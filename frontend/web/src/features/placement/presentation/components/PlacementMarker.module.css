@@ -1,0 +1,22 @@
+.marker {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 3px solid var(--color-surface);
+  border-radius: var(--radius-pill);
+  background: var(--color-accent);
+  box-shadow: 0 2px 8px rgb(23 35 29 / 40%);
+  color: var(--color-surface);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.marker[aria-pressed='true'] {
+  width: 40px;
+  height: 40px;
+  background: var(--color-accent-pressed);
+  border-color: var(--color-warning);
+}

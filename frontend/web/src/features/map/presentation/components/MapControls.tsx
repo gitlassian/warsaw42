@@ -9,10 +9,12 @@ type MapControlsProps = {
   /** Narrow only: layers, time and filters fold behind a small "more" button. */
   collapsible?: boolean
   coverageShown: boolean
+  placementShown: boolean
   filters: AedFilters
   timeOpen: boolean
   filtersOpen: boolean
   onToggleCoverage: () => void
+  onTogglePlacement: () => void
   onToggleFilter: (group: AedAvailability) => void
   onToggleTime: () => void
   onFiltersOpenChange: (open: boolean) => void
@@ -24,10 +26,12 @@ type MapControlsProps = {
 export function MapControls({
   collapsible,
   coverageShown,
+  placementShown,
   filters,
   timeOpen,
   filtersOpen,
   onToggleCoverage,
+  onTogglePlacement,
   onToggleFilter,
   onToggleTime,
   onFiltersOpenChange,
@@ -47,6 +51,14 @@ export function MapControls({
             text="Zasięg"
             pressed={coverageShown}
             onClick={onToggleCoverage}
+          />
+          <IconButton
+            variant="floating"
+            icon="add_location"
+            label="Gdzie dodać AED: miejsca, które poprawią zasięg o wybranej porze"
+            text="Nowe"
+            pressed={placementShown}
+            onClick={onTogglePlacement}
           />
           <IconButton
             variant="floating"

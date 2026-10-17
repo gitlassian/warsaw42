@@ -11,6 +11,9 @@ import { aedsStore } from '@/features/aeds/store'
 import type { CoverageCell } from '@/features/coverage/models/coverage'
 import { nearestSite } from '@/features/coverage/lib/coverageGeometry'
 import { coverageStore, selectCoverageCell } from '@/features/coverage/store'
+import { PlacementMarker } from '@/features/placement/presentation/components/PlacementMarker'
+import { usePlacementView } from '@/features/placement/presentation/usePlacementView'
+import { placementStore, selectPlacement } from '@/features/placement/store'
 import { discoveryStore, pickOrigin, requestEtas } from '@/features/discovery/store'
 import { headingAt, locateOnRoute } from '@/features/navigation/lib/progress'
 import { navigationStore, routePlan, stopFollowing } from '@/features/navigation/store'
@@ -66,6 +69,10 @@ export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
   const reportMatch = useMatch(RoutePaths.report)
   const navigateMatch = useMatch(RoutePaths.navigate)
   const showCoverage = useMatch(RoutePaths.coverage) !== null
+  const showPlacement = useMatch(RoutePaths.placement) !== null
+  const placement = usePlacementView()
+  const placementData = useStore(placementStore, (s) => s.data)
+  const placementSelected = useStore(placementStore, (s) => s.selected)
   const selectedId = aedMatch?.params.id ?? reportMatch?.params.id ?? navigateMatch?.params.id
   const selectedAed = selectedId ? byId.get(selectedId) : undefined
 
@@ -191,6 +198,23 @@ export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
     if (map) setSourceData(map, SOURCE.coverage, showCoverage && coverageLayer ? coverageLayer.data : EMPTY_COLLECTION)
   }, [map, showCoverage, coverageLayer])
 
+  // Suggested AED sites: a dashed reach circle around each one.
+  useEffect(() => {
+    if (!map) return
+    const circles =
+      showPlacement && placement && placementData
+        ? {
+            type: 'FeatureCollection' as const,
+            features: placement.picks.map((p) => ({
+              type: 'Feature' as const,
+              properties: {},
+              geometry: circlePolygon({ lng: p.lng, lat: p.lat }, placementData.radius_m),
+            })),
+          }
+        : EMPTY_COLLECTION
+    setSourceData(map, SOURCE.placement, circles)
+  }, [map, showPlacement, placement, placementData])
+
   useEffect(() => {
     if (!map) return
     map.getCanvas().style.cursor = picking ? 'crosshair' : ''
@@ -273,6 +297,13 @@ export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
       )}
       {/* The selected AED stays visible even inside a cluster. */}
       {map && selectedAed && renderAed(selectedAed.id, selectedAed.location)}
+      {map &&
+        showPlacement &&
+        placement?.picks.map((p) => (
+          <MapMarker key={`placement-${p.rank}`} map={map} lngLat={p} anchor="center" raised={placementSelected === p.rank}>
+            <PlacementMarker rank={p.rank} selected={placementSelected === p.rank} onSelect={() => selectPlacement(p.rank)} />
+          </MapMarker>
+        ))}
       {map && origin && !livePosition && (
         <MapMarker map={map} lngLat={origin} anchor={origin.source === 'gps' ? 'center' : 'bottom'}>
           <OriginMarker source={origin.source} />

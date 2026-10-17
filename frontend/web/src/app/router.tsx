@@ -3,6 +3,7 @@ import { RoutePaths } from '@/app/routePaths'
 import type { SheetSnap } from '@/design-system/components/Sheet'
 import { CoveragePanel } from '@/features/coverage/presentation/sheets/CoveragePanel'
 import { DataInfoPanel } from '@/features/dataInfo/presentation/sheets/DataInfoPanel'
+import { PlacementPanel } from '@/features/placement/presentation/sheets/PlacementPanel'
 import { AedDetailsPanel } from '@/features/discovery/presentation/sheets/AedDetailsPanel'
 import { NearbyListPanel } from '@/features/discovery/presentation/sheets/NearbyListPanel'
 import { StartPanel } from '@/features/discovery/presentation/sheets/StartPanel'
@@ -39,6 +40,7 @@ export const appRouter = createBrowserRouter([
       { path: RoutePaths.navigate, element: <NavigationPanel />, handle: handle({ sheet: 'compact', navigation: true }) },
       { path: RoutePaths.report, element: <ReportPanel />, handle: handle({ sheet: 'expanded', close: 'selection' }) },
       { path: RoutePaths.coverage, element: <CoveragePanel />, handle: handle({ sheet: 'medium', close: 'panel' }) },
+      { path: RoutePaths.placement, element: <PlacementPanel />, handle: handle({ sheet: 'medium', close: 'panel' }) },
       { path: RoutePaths.data, element: <DataInfoPanel />, handle: handle({ sheet: 'medium', close: 'panel' }) },
       { path: '*', element: <Navigate to={RoutePaths.map} replace /> },
     ],
