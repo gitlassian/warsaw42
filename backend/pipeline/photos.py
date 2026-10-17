@@ -8,7 +8,7 @@ Writes data/aed/photos_public/<defibrillator_id>.webp  resized copies, safe to s
 
 The EXIF orientation is applied to the pixels before the metadata is dropped, so photos stay upright.
 Also writes backend/data/out/aed_photos.json (ids that have a photo).
-Upload photos_public/ to a Supabase Storage bucket and store the bucket-relative name in aed_photo.public_file_name.
+Upload photos_public/ to the aed-photos bucket with pipeline/upload_photos.py.
 """
 import argparse
 import hashlib
