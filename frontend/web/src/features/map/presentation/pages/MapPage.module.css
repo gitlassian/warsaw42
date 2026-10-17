@@ -11,6 +11,17 @@
   left: var(--space-16);
   right: var(--space-16);
   z-index: 4;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-8);
+}
+
+/* Narrow start screen: fills the rest of the logo's row. */
+.search {
+  flex: 1;
+  min-width: 0;
+  border-radius: var(--radius-sheet);
+  box-shadow: var(--shadow-floating);
 }
 
 /* Dark gradient scrims keep the white map controls readable on a light map; they never catch taps. */
@@ -64,13 +75,33 @@
 .controls {
   position: absolute;
   right: var(--space-16);
-  /* Clears the Mapbox attribution button in the corner. */
-  bottom: calc(var(--sheet-cover) + var(--space-48));
+  bottom: calc(var(--sheet-cover) + var(--space-16));
   z-index: 1;
   display: flex;
   flex-direction: column;
   gap: var(--space-8);
   transition: bottom var(--duration-panel) ease-out;
+}
+
+/* Narrow: a small white square right above the "more" button, centred on it. */
+.locate {
+  display: grid;
+  place-items: center;
+  align-self: flex-end;
+  width: 40px;
+  height: 40px;
+  margin-right: var(--space-4);
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  color: var(--color-text);
+  box-shadow: var(--shadow-floating);
+  cursor: pointer;
+}
+
+.locate:disabled {
+  color: var(--color-text-muted);
 }
 
 /* Time picker: opens to the left of the control column, level with its bottom edge. */
@@ -151,6 +182,7 @@
   /* Top row of the side panel (logo, close button), divided from the panel title below. */
   .header {
     position: static;
+    display: block;
     grid-area: 1 / 1;
     padding: var(--space-16) var(--space-24);
     border-right: 1px solid var(--color-border);
@@ -225,7 +257,7 @@
   .search {
     flex: 0 1 auto;
     width: 360px;
-    min-width: 0;
+    box-shadow: none;
   }
 
   .layout[data-floating] .mapArea {

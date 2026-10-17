@@ -1,4 +1,4 @@
-import { Link, useMatch, useNavigate } from 'react-router'
+import { Link } from 'react-router'
 import { RoutePaths } from '@/app/routePaths'
 import logo from '@/assets/brand/defiwawa-horizontal.svg'
 import { IconButton } from '@/design-system/components/IconButton'
@@ -7,13 +7,12 @@ import styles from './AppHeader.module.css'
 type AppHeaderProps = {
   /** Over the map, also in the wide layout. */
   floating?: boolean
-  withInfo?: boolean
   /** Wide layout: closes the open AED or panel from the header row. */
   onClose?: () => void
 }
 
-/** Compact name, plus the info button on narrow screens or the open AED/panel's close button on wide ones (DESIGN.md §6). */
-export function AppHeader({ floating = false, withInfo = true, onClose }: AppHeaderProps) {
+/** Compact name, plus the open AED/panel's close button on wide screens (DESIGN.md §6). */
+export function AppHeader({ floating = false, onClose }: AppHeaderProps) {
   return (
     <header className={styles.header} data-floating={floating || undefined}>
       <Link to={RoutePaths.map} className={styles.brand}>
@@ -21,7 +20,6 @@ export function AppHeader({ floating = false, withInfo = true, onClose }: AppHea
           <img src={logo} alt="DefiWawa" className={styles.logo} />
         </h1>
       </Link>
-      {withInfo && <InfoButton />}
       {onClose && (
         <span className={styles.close}>
           <IconButton icon="close" label="Zamknij" onClick={onClose} />
@@ -31,17 +29,3 @@ export function AppHeader({ floating = false, withInfo = true, onClose }: AppHea
   )
 }
 
-/** Opens "O danych" and closes it again: in the header on narrow screens. */
-function InfoButton() {
-  const navigate = useNavigate()
-  const shown = useMatch(RoutePaths.data) !== null
-  return (
-    <IconButton
-      variant="floating"
-      icon="info"
-      label="O danych"
-      pressed={shown}
-      onClick={() => navigate(shown ? RoutePaths.map : RoutePaths.data)}
-    />
-  )
-}

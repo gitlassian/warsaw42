@@ -99,7 +99,7 @@ export function AddressSearch() {
           aria-expanded={showList}
           aria-controls={listId}
           aria-activedescendant={showList && active >= 0 ? `${id}-${active}` : undefined}
-          placeholder="Szukaj adresu w Warszawie"
+          placeholder="Szukaj adresu"
           autoComplete="off"
           enterKeyHint="search"
           value={query}

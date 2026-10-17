@@ -27,10 +27,10 @@
   display: flex;
 }
 
-/* [D]efiWawa lockup: the symbol is the D; cap height ≈ 21px at this size. */
+/* [D]efiWawa lockup: the symbol is the D. Smaller on phones, 24 px on wide screens. */
 .logo {
   display: block;
-  height: 24px;
+  height: 18px;
   width: auto;
 }
 
@@ -42,6 +42,11 @@
 
 /* Wide layout: the header is the top of the side panel (unless it floats over the map). */
 @media (min-width: 840px) {
+  /* Cap height ≈ 21px at this size. */
+  .logo {
+    height: 24px;
+  }
+
   .header:not([data-floating]) .brand {
     padding-inline: 0;
     background: none;

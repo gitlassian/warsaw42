@@ -1,54 +1,45 @@
+import { type ReactNode, useState } from 'react'
+import { AppIcon } from '@/design-system/components/AppIcon'
 import { IconButton } from '@/design-system/components/IconButton'
 import type { AedAvailability, AedFilters } from '@/features/aeds/lib/aedAvailability'
 import { FilterMenu } from './FilterMenu'
 import styles from './MapControls.module.css'
 
 type MapControlsProps = {
-  /** Narrow only: wide screens have a small location button above the zoom buttons (MapView). */
-  withLocate: boolean
-  /** Navigation: only the location button. */
-  locateOnly?: boolean
-  locating: boolean
+  /** Narrow only: layers, time and filters fold behind a small "more" button. */
+  collapsible?: boolean
   coverageShown: boolean
   filters: AedFilters
   timeOpen: boolean
   filtersOpen: boolean
-  onLocate: () => void
   onToggleCoverage: () => void
   onToggleFilter: (group: AedAvailability) => void
   onToggleTime: () => void
   onFiltersOpenChange: (open: boolean) => void
+  /** Narrow: shown right above the "more" button; hidden while the tiles are unfolded. */
+  children?: ReactNode
 }
 
-/** Round floating controls; positioned around the sheet by the page. */
+/** Floating map controls (layers, time, filters); positioned around the sheet by the page. */
 export function MapControls({
-  withLocate,
-  locateOnly,
-  locating,
+  collapsible,
   coverageShown,
   filters,
   timeOpen,
   filtersOpen,
-  onLocate,
   onToggleCoverage,
   onToggleFilter,
   onToggleTime,
   onFiltersOpenChange,
+  children,
 }: MapControlsProps) {
+  const [moreOpen, setMoreOpen] = useState(false)
+  const moreLabel = moreOpen ? 'Ukryj opcje mapy' : 'Więcej opcji mapy'
+
   return (
     <div className={styles.controls}>
-      {withLocate && (
-        <IconButton
-          variant="floating"
-          icon="my_location"
-          label="Pokaż moją lokalizację"
-          text="Pozycja"
-          onClick={onLocate}
-          disabled={locating}
-        />
-      )}
-      {!locateOnly && (
-        <>
+      {(!collapsible || moreOpen) && (
+        <div className={collapsible ? styles.unfolded : styles.controls}>
           <IconButton
             variant="floating"
             icon="layers"
@@ -66,7 +57,23 @@ export function MapControls({
             onClick={onToggleTime}
           />
           <FilterMenu filters={filters} onToggle={onToggleFilter} open={filtersOpen} onOpenChange={onFiltersOpenChange} />
-        </>
+        </div>
+      )}
+      {!moreOpen && children}
+      {collapsible && (
+        <button
+          type="button"
+          className={styles.more}
+          aria-label={moreLabel}
+          title={moreLabel}
+          aria-expanded={moreOpen}
+          onClick={() => setMoreOpen(!moreOpen)}
+        >
+          {/* Keyed so the glyph remounts and replays its turn-in on every toggle. */}
+          <span key={moreOpen ? 'close' : 'more'} className={styles.moreIcon}>
+            {moreOpen ? <AppIcon name="close" /> : <AppIcon name="more" size={32} />}
+          </span>
+        </button>
       )}
     </div>
   )

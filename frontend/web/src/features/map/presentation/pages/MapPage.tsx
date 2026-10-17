@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type CSSProperties } from 're
 import { Outlet, useLocation, useMatches, useNavigate } from 'react-router'
 import type { RouteHandle } from '@/app/router'
 import { RoutePaths } from '@/app/routePaths'
+import { AppIcon } from '@/design-system/components/AppIcon'
 import { Button, ButtonLink } from '@/design-system/components/Button'
 import { Notice } from '@/design-system/components/Notice'
 import { Sheet, WIDE_LAYOUT_QUERY } from '@/design-system/components/Sheet'
@@ -106,6 +107,18 @@ export function MapPage() {
     const origin = await locate()
     if (origin) mapCamera.focus(origin)
   }
+  const locateButton = (
+    <button
+      type="button"
+      className={styles.locate}
+      aria-label="Pokaż moją lokalizację"
+      title="Pokaż moją lokalizację"
+      onClick={onLocate}
+      disabled={locating}
+    >
+      <AppIcon name="my_location" size={20} />
+    </button>
+  )
 
   return (
     <div
@@ -119,17 +132,15 @@ export function MapPage() {
         {navigating && !wide ? (
           <NavigationBanner />
         ) : (
-          <AppHeader floating={floating} withInfo={!wide} onClose={wide && handle?.close ? onClose : undefined} />
+          <AppHeader floating={floating} onClose={wide && handle?.close ? onClose : undefined} />
         )}
-        {/* Wide start screen: the address search and the find button in the logo's row. */}
-        {wide && floating && (
-          <>
-            <div className={styles.search}>
-              <AddressSearch />
-            </div>
-            {findButton}
-          </>
+        {/* Start screen: the address search in the logo's row; wide also adds the find button. */}
+        {floating && (wide || !picking) && (
+          <div className={styles.search}>
+            <AddressSearch />
+          </div>
         )}
+        {wide && floating && findButton}
       </div>
 
       {!floating && (
@@ -166,7 +177,6 @@ export function MapPage() {
         {wide && !floating && findButton && <div className={styles.mapFind}>{findButton}</div>}
         <div className={styles.overlay}>
           {navigating && wide && <NavigationBanner />}
-          {floating && !wide && !picking && <AddressSearch />}
           {floating && wide && (
             <aside className={styles.status} aria-label="Panel">
               <Outlet />
@@ -200,24 +210,27 @@ export function MapPage() {
             />
           )}
         </div>
-        {/* Wide navigation: nothing left in the column, the location button sits by the zoom buttons. */}
-        {showControls && !(wide && navigating) && (
+        {/* Narrow: the location button sits right above the "more" button (wide: by the zoom buttons, see MapView). */}
+        {showControls && (!navigating || !wide) && (
           <div className={styles.controls}>
-            {/* Navigation: only the location button, no layers, time or filters. */}
-            <MapControls
-              withLocate={!wide}
-              locateOnly={navigating}
-              locating={locating}
-              coverageShown={coverageShown}
-              filters={{ available, unavailable }}
-              onToggleFilter={toggleFilter}
-              timeOpen={timeOpen}
-              onToggleTime={toggleTime}
-              filtersOpen={filtersOpen}
-              onFiltersOpenChange={onFiltersOpenChange}
-              onLocate={onLocate}
-              onToggleCoverage={() => navigate(coverageShown ? RoutePaths.map : RoutePaths.coverage)}
-            />
+            {/* Navigation: no layers, time or filters. */}
+            {navigating ? (
+              locateButton
+            ) : (
+              <MapControls
+                collapsible={!wide}
+                coverageShown={coverageShown}
+                filters={{ available, unavailable }}
+                onToggleFilter={toggleFilter}
+                timeOpen={timeOpen}
+                onToggleTime={toggleTime}
+                filtersOpen={filtersOpen}
+                onFiltersOpenChange={onFiltersOpenChange}
+                onToggleCoverage={() => navigate(coverageShown ? RoutePaths.map : RoutePaths.coverage)}
+              >
+                {!wide && locateButton}
+              </MapControls>
+            )}
           </div>
         )}
         {timeOpen && showControls && !navigating && (

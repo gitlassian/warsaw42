@@ -3,13 +3,13 @@
   height: 100%;
 }
 
-/* Keep Mapbox logo and attribution above the bottom sheet. */
+/* Keep the Mapbox logo above the bottom sheet. */
 .map :global(.mapboxgl-ctrl-bottom-left),
 .map :global(.mapboxgl-ctrl-bottom-right) {
   bottom: var(--sheet-cover, 0px);
 }
 
-/* Zoom and location buttons: wide screens only (pinch zoom on phones), small, above the attribution. */
+/* Zoom and location buttons: wide screens only (pinch zoom on phones), small. */
 .map :global(.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group) {
   display: none;
   margin: 0 var(--space-16) var(--space-8) 0;

@@ -3,3 +3,63 @@
   flex-direction: column;
   gap: var(--space-8);
 }
+
+/* Smaller uncaptioned version of the tiles it unfolds; solid green while they are shown. */
+.more {
+  composes: tile from '../../../../design-system/components/IconButton.module.css';
+  width: 48px;
+  height: 48px;
+  align-self: flex-end;
+  transition:
+    background-color var(--duration-feedback),
+    transform var(--duration-feedback);
+}
+
+.more:active {
+  transform: scale(0.94);
+}
+
+.moreIcon {
+  display: grid;
+  animation: icon-turn-in var(--duration-feedback) ease-out;
+}
+
+.more[aria-expanded='true'] {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+.more[aria-expanded='true']:hover {
+  background: var(--color-accent-hover);
+}
+
+/* Unfolded tiles rise out of the button, nearest first. */
+.unfolded {
+  composes: controls;
+}
+
+.unfolded > * {
+  animation: tile-in var(--duration-panel) ease-out backwards;
+}
+
+.unfolded > :nth-child(2) {
+  animation-delay: 40ms;
+}
+
+.unfolded > :nth-child(1) {
+  animation-delay: 80ms;
+}
+
+@keyframes tile-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.9);
+  }
+}
+
+@keyframes icon-turn-in {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.6);
+  }
+}

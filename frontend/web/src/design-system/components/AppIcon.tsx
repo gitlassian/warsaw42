@@ -16,6 +16,7 @@ import caretRight from '@phosphor-icons/core/bold/caret-right-bold.svg'
 import checkCircle from '@phosphor-icons/core/bold/check-circle-bold.svg'
 import circlesThree from '@phosphor-icons/core/bold/circles-three-bold.svg'
 import clock from '@phosphor-icons/core/bold/clock-bold.svg'
+import dotsThree from '@phosphor-icons/core/bold/dots-three-bold.svg'
 import doorOpen from '@phosphor-icons/core/bold/door-open-bold.svg'
 import downloadSimple from '@phosphor-icons/core/bold/download-simple-bold.svg'
 import flag from '@phosphor-icons/core/bold/flag-bold.svg'
@@ -70,6 +71,7 @@ const ICONS = {
   list: listBullets,
   location_on: mapPin,
   lock: lockSimple,
+  more: dotsThree,
   my_location: gpsFix,
   navigation: navigationArrow,
   near_me: navigationArrow,

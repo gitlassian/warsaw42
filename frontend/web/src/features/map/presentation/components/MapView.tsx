@@ -88,6 +88,7 @@ export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
         minZoom: 10,
         maxBounds: WARSAW_MAX_BOUNDS,
         language: 'pl',
+        attributionControl: false,
         locale: { 'NavigationControl.ZoomIn': 'Przybliż', 'NavigationControl.ZoomOut': 'Oddal' },
       })
       // Small zoom and location buttons in the bottom-right corner, shown on wide screens only (MapView.module.css).
