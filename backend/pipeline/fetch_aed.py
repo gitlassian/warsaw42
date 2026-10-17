@@ -15,7 +15,7 @@ import urllib.request
 from datetime import datetime, timezone
 
 API = "https://dane.um.warszawa.pl/api/action/get_scb_lokalizacja_defibrylatorow"
-ROOT = os.path.join(os.path.dirname(__file__), "..", "data")
+ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 RAW = os.path.join(ROOT, "raw", "scb_aed_list.json")
 CHANGES = os.path.join(ROOT, "raw", "changes.jsonl")
 PHOTOS = os.path.join(ROOT, "aed", "photos")

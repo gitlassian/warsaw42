@@ -11,7 +11,7 @@ import time
 import urllib.parse
 import urllib.request
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "data", "raw", "osm_levels.json")
+OUT = os.path.join(os.path.dirname(__file__), "..", "..", "data", "raw", "osm_levels.json")
 QUERY = ('[out:json][timeout:120];area["name"="Warszawa"]["boundary"="administrative"]->.a;'
          '(node["emergency"="defibrillator"]["level"](area.a););out tags center;')
 ENDPOINTS = ["https://overpass-api.de/api/interpreter", "https://overpass.kumi.systems/api/interpreter"]

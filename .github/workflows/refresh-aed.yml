@@ -17,10 +17,12 @@ jobs:
         with:
           python-version: "3.12"
       - name: Fetch AED snapshot
+        working-directory: backend
         env:
           WARSAW_API_KEY: ${{ secrets.WARSAW_API_KEY }}
         run: python -m pipeline.fetch_aed
       - name: Build aed.json (regex first, LLM only for new strings)
+        working-directory: backend
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}

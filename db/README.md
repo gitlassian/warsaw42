@@ -31,9 +31,9 @@ Also: `hours_cache` (LLM answers by exact string), `population_cell` (GUS 1 km g
 | Column | Source |
 |---|---|
 | `aed.*`, `address.street_raw`, `building_no`, `postcode` | SCB API `get_scb_lokalizacja_defibrylatorow` |
-| `aed_hours`, `aed_schedule` | `pipeline/hours.py` (regex), `pipeline/llm_hours.py` (LLM), 24/7 from `device_availability = Tak` |
-| `aed.floor` | `pipeline/floor.py` from the description (`text`), else OSM `level` within 30 m (`osm`) |
-| `aed.in_building` | SCB `device_location`; `in_footprint`, `building_*` from `pipeline/building.py` |
+| `aed_hours`, `aed_schedule` | `backend/pipeline/hours.py` (regex), `backend/pipeline/llm_hours.py` (LLM), 24/7 from `device_availability = Tak` |
+| `aed.floor` | `backend/pipeline/floor.py` from the description (`text`), else OSM `level` within 30 m (`osm`) |
+| `aed.in_building` | SCB `device_location`; `in_footprint`, `building_*` from `backend/pipeline/building.py` |
 | `audit_flag` | suspicious reasons, address/coordinate mismatch, unknown hours (codes listed in `schema.sql`) |
 
 ## Checks on the real data

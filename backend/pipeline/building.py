@@ -13,7 +13,7 @@ import math
 import os
 from collections import defaultdict
 
-ROOT = os.path.join(os.path.dirname(__file__), "..", "data")
+ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "data")
 NEAR_M = 15.0
 CELL = 0.001  # grid cell in degrees (~110 m x 70 m)
 KX, KY = 111320 * math.cos(math.radians(52.23)), 110540  # metres per degree at Warsaw
