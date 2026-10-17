@@ -273,7 +273,7 @@ The list is a complete way to find an AED without operating the map. Label close
 
 Route: a 5-wide green line over a white casing with a total width of 9. The casing separates it from parks, roads, and coverage areas. Give the origin and destination different icons and accessible names.
 
-User location: a blue dot with a white border and translucent accuracy area. Indicate a manually selected origin with a marker rather than a GPS dot.
+User location: a blue dot with a white border and a soft pulsing halo. The translucent accuracy area appears for a moment after each GPS fix, then fades out; it is hidden during navigation, where the user is a direction arrow. Indicate a manually selected origin with a marker rather than a GPS dot.
 
 The first release shows route geometry, time, distance, and our own entrance instructions. Do not depict turn-by-turn instructions or offline routing as available features in mockups.
 

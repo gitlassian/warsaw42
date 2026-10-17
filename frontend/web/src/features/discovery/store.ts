@@ -192,3 +192,13 @@ export async function routeTo(aedId: string) {
     discoveryStore.set({ routing: { aedId, status: 'failed' } })
   }
 }
+
+/** New route from the walker's live position, after navigation went off the route. */
+export function rerouteFrom(origin: Origin, aedId: string) {
+  if (!isInsideWarsaw(origin)) {
+    discoveryStore.set({ issue: 'outside' })
+    return
+  }
+  setOrigin(origin)
+  return routeTo(aedId)
+}

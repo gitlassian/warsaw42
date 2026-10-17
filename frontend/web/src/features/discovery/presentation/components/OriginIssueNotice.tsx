@@ -9,7 +9,11 @@ const MESSAGES: Record<Exclude<LocationIssue, 'outside_pick'>, { title: string; 
   },
   unavailable: {
     title: 'Nie możemy ustalić Twojej lokalizacji.',
-    text: 'Spróbuj ponownie albo wybierz punkt startowy na mapie.',
+    text: 'Sprawdź, czy lokalizacja jest włączona w ustawieniach urządzenia, i spróbuj ponownie. Możesz też wybrać punkt startowy na mapie.',
+  },
+  insecure: {
+    title: 'Lokalizacja wymaga bezpiecznego połączenia.',
+    text: 'Przeglądarka udostępnia lokalizację tylko stronom HTTPS. Wybierz punkt startowy na mapie.',
   },
   outside: {
     title: 'Aplikacja obejmuje Warszawę.',
@@ -20,10 +24,12 @@ const MESSAGES: Record<Exclude<LocationIssue, 'outside_pick'>, { title: string; 
 type OriginIssueNoticeProps = {
   issue: LocationIssue
   onPick: () => void
+  /** Shown for a failed fix, which often succeeds on a second try. */
+  onRetry?: () => void
 }
 
 /** Location problem with the manual-origin fallback (DESIGN.md §8). */
-export function OriginIssueNotice({ issue, onPick }: OriginIssueNoticeProps) {
+export function OriginIssueNotice({ issue, onPick, onRetry }: OriginIssueNoticeProps) {
   if (issue === 'outside_pick') return null
   const { title, text } = MESSAGES[issue]
   return (
@@ -31,9 +37,16 @@ export function OriginIssueNotice({ issue, onPick }: OriginIssueNoticeProps) {
       tone="warning"
       title={title}
       actions={
-        <Button icon="location_on" onClick={onPick}>
-          Wybierz punkt na mapie
-        </Button>
+        <>
+          {issue === 'unavailable' && onRetry && (
+            <Button icon="my_location" onClick={onRetry}>
+              Spróbuj ponownie
+            </Button>
+          )}
+          <Button icon="location_on" onClick={onPick}>
+            Wybierz punkt na mapie
+          </Button>
+        </>
       }
     >
       {text}

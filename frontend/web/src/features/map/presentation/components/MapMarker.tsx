@@ -9,20 +9,25 @@ type MapMarkerProps = {
   anchor?: 'bottom' | 'center'
   /** Raises the selected marker above its neighbours. */
   raised?: boolean
+  /** Degrees clockwise from north; the marker then turns and tilts with the map (navigation arrow). */
+  rotation?: number
   children: ReactNode
 }
 
 /** Renders React content as a Mapbox HTML marker. */
-export function MapMarker({ map, lngLat: { lng, lat }, anchor = 'bottom', raised, children }: MapMarkerProps) {
+export function MapMarker({ map, lngLat: { lng, lat }, anchor = 'bottom', raised, rotation, children }: MapMarkerProps) {
   const [element] = useState(() => document.createElement('div'))
 
   useEffect(() => {
-    const marker = new mapboxgl.Marker({ element, anchor }).setLngLat([lng, lat]).addTo(map)
+    const alignment = rotation === undefined ? 'auto' : 'map'
+    const marker = new mapboxgl.Marker({ element, anchor, rotation, rotationAlignment: alignment, pitchAlignment: alignment })
+      .setLngLat([lng, lat])
+      .addTo(map)
     marker.getElement().style.zIndex = raised ? '2' : ''
     return () => {
       marker.remove()
     }
-  }, [map, element, anchor, lng, lat, raised])
+  }, [map, element, anchor, lng, lat, raised, rotation])
 
   return createPortal(children, element)
 }

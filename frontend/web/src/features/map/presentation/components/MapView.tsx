@@ -1,6 +1,6 @@
 import mapboxgl, { type GeoJSONSource, type Map as MapboxMap, type MapMouseEvent } from 'mapbox-gl'
 import type { Point } from 'geojson'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useMatch } from 'react-router'
 import { RoutePaths, buildPath } from '@/app/routePaths'
 import { passesFilters } from '@/features/aeds/lib/aedAvailability'
@@ -10,13 +10,15 @@ import type { CoverageCell } from '@/features/coverage/models/coverage'
 import { nearestSite } from '@/features/coverage/lib/coverageGeometry'
 import { coverageStore, selectCoverageCell } from '@/features/coverage/store'
 import { discoveryStore, pickOrigin, requestEtas } from '@/features/discovery/store'
+import { headingAt, locateOnRoute } from '@/features/navigation/lib/progress'
+import { navigationStore, routePlan, stopFollowing } from '@/features/navigation/store'
 import { WARSAW_CENTER, WARSAW_MAX_BOUNDS, circlePolygon, type LngLat } from '@/shared/geo/geo'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
 import { mapFiltersStore } from '@/features/aeds/filterStore'
-import { AEDS_LAYER, COVERAGE_HALO_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
+import { ACCURACY_LAYER, ACCURACY_OPACITY, AEDS_LAYER, COVERAGE_HALO_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
 import { MapMarker } from './MapMarker'
-import { AedMarker, ClusterMarker, OriginMarker } from './MapMarkers'
+import { AedMarker, ClusterMarker, HeadingMarker, OriginMarker } from './MapMarkers'
 import styles from './MapView.module.css'
 
 /** A rendered point of the clustered AED source: one AED or a cluster. */
@@ -24,6 +26,8 @@ type VisibleFeature = { key: string; lngLat: LngLat } & (
   | { aedId: string }
   | { clusterId: number; count: number; available: number }
 )
+
+const ACCURACY_VISIBLE_MS = 2500
 
 const sameKeys = (a: VisibleFeature[], b: VisibleFeature[]) =>
   a.length === b.length && a.every((f, i) => f.key === b[i].key)
@@ -48,11 +52,15 @@ export function MapView({ onLoadError }: MapViewProps) {
   const route = useStore(discoveryStore, (s) => s.route)
   const picking = useStore(discoveryStore, (s) => s.picking)
   const coverageLayer = useStore(coverageStore, (s) => s.layer)
+  const livePosition = useStore(navigationStore, (s) => s.position)
+  const following = useStore(navigationStore, (s) => s.following)
+  const navigatedId = useStore(navigationStore, (s) => s.aedId)
 
   const aedMatch = useMatch(RoutePaths.aed)
   const reportMatch = useMatch(RoutePaths.report)
+  const navigateMatch = useMatch(RoutePaths.navigate)
   const showCoverage = useMatch(RoutePaths.coverage) !== null
-  const selectedId = aedMatch?.params.id ?? reportMatch?.params.id
+  const selectedId = aedMatch?.params.id ?? reportMatch?.params.id ?? navigateMatch?.params.id
   const selectedAed = selectedId ? byId.get(selectedId) : undefined
 
   // Create the map once.
@@ -87,6 +95,8 @@ export function MapView({ onLoadError }: MapViewProps) {
     instance.on('error', () => {
       if (!loaded) onLoadError()
     })
+    // Panning by hand stops the navigation camera from following the walker.
+    instance.on('dragstart', stopFollowing)
     instance.on('load', () => {
       loaded = true
       addAppLayers(instance)
@@ -152,11 +162,18 @@ export function MapView({ onLoadError }: MapViewProps) {
     if (map) setSourceData(map, SOURCE.route, route ? route.geometry : EMPTY_COLLECTION)
   }, [map, route])
 
+  // Accuracy area (DESIGN.md §12): shown for a moment after a GPS fix, then faded out, as in Google Maps.
+  // Hidden while navigating, where the walker is an arrow on the route.
   useEffect(() => {
     if (!map) return
-    const accuracy = origin?.source === 'gps' && origin.accuracyM ? circlePolygon(origin, origin.accuracyM) : null
+    const accuracy =
+      !livePosition && origin?.source === 'gps' && origin.accuracyM ? circlePolygon(origin, origin.accuracyM) : null
     setSourceData(map, SOURCE.accuracy, accuracy ?? EMPTY_COLLECTION)
-  }, [map, origin])
+    if (!accuracy) return
+    map.setPaintProperty(ACCURACY_LAYER, 'fill-opacity', ACCURACY_OPACITY)
+    const timer = setTimeout(() => map.setPaintProperty(ACCURACY_LAYER, 'fill-opacity', 0), ACCURACY_VISIBLE_MS)
+    return () => clearTimeout(timer)
+  }, [map, origin, livePosition])
 
   useEffect(() => {
     if (map) setSourceData(map, SOURCE.coverage, showCoverage && coverageLayer ? coverageLayer.data : EMPTY_COLLECTION)
@@ -184,11 +201,24 @@ export function MapView({ onLoadError }: MapViewProps) {
   }, [map, picking])
 
   // Move the camera only after an explicit selection or a new route (DESIGN.md §12).
+  // Navigation moves the camera itself (heading-up); leaving it shows the whole route again.
+  const navigating = navigateMatch !== null
   useEffect(() => {
-    if (!map || !selectedAed) return
+    if (!map || !selectedAed || navigating) return
     if (route?.aedId === selectedAed.id) mapCamera.fitRoute(route)
     else mapCamera.focus(selectedAed.location)
-  }, [map, selectedAed, route])
+  }, [map, selectedAed, route, navigating])
+
+  // Walking direction along the navigated route at the live position: turns the map and the arrow.
+  const heading = useMemo(() => {
+    if (!livePosition || !route || route.aedId !== navigatedId) return null
+    const plan = routePlan(route)
+    return plan.coordinates.length > 1 ? headingAt(plan, locateOnRoute(plan, livePosition).alongM) : null
+  }, [livePosition, route, navigatedId])
+
+  useEffect(() => {
+    if (map && following && livePosition) mapCamera.navigate(livePosition, heading ?? map.getBearing())
+  }, [map, following, livePosition, heading])
 
   const expandCluster = (clusterId: number, center: LngLat) =>
     map?.getSource<GeoJSONSource>(SOURCE.aeds)?.getClusterExpansionZoom(clusterId, (error, zoom) => {
@@ -225,9 +255,15 @@ export function MapView({ onLoadError }: MapViewProps) {
         )}
       {/* The selected AED stays visible even inside a cluster. */}
       {map && selectedAed && renderAed(selectedAed.id, selectedAed.location)}
-      {map && origin && (
+      {map && origin && !livePosition && (
         <MapMarker map={map} lngLat={origin} anchor={origin.source === 'gps' ? 'center' : 'bottom'}>
           <OriginMarker source={origin.source} />
+        </MapMarker>
+      )}
+      {/* While navigating, the live position replaces the search start point. */}
+      {map && livePosition && (
+        <MapMarker map={map} lngLat={livePosition} anchor="center" rotation={heading ?? undefined}>
+          {heading === null ? <OriginMarker source="gps" /> : <HeadingMarker />}
         </MapMarker>
       )}
     </div>

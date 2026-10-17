@@ -40,7 +40,7 @@ export function StartPanel() {
         </Text>
       )}
 
-      {issue && <OriginIssueNotice issue={issue} onPick={onPick} />}
+      {issue && <OriginIssueNotice issue={issue} onPick={onPick} onRetry={onFind} />}
 
       {search.status === 'failed' && (
         <Notice tone="danger" title="Nie udało się wyznaczyć trasy." actions={<Button onClick={onFind}>Spróbuj ponownie</Button>} />

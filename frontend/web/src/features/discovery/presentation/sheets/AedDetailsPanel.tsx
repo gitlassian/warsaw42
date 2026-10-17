@@ -10,10 +10,10 @@ import { Text } from '@/design-system/components/Text'
 import { aedStatus, placementLabel } from '@/features/aeds/lib/aedStatus'
 import type { Aed } from '@/features/aeds/models/aed'
 import { AedHours } from '@/features/aeds/presentation/components/AedHours'
+import { AedUsageGuide } from '@/features/aeds/presentation/components/AedUsageGuide'
 import { AedStatusView } from '@/features/aeds/presentation/components/AedStatusView'
 import { aedsStore } from '@/features/aeds/store'
-import { mapCamera } from '@/features/map/lib/mapCamera'
-import { distanceMeters } from '@/shared/geo/geo'
+import { distanceMeters, type LngLat } from '@/shared/geo/geo'
 import { formatDateTime, formatDistance } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
 import { discoveryStore, requestEtas, routeTo, startPicking } from '../../store'
@@ -27,7 +27,14 @@ const DEVICE_CONDITION: Record<Aed['operationalStatus'], string> = {
   confirmed_operational: 'Urządzenie zostało sprawdzone.',
 }
 
-/** Selected AED card (DESIGN.md §7): time, place, access, entrance, route, details, report. */
+/** Walking directions in Google Maps; without an origin it uses the device location. */
+function googleMapsUrl(destination: LngLat, origin: LngLat | null) {
+  const params = new URLSearchParams({ api: '1', destination: `${destination.lat},${destination.lng}`, travelmode: 'walking' })
+  if (origin) params.set('origin', `${origin.lat},${origin.lng}`)
+  return `https://www.google.com/maps/dir/?${params}`
+}
+
+/** Selected AED card (DESIGN.md §7): time, place, access, entrance, route, details, report, then the other compared AEDs. */
 export function AedDetailsPanel() {
   const { id = '' } = useParams()
   const aed = useStore(aedsStore, (s) => s.byId.get(id))
@@ -91,9 +98,14 @@ export function AedDetailsPanel() {
 
       <Stack gap={8}>
         {routeShown ? (
-          <Button variant="primary" icon="route" onClick={() => mapCamera.fitRoute(routeShown)}>
-            Pokaż trasę
-          </Button>
+          <>
+            <ButtonLink variant="primary" icon="navigation" to={buildPath.navigate(aed.id)}>
+              Prowadź do defibrylatora
+            </ButtonLink>
+            <ButtonLink icon="google_maps" to={googleMapsUrl(aed.location, origin)} target="_blank" rel="noopener noreferrer">
+              Otwórz w Google Maps
+            </ButtonLink>
+          </>
         ) : (
           <Button
             variant="primary"
@@ -114,29 +126,15 @@ export function AedDetailsPanel() {
             {straightLineM != null && `Odległość w linii prostej: ${formatDistance(straightLineM)}.`}
           </Notice>
         )}
-        {issue && <OriginIssueNotice issue={issue} onPick={() => startPicking(() => routeTo(aed.id))} />}
+        {issue && (
+          <OriginIssueNotice issue={issue} onPick={() => startPicking(() => routeTo(aed.id))} onRetry={() => routeTo(aed.id)} />
+        )}
       </Stack>
 
-      {result && inResult && (
-        <>
-          <AedList
-            title="Inne defibrylatory"
-            aeds={compared.filter((a) => a.id !== aed.id)}
-            now={now}
-            etas={etas}
-            origin={origin}
-          />
-          <AedList
-            title="Dostęp niepotwierdzony"
-            aeds={result.unknownAccessAlternatives}
-            now={now}
-            etas={etas}
-            origin={origin}
-          />
-        </>
-      )}
-
       <div>
+        <Disclosure title="Jak użyć defibrylatora">
+          <AedUsageGuide withHeading={false} />
+        </Disclosure>
         <Disclosure title="Godziny dostępu">
           <AedHours schedule={aed.schedule} sourceHours={aed.sourceHours} unverified={aed.unverifiedSchedule} />
         </Disclosure>
@@ -164,6 +162,25 @@ export function AedDetailsPanel() {
       <ButtonLink to={buildPath.report(aed.id)} icon="flag">
         Zgłoś problem
       </ButtonLink>
+
+      {result && inResult && (
+        <>
+          <AedList
+            title="Inne defibrylatory"
+            aeds={compared.filter((a) => a.id !== aed.id)}
+            now={now}
+            etas={etas}
+            origin={origin}
+          />
+          <AedList
+            title="Dostęp niepotwierdzony"
+            aeds={result.unknownAccessAlternatives}
+            now={now}
+            etas={etas}
+            origin={origin}
+          />
+        </>
+      )}
     </Stack>
   )
 }

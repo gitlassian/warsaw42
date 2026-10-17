@@ -112,6 +112,7 @@ export function createFindHandler(deps: Deps): (req: Request) => Promise<Respons
           geometry: route.geometry,
           distance_m: route.distance_m,
           duration_seconds: route.duration_seconds,
+          steps: route.steps,
         },
       };
       alternatives = rest.map(routedView);

@@ -9,9 +9,14 @@ const dateTime = new Intl.DateTimeFormat('pl-PL', {
   minute: '2-digit',
 })
 
+const clock = new Intl.DateTimeFormat('pl-PL', { timeZone: 'Europe/Warsaw', hour: '2-digit', minute: '2-digit' })
+
 const kilometers = new Intl.NumberFormat('pl-PL', { maximumFractionDigits: 1 })
 
 export const formatDateTime = (date: Date | string) => dateTime.format(new Date(date))
+
+/** 14:30 */
+export const formatClock = (date: Date) => clock.format(date)
 
 export const formatDuration = (seconds: number) => `${Math.max(1, Math.round(seconds / 60))} min`
 

@@ -1,0 +1,95 @@
+.guide {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+/* Large tap target: on a phone this dials straight away. */
+.call {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-8);
+  min-height: 48px;
+  padding: var(--space-12) var(--space-16);
+  border-radius: var(--radius-control);
+  background: var(--color-danger);
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.call:hover {
+  filter: brightness(0.92);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+  counter-increment: step;
+}
+
+.step::before {
+  content: counter(step);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-pill);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.title {
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.detail {
+  color: var(--color-text-secondary);
+}
+
+.photo {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: var(--radius-control);
+  background: var(--color-unknown-soft);
+}
+
+.facts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fact {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-12);
+}
+
+.fact > :first-child {
+  margin-top: 2px;
+  color: var(--color-text-secondary);
+}

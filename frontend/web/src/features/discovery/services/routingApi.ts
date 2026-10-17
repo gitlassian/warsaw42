@@ -2,14 +2,23 @@ import type { LineString } from 'geojson'
 import { fetchAeds } from '@/features/aeds/services/aedApi'
 import type { LngLat } from '@/shared/geo/geo'
 import { callFunction } from '@/shared/lib/supabase'
-import type { Eta, FindCandidate, FindResult, WalkingRoute } from '../models/routing'
+import type { Eta, FindCandidate, FindResult, RouteStep, WalkingRoute } from '../models/routing'
 
 // Edge Functions aeds-find, routes-etas and routes-walking (ENDPOINTS.md "Finding and routing").
 // Their AED view is slim; the full record comes from the cached AED list by id.
 
 type ApiAedRef = { aed: { id: string } }
 type ApiWalking = { duration_seconds: number; distance_m: number }
-type ApiRoute = ApiWalking & { geometry: LineString }
+type ApiStep = {
+  instruction: string
+  maneuver_type: string
+  maneuver_modifier: string | null
+  street: string | null
+  location: [number, number]
+  distance_m: number
+  duration_seconds: number
+}
+type ApiRoute = ApiWalking & { geometry: LineString; steps?: ApiStep[] }
 type ApiCandidate = ApiAedRef & { walking: ApiWalking | null }
 
 type FindResponse = {
@@ -32,6 +41,17 @@ const toRoute = (aedId: string, r: ApiRoute): WalkingRoute => ({
   durationSeconds: r.duration_seconds,
   distanceM: r.distance_m,
   geometry: r.geometry,
+  steps: (r.steps ?? []).map(
+    (st): RouteStep => ({
+      instruction: st.instruction,
+      maneuverType: st.maneuver_type,
+      maneuverModifier: st.maneuver_modifier,
+      street: st.street,
+      location: { lng: st.location[0], lat: st.location[1] },
+      distanceM: st.distance_m,
+      durationSeconds: st.duration_seconds,
+    }),
+  ),
 })
 
 export async function findAed(origin: LngLat): Promise<FindResult> {

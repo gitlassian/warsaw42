@@ -55,10 +55,23 @@ export type MatrixElement =
 
 export type LineString = { type: "LineString"; coordinates: [number, number][] };
 
+// One turn-by-turn instruction; distance and duration cover the walk from this maneuver to the next.
+export type RouteStep = {
+  instruction: string;
+  // Mapbox maneuver type ("depart", "turn", "arrive", ...) and modifier ("left", "slight right", ...).
+  maneuver_type: string;
+  maneuver_modifier: string | null;
+  street: string | null;
+  location: [number, number];
+  distance_m: number;
+  duration_seconds: number;
+};
+
 export type WalkingRoute = {
   duration_seconds: number;
   distance_m: number;
   geometry: LineString;
+  steps: RouteStep[];
 };
 
 export interface RoutesProvider {

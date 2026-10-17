@@ -12,6 +12,7 @@ test("returns route geometry, arrival time and eligibility", async () => {
   assert.equal(data.aed.id, "fx-sample");
   assert.equal(data.geometry.type, "LineString");
   assert.deepEqual(data.geometry.coordinates[0], [ORIGIN.longitude, ORIGIN.latitude]);
+  assert.deepEqual(data.steps, []);
   assert.equal(data.duration_seconds, 300);
   assert.equal(data.estimated_arrival_at, "2026-10-19T08:05:00.000Z");
   assert.equal(data.eligible_for_automatic_selection, true);
