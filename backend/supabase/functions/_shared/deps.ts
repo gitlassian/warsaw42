@@ -2,6 +2,7 @@
 
 import { createGoogleRoutesProvider } from "./google_routes.ts";
 import { createFixtureEvaluator, createFixtureRepository, FIXTURE_AEDS } from "./fixtures.ts";
+import { createSupabaseEvaluator, createSupabaseRepository } from "./supabase_repository.ts";
 import type { Deps } from "./ports.ts";
 
 export const DEFAULT_CONFIG: Deps["config"] = {
@@ -18,15 +19,17 @@ export const DEFAULT_CONFIG: Deps["config"] = {
 export function buildDeps(): Deps {
   const apiKey = requireEnv("GOOGLE_ROUTES_API_KEY");
 
-  // TODO: replace with the Supabase-backed repository and the shared availability
-  // evaluator once the AED schema lands.
-  if (Deno.env.get("DEFIWAWA_USE_FIXTURES") !== "1") {
-    throw new Error("AED repository is not wired yet; set DEFIWAWA_USE_FIXTURES=1 for local runs");
-  }
+  // DEFIWAWA_USE_FIXTURES=1 serves the fake AEDs from fixtures.ts instead of the database.
+  const useFixtures = Deno.env.get("DEFIWAWA_USE_FIXTURES") === "1";
+  // SUPABASE_URL and SUPABASE_ANON_KEY are provided by the Edge Functions runtime.
+  const supabase = useFixtures ? null : {
+    url: requireEnv("SUPABASE_URL"),
+    anonKey: requireEnv("SUPABASE_ANON_KEY"),
+  };
 
   return {
-    repo: createFixtureRepository(FIXTURE_AEDS),
-    availability: createFixtureEvaluator(FIXTURE_AEDS),
+    repo: supabase ? createSupabaseRepository(supabase) : createFixtureRepository(FIXTURE_AEDS),
+    availability: supabase ? createSupabaseEvaluator(supabase) : createFixtureEvaluator(FIXTURE_AEDS),
     routes: createGoogleRoutesProvider({ apiKey }),
     now: () => new Date(),
     config: {

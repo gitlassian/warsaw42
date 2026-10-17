@@ -1,3 +1,4 @@
+import { DataSourceError } from "./ports.ts";
 import type { Deps } from "./ports.ts";
 
 const MAX_BODY_BYTES = 16_384;
@@ -38,6 +39,10 @@ export function postEndpoint(
         meta: { request_id: requestId, generated_at: deps.now().toISOString(), ...meta },
       }, cors);
     } catch (err) {
+      if (err instanceof DataSourceError) {
+        console.error(JSON.stringify({ request_id: requestId, error: `${err.name}: ${err.message}` }));
+        err = new ApiError(503, "data_unavailable", "AED data is temporarily unavailable.");
+      }
       if (err instanceof ApiError) {
         return json(err.status, {
           error: { code: err.code, message: err.message, details: err.details },

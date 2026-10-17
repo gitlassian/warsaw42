@@ -20,7 +20,7 @@ from . import llm_hours
 from .floor import floor_from_text
 from .hours import Parsed, empty_schedule, full_schedule, parse_regex, to_osm, DAY_KEYS
 
-ROOT = os.path.join(os.path.dirname(__file__), "..", "..", "data")
+ROOT = os.path.join(os.path.dirname(__file__), "..", "data")
 # 24/7 + indoors is plausible at places with round-the-clock security; the rest is worth a second look
 STAFFED_24H = re.compile(r"urz[ąa]d dzielnicy|stra[żz] miejska|policj|komend|szpital|dworzec|lotnisko|metro", re.I)
 
