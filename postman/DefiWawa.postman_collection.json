@@ -1154,7 +1154,7 @@
               }
             ],
             "url": "{{functions_url}}/aeds-find",
-            "description": "С фикстурами ПАДАЕТ (200): грубый прямоугольник из fixtures.ts. С базой должен быть 422 outside_service_area: is_inside_warsaw(52.2927, 21.1053) = false на границе из seed.sql (проверено fixtures/run_availability_sql.py).",
+            "description": "С фикстурами ПАДАЕТ (200): грубый прямоугольник из fixtures.ts. С базой должен быть 422 outside_service_area: is_inside_warsaw(52.2927, 21.1053) = false на границе из seed.sql (проверено на тестовой базе).",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"origin\": {\n    \"latitude\": 52.2927,\n    \"longitude\": 21.1053\n  }\n}",

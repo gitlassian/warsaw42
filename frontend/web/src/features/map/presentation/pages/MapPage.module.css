@@ -47,6 +47,18 @@
   transition: bottom var(--duration-panel) ease-out;
 }
 
+/* Time picker: opens to the left of the control column, level with its bottom edge. */
+.timeBar {
+  position: absolute;
+  left: var(--space-16);
+  right: calc(var(--space-16) + 48px + var(--space-8));
+  bottom: calc(var(--sheet-cover) + var(--space-48));
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  transition: bottom var(--duration-panel) ease-out;
+}
+
 /* Pinned find bar on every screen: a white bar on the bottom edge. Below the sheet (z 3): an open sheet covers it. */
 .dock {
   position: absolute;
@@ -108,6 +120,14 @@
   .controls {
     top: var(--space-16);
     bottom: auto;
+  }
+
+  /* The controls are at the top here, so the picker opens beside them. */
+  .timeBar {
+    left: auto;
+    top: var(--space-16);
+    bottom: auto;
+    width: min(440px, calc(100% - 2 * var(--space-16) - 48px - var(--space-8)));
   }
 
   /* Start screen: no side panel; the map fills the window, header floats top-left, card sits bottom-right. */
