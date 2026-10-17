@@ -1,4 +1,4 @@
-# Warsaw AED Map — API Endpoints
+# DefiWawa — API Endpoints
 
 Proposed API specification for the shared web and Flutter mobile backend, based on [plan.md](plan.md). These endpoints describe the implementation contract; they are not implemented yet.
 
@@ -12,11 +12,33 @@ Proposed API specification for the shared web and Flutter mobile backend, based 
 
 ---
 
+### Розподіл відповідальності
+
+| Учасник | Задачі |
+| --- | --- |
+| **Ярік — backend і база даних** | Продовжує таблиці, міграції, PostGIS та RLS. Реалізує API AED, пошук найближчих точок, оцінку доступності, імпорт Варшави, покриття та статуси фонових задач. |
+| **Вітя — backend та інтеграції** | Google Routes, ETA, автоматичний вибір доступного AED, AI-парсинг годин, подання та модерація звітів, reviewed overrides, серверна генерація й видача offline-пакетів. Twilio та OTP належать Максіму. |
+| **Максім — frontend + Twilio/OTP** | Спільний UI web/mobile, карта з обмеженням Варшавою, підключення API та мобільний offline-режим. Також налаштовує Twilio у Supabase Phone Auth і реалізує три OTP-ендпоінти: request, resend, verify, разом із формою введення коду. |
+| **Саня — допоміжні задачі віддалено** | Тестові JSON-приклади, Postman-колекція, приклади неоднозначних годин роботи, ручне тестування, список багів, чернетки текстів UI та сценарію пітчу. Його задачі не блокують основну розробку. |
+
+**Межі відповідальності:**
+
+- Біля кожного ендпоінта вказаний один відповідальний за реалізацію, валідацію, доступ і помилки. Максім інтегрує всі публічні ендпоінти у frontend; для OTP він також відповідальний за серверну частину.
+- Максім видає короткоживучий одноразовий `report_token` після перевірки OTP через Supabase + Twilio. Вітя перевіряє та атомарно споживає його в `POST /reports`; вони узгоджують прив'язку токена до чернетки, строк дії та повторні запити. Збережена сесія не замінює нову OTP-перевірку.
+- Ярік веде всі міграції й RLS, зокрема для OTP, звітів і пакетів, за погодженими вимогами Максіма та Віті. Секрети Twilio залишаються на сервері.
+- Ярік надає пошук кандидатів і спільну логіку доступності; Вітя використовує їх для вибору AED на момент прибуття та записує AI-розклади у погодженому форматі.
+- Вітя готує offline-артефакти й маніфести; Максім реалізує їх завантаження, локальне збереження та відображення без мережі.
+- Саня готує fixtures і перевіряє сценарії на тестовому середовищі: закритий AED, невідомі години, відсутність маршруту, GPS поза Варшавою, неправильний OTP, перерваний offline-download. Тестові дані мають бути позначені; production-секрети йому не потрібні.
+
+**Пріоритет Віті:** спочатку `/routes/etas`, `/routes/walking` і `/aeds/find`; далі AI-парсинг годин, приймання звітів і offline-пакети. Модерація спочатку може працювати через обмежений Supabase workflow без окремого admin UI.
+
+---
+
 ### 1. AED Map and Details — Public
 
-- **GET `/api/v1/aeds`** — List AEDs inside a map viewport. Accepts `bbox=west,south,east,north`, optional `availability=open|closed|unknown`, `public_access=public|restricted|unknown`, `at`, `limit`, and `cursor`. Returns marker data, evaluated availability, source freshness, and pagination.
-- **GET `/api/v1/aeds/{id}`** — Get an AED's coordinates, venue, address, manufacturer, indoor/outdoor placement, public-access restrictions, entrance instructions, original access text, normalized schedule, reviewed operational status, and source timestamps.
-- **GET `/api/v1/aeds/{id}/availability`** — Evaluate availability at `at` (defaults to server time), optionally through `until`. Returns `open|closed|unknown`, reasons, evaluation time, next known change, and whether the entire requested interval is covered by known opening hours.
+- **GET `/api/v1/aeds`** — **Backend: Ярік.** List AEDs inside a map viewport. Accepts `bbox=west,south,east,north`, optional `availability=open|closed|unknown`, `public_access=public|restricted|unknown`, `at`, `limit`, and `cursor`. Returns marker data, evaluated availability, source freshness, and pagination.
+- **GET `/api/v1/aeds/{id}`** — **Backend: Ярік.** Get an AED's coordinates, venue, address, manufacturer, indoor/outdoor placement, public-access restrictions, entrance instructions, original access text, normalized schedule, reviewed operational status, and source timestamps.
+- **GET `/api/v1/aeds/{id}/availability`** — **Backend: Ярік.** Evaluate availability at `at` (defaults to server time), optionally through `until`. Returns `open|closed|unknown`, reasons, evaluation time, next known change, and whether the entire requested interval is covered by known opening hours.
 
 Use a stable string AED ID; expose the original Warsaw `source_id` separately. Unknown hours must remain unknown. `operational_status=unknown|confirmed_unavailable|confirmed_operational` is independent of opening hours, with verification provenance where available. Opening hours alone never establish device health.
 
@@ -26,8 +48,8 @@ List responses use `{ "data": [], "meta": {}, "next_cursor": null }`. Default pa
 
 ### 2. Nearby Discovery and Automatic Selection — Public
 
-- **POST `/api/v1/aeds/nearby`** — Find AEDs near an `origin`, ordered by straight-line distance. Accepts `radius_m` (default 2,000; maximum 20,000), `limit` (default 20; maximum 100), and optional availability/access filters. Returns AED summaries, `distance_m`, and `distance_type=straight_line`. Does not call Google routing.
-- **POST `/api/v1/aeds/find`** — Implement “Znajdź defibrylator.” Accepts an `origin` and optional `max_results` (default 3; maximum 5). Uses server time, public-access and operational-status checks, Google walking times, and availability at arrival plus the configured access buffer. Returns the selected AED, alternatives, and the selected walking route when available.
+- **POST `/api/v1/aeds/nearby`** — **Backend: Ярік.** Find AEDs near an `origin`, ordered by straight-line distance. Accepts `radius_m` (default 2,000; maximum 20,000), `limit` (default 20; maximum 100), and optional availability/access filters. Returns AED summaries, `distance_m`, and `distance_type=straight_line`. Does not call Google routing.
+- **POST `/api/v1/aeds/find`** — **Backend: Вітя.** Implement “Znajdź defibrylator.” Accepts an `origin` and optional `max_results` (default 3; maximum 5). Uses server time, public-access and operational-status checks, Google walking times, and availability at arrival plus the configured access buffer. Returns the selected AED, alternatives, and the selected walking route when available.
 
 `origin` has the shape `{ "latitude": 52.2086, "longitude": 21.0149 }`. The find operation begins with up to 20 candidates within 2 km and may expand within a bounded server-side budget. Clients cannot bypass access filtering or increase paid API limits.
 
@@ -39,8 +61,8 @@ Return `200` for a completed search with no eligible AED. A routing failure with
 
 ### 3. Walking Times and Routes — Public
 
-- **POST `/api/v1/routes/etas`** — Get walking times for visible individual AED markers. Accepts `origin` and `aed_ids` (1–20 unique IDs). Returns one result per requested ID with `status=ok|no_route|not_found|provider_error`, `duration_seconds`, `distance_m`, `estimated_arrival_at`, and availability at arrival. Failed entries have null route values.
-- **POST `/api/v1/routes/walking`** — Build a walking route to a selected AED. Accepts `origin` and `aed_id`. Returns route geometry, distance, duration, predicted arrival, access-buffer eligibility, and availability warnings. Allows manually selected destinations with uncertain/closed access, but clearly marks them ineligible for automatic selection.
+- **POST `/api/v1/routes/etas`** — **Backend: Вітя.** Get walking times for visible individual AED markers. Accepts `origin` and `aed_ids` (1–20 unique IDs). Returns one result per requested ID with `status=ok|no_route|not_found|provider_error`, `duration_seconds`, `distance_m`, `estimated_arrival_at`, and availability at arrival. Failed entries have null route values.
+- **POST `/api/v1/routes/walking`** — **Backend: Вітя.** Build a walking route to a selected AED. Accepts `origin` and `aed_id`. Returns route geometry, distance, duration, predicted arrival, access-buffer eligibility, and availability warnings. Allows manually selected destinations with uncertain/closed access, but clearly marks them ineligible for automatic selection.
 
 Use Google Routes API through the backend. Return geometry as a GeoJSON `LineString` in `[longitude, latitude]` order and include required provider attribution. The initial interface uses geometry and summary metrics; Google route descriptions/steps are outside this contract. AED entrance instructions come from our own source records.
 
@@ -52,10 +74,10 @@ Routing responses use `Cache-Control: no-store` and do not enter offline package
 
 ### 4. Phone Verification and Reports — OTP Required for Submission
 
-- **POST `/api/v1/reports/otp/request`** — Start phone verification for a report. Accepts `phone` in E.164 format, `aed_id`, `category`, and `description`. Returns an opaque `challenge_id`, expiration, masked phone display, and resend time. The server binds the challenge to the validated report draft.
-- **POST `/api/v1/reports/otp/resend`** — Resend the code for an active `challenge_id`, subject to cooldowns and send limits. Returns updated expiry/resend metadata. Changing the phone or report draft requires a new challenge.
-- **POST `/api/v1/reports/otp/verify`** — Verify `challenge_id` and `code` through the configured OTP provider. Returns a short-lived, single-use `report_token` bound to that draft. A saved auth session does not replace a fresh OTP check.
-- **POST `/api/v1/reports`** — Submit the bound draft using `Authorization: Bearer <report_token>` and `Idempotency-Key: <client-generated UUID>`. Consumes the authorization atomically and returns `201` with a report ID, `status=pending`, and submission time.
+- **POST `/api/v1/reports/otp/request`** — **Backend: Максім.** Start phone verification for a report. Accepts `phone` in E.164 format, `aed_id`, `category`, and `description`. Returns an opaque `challenge_id`, expiration, masked phone display, and resend time. The server binds the challenge to the validated report draft.
+- **POST `/api/v1/reports/otp/resend`** — **Backend: Максім.** Resend the code for an active `challenge_id`, subject to cooldowns and send limits. Returns updated expiry/resend metadata. Changing the phone or report draft requires a new challenge.
+- **POST `/api/v1/reports/otp/verify`** — **Backend: Максім.** Verify `challenge_id` and `code` through the configured OTP provider. Returns a short-lived, single-use `report_token` bound to that draft. A saved auth session does not replace a fresh OTP check.
+- **POST `/api/v1/reports`** — **Backend: Вітя.** Submit the bound draft using `Authorization: Bearer <report_token>` and `Idempotency-Key: <client-generated UUID>`. Consumes the authorization atomically and returns `201` with a report ID, `status=pending`, and submission time.
 
 Report categories: `missing`, `malfunction`, `inaccessible`, `incorrect_hours`, `incorrect_location`, and `other`. Require a trimmed description of 10–2,000 characters. Reports do not immediately change public AED status; they enter moderation.
 
@@ -69,8 +91,8 @@ For submission retries, retain a receipt keyed to the authorization and idempote
 
 ### 5. Coverage Gaps — Public
 
-- **GET `/api/v1/coverage`** — Get a viewport's coverage layer as a GeoJSON `FeatureCollection` inside `data`. Accepts `bbox`, `scenario=all_public|available_at|always_open`, `threshold_m` (default 500; range 100–2,000), and `at` for `available_at` (defaults to server time). Returns cells/regions, distance metrics, eligible AED counts, data version, and calculation time.
-- **GET `/api/v1/coverage/{layer_id}/regions/{region_id}`** — Explain a region from a versioned coverage response: nearest eligible AED at its representative point, distance, threshold, scenario, evaluation time, sampling method, and data-quality limitations.
+- **GET `/api/v1/coverage`** — **Backend: Ярік.** Get a viewport's coverage layer as a GeoJSON `FeatureCollection` inside `data`. Accepts `bbox`, `scenario=all_public|available_at|always_open`, `threshold_m` (default 500; range 100–2,000), and `at` for `available_at` (defaults to server time). Returns cells/regions, distance metrics, eligible AED counts, data version, and calculation time.
+- **GET `/api/v1/coverage/{layer_id}/regions/{region_id}`** — **Backend: Ярік.** Explain a region from a versioned coverage response: nearest eligible AED at its representative point, distance, threshold, scenario, evaluation time, sampling method, and data-quality limitations.
 
 Use the planned 250 m grid and straight-line distances. `all_public` ignores opening hours, `always_open` requires confidently known 24/7 public access, and `available_at` evaluates schedules at the selected time. Every scenario excludes inactive and confirmed unavailable devices.
 
@@ -82,8 +104,8 @@ For an uncached layer requiring background calculation, return `202` with `statu
 
 ### 6. Offline Map Packages — Public, Used by Mobile
 
-- **GET `/api/v1/offline/regions`** — List downloadable areas such as Warsaw and supported districts, with IDs, names, bounds, available package versions, total download sizes, and update dates.
-- **GET `/api/v1/offline/regions/{region_id}/manifest`** — Get the latest manifest, optionally supplying `installed_version` and `schema_version`. Returns `update_available`, compatibility, package/data versions, generation time, attribution, and separate basemap/AED assets with download URLs, byte sizes, formats, and SHA-256 checksums.
+- **GET `/api/v1/offline/regions`** — **Backend: Вітя.** List downloadable areas such as Warsaw and supported districts, with IDs, names, bounds, available package versions, total download sizes, and update dates.
+- **GET `/api/v1/offline/regions/{region_id}/manifest`** — **Backend: Вітя.** Get the latest manifest, optionally supplying `installed_version` and `schema_version`. Returns `update_available`, compatibility, package/data versions, generation time, attribution, and separate basemap/AED assets with download URLs, byte sizes, formats, and SHA-256 checksums.
 
 Asset download URLs point directly to Storage/CDN resources; do not proxy large map files through an Edge Function. Assets are immutable and versioned, support resumable HTTP Range downloads, and remain available for the published retention window. The manifest states `assets_available_until`; if a download URL expires, fetch a fresh manifest.
 
@@ -95,7 +117,7 @@ Use ETag/conditional GET for manifests, return `304` when unchanged, and return 
 
 ### 7. Public Dataset Status
 
-- **GET `/api/v1/data/status`** — Return the published dataset version, active AED count, source attribution, last successful fetch, known source update time, and `fresh|stale|unavailable` synchronization status. Include the expected two-hour refresh interval and a user-safe notice if the last usable snapshot is stale.
+- **GET `/api/v1/data/status`** — **Backend: Ярік.** Return the published dataset version, active AED count, source attribution, last successful fetch, known source update time, and `fresh|stale|unavailable` synchronization status. Include the expected two-hour refresh interval and a user-safe notice if the last usable snapshot is stale.
 
 A successful fetch is not a physical inspection. Expose source update and verification timestamps separately, and use null when unknown. This endpoint must not expose credentials, raw importer errors, private reports, or administrative configuration.
 
@@ -103,11 +125,11 @@ A successful fetch is not a physical inspection. Expose source update and verifi
 
 ### 8. Report Moderation and AED Corrections — Moderator/Admin Only
 
-- **GET `/api/v1/admin/reports`** — List reports with `status=pending|accepted|rejected|resolved`, optional `aed_id`, and cursor pagination. Return report content and internal reporter references, not raw phone numbers by default.
-- **GET `/api/v1/admin/reports/{id}`** — Get one report, its AED context, and moderation history.
-- **PATCH `/api/v1/admin/reports/{id}`** — Record a moderation decision with `status`, mandatory `reason`, and `expected_version` for concurrency control. Enforce permitted state transitions and audit the reviewer.
-- **POST `/api/v1/admin/aeds/{id}/overrides`** — Create a reviewed correction to hours, access, coordinates, or operational condition. Requires `type`, schema-validated `value`, `reason`, `valid_from`, `valid_until`, and optional `report_id`.
-- **PATCH `/api/v1/admin/aeds/{id}/overrides/{override_id}`** — Revoke an override with a reason and `expected_version`, preserving its audit history. Changes to its content require a replacement override.
+- **GET `/api/v1/admin/reports`** — **Backend: Вітя.** List reports with `status=pending|accepted|rejected|resolved`, optional `aed_id`, and cursor pagination. Return report content and internal reporter references, not raw phone numbers by default.
+- **GET `/api/v1/admin/reports/{id}`** — **Backend: Вітя.** Get one report, its AED context, and moderation history.
+- **PATCH `/api/v1/admin/reports/{id}`** — **Backend: Вітя.** Record a moderation decision with `status`, mandatory `reason`, and `expected_version` for concurrency control. Enforce permitted state transitions and audit the reviewer.
+- **POST `/api/v1/admin/aeds/{id}/overrides`** — **Backend: Вітя.** Create a reviewed correction to hours, access, coordinates, or operational condition. Requires `type`, schema-validated `value`, `reason`, `valid_from`, `valid_until`, and optional `report_id`.
+- **PATCH `/api/v1/admin/aeds/{id}/overrides/{override_id}`** — **Backend: Вітя.** Revoke an override with a reason and `expected_version`, preserving its audit history. Changes to its content require a replacement override.
 
 Accepting a report records the moderation decision; changing public AED behavior requires an explicit override. Reject ambiguous overlapping overrides with `409 override_conflict`. Creating/revoking an override updates the published data version and invalidates affected coverage/package outputs. Imports must never overwrite reviewed corrections.
 
@@ -117,10 +139,10 @@ These endpoints support a future administration interface. The initial restricte
 
 ### 9. Warsaw Import and Hours Parsing — Internal Only
 
-- **POST `/api/v1/internal/sources/warsaw/sync`** — Queue a Warsaw Open Data import. Called every two hours or manually by an authorized operator. Validates snapshot completeness, upserts source records, queues changed schedules, and publishes a coherent dataset version. Returns `202` with `job_id`.
-- **GET `/api/v1/internal/sources/warsaw/status`** — Inspect the last successful run, current job, source counts, quarantined rows, pending parsing work, and sanitized failure details.
-- **POST `/api/v1/internal/aeds/{id}/parse-hours`** — Queue reprocessing of an AED's current access text, optionally with a parser version and reason. Returns `202` with `job_id`. Input comes from the stored source record, not arbitrary public text.
-- **GET `/api/v1/internal/jobs/{job_id}`** — Get `queued|running|succeeded|failed`, progress counts, timestamps, and sanitized errors for an import, parsing, coverage, or package job.
+- **POST `/api/v1/internal/sources/warsaw/sync`** — **Backend: Ярік.** Queue a Warsaw Open Data import. Called every two hours or manually by an authorized operator. Validates snapshot completeness, upserts source records, queues changed schedules, and publishes a coherent dataset version. Returns `202` with `job_id`.
+- **GET `/api/v1/internal/sources/warsaw/status`** — **Backend: Ярік.** Inspect the last successful run, current job, source counts, quarantined rows, pending parsing work, and sanitized failure details.
+- **POST `/api/v1/internal/aeds/{id}/parse-hours`** — **Backend: Вітя.** Queue reprocessing of an AED's current access text, optionally with a parser version and reason. Returns `202` with `job_id`. Input comes from the stored source record, not arbitrary public text.
+- **GET `/api/v1/internal/jobs/{job_id}`** — **Backend: Ярік.** Get `queued|running|succeeded|failed`, progress counts, timestamps, and sanitized errors for an import, parsing, coverage, or package job.
 
 AI parsing runs in the background and produces the schedule schema defined in `plan.md`, including source hashes and validation/review state. Ambiguous or invalid results remain unknown. No client-side AI endpoint is needed.
 
@@ -132,8 +154,8 @@ The exact upstream Warsaw endpoint, resource ID, and credentials remain configur
 
 ### 10. Coverage and Offline Generation — Internal Only
 
-- **POST `/api/v1/internal/coverage/rebuild`** — Queue coverage computation for a published dataset version, scenario, evaluation time, and threshold. Reuse the same job for duplicate inputs. Returns `202` with `job_id`.
-- **POST `/api/v1/internal/offline/regions/{region_id}/build`** — Queue a versioned offline package build for a published dataset version. Reuse unchanged basemap assets, validate generated artifacts, and publish the manifest only after all assets are ready. Returns `202` with `job_id`.
+- **POST `/api/v1/internal/coverage/rebuild`** — **Backend: Ярік.** Queue coverage computation for a published dataset version, scenario, evaluation time, and threshold. Reuse the same job for duplicate inputs. Returns `202` with `job_id`.
+- **POST `/api/v1/internal/offline/regions/{region_id}/build`** — **Backend: Вітя.** Queue a versioned offline package build for a published dataset version. Reuse unchanged basemap assets, validate generated artifacts, and publish the manifest only after all assets are ready. Returns `202` with `job_id`.
 
 Workers invoke these operations after relevant source/override updates and when time-dependent coverage expires. Internal endpoints require scoped server credentials and cannot be triggered using the public application key or a phone-verified reporter token.
 
