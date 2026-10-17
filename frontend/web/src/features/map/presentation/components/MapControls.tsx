@@ -7,13 +7,24 @@ type MapControlsProps = {
   locating: boolean
   coverageShown: boolean
   filters: AedFilters
+  timeOpen: boolean
   onLocate: () => void
   onToggleCoverage: () => void
   onToggleFilter: (group: AedAvailability) => void
+  onToggleTime: () => void
 }
 
 /** Round floating controls; positioned around the sheet by the page. */
-export function MapControls({ locating, coverageShown, filters, onLocate, onToggleCoverage, onToggleFilter }: MapControlsProps) {
+export function MapControls({
+  locating,
+  coverageShown,
+  filters,
+  timeOpen,
+  onLocate,
+  onToggleCoverage,
+  onToggleFilter,
+  onToggleTime,
+}: MapControlsProps) {
   return (
     <div className={styles.controls}>
       <IconButton
@@ -29,6 +40,13 @@ export function MapControls({ locating, coverageShown, filters, onLocate, onTogg
         label="Warstwa: Zasięg AED"
         pressed={coverageShown}
         onClick={onToggleCoverage}
+      />
+      <IconButton
+        variant="floating"
+        icon="schedule"
+        label={timeOpen ? 'Ukryj wybór godziny' : 'Sprawdź dostępność o innej porze'}
+        pressed={timeOpen}
+        onClick={onToggleTime}
       />
       <FilterMenu filters={filters} onToggle={onToggleFilter} />
     </div>

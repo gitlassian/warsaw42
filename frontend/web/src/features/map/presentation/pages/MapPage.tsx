@@ -5,7 +5,8 @@ import { RoutePaths } from '@/app/routePaths'
 import { Button, ButtonLink } from '@/design-system/components/Button'
 import { Notice } from '@/design-system/components/Notice'
 import { Sheet } from '@/design-system/components/Sheet'
-import { loadAeds } from '@/features/aeds/store'
+import { nextWarsawWeekday } from '@/features/aeds/lib/viewTime'
+import { aedsStore, loadAeds, resetViewTime, setViewTime } from '@/features/aeds/store'
 import { OriginIssueNotice } from '@/features/discovery/presentation/components/OriginIssueNotice'
 import { PickOriginBanner } from '@/features/discovery/presentation/components/PickOriginBanner'
 import { discoveryStore, locate, startPicking, stopPicking } from '@/features/discovery/store'
@@ -16,6 +17,7 @@ import { mapFiltersStore, toggleFilter } from '../../store'
 import { AppHeader } from '../components/AppHeader'
 import { MapControls } from '../components/MapControls'
 import { MapView } from '../components/MapView'
+import { TimeBar } from '../components/TimeBar'
 import styles from './MapPage.module.css'
 
 /** App shell: the map stays mounted; the active route renders into the sheet / side panel. */
@@ -26,6 +28,7 @@ export function MapPage() {
   const viewportHeight = useViewportHeight()
   const [cover, setCover] = useState(0)
   const [mapFailed, setMapFailed] = useState(false)
+  const [timeOpen, setTimeOpen] = useState(false)
   const onMapError = useCallback(() => setMapFailed(true), [])
   // The sheet reports its height before the map reacts to the new route, so camera moves use the final inset.
   const onCoverChange = useCallback((px: number) => {
@@ -35,6 +38,8 @@ export function MapPage() {
   const picking = useStore(discoveryStore, (s) => s.picking)
   const issue = useStore(discoveryStore, (s) => s.issue)
   const locating = useStore(discoveryStore, (s) => s.locating)
+  const now = useStore(aedsStore, (s) => s.now)
+  const live = useStore(aedsStore, (s) => s.live)
   const available = useStore(mapFiltersStore, (s) => s.available)
   const unavailable = useStore(mapFiltersStore, (s) => s.unavailable)
   const unknown = useStore(mapFiltersStore, (s) => s.unknown)
@@ -43,6 +48,12 @@ export function MapPage() {
   useEffect(() => {
     loadAeds()
   }, [])
+
+  // Closing the picker returns to the real time, so the map never keeps showing a hidden preview.
+  const toggleTime = () => {
+    if (timeOpen) resetViewTime()
+    setTimeOpen(!timeOpen)
+  }
 
   const onLocate = async () => {
     const origin = await locate()
@@ -90,10 +101,26 @@ export function MapPage() {
               coverageShown={coverageShown}
               filters={{ available, unavailable, unknown }}
               onToggleFilter={toggleFilter}
+              timeOpen={timeOpen}
+              onToggleTime={toggleTime}
               onLocate={onLocate}
               onToggleCoverage={() => navigate(coverageShown ? RoutePaths.map : RoutePaths.coverage)}
             />
           </div>
+        )}
+        {cover < viewportHeight * 0.7 && (
+          <>
+            {timeOpen && (
+              <div className={styles.timeBar}>
+                <TimeBar
+                  at={now}
+                  live={live}
+                  onChange={(day, minutes) => setViewTime(nextWarsawWeekday(day, minutes, new Date()))}
+                  onNow={resetViewTime}
+                />
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>
