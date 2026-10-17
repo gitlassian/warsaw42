@@ -12,6 +12,7 @@ import { discoveryStore, locate, startPicking, stopPicking } from '@/features/di
 import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
+import { mapFiltersStore, toggleFilter } from '../../store'
 import { AppHeader } from '../components/AppHeader'
 import { MapControls } from '../components/MapControls'
 import { MapView } from '../components/MapView'
@@ -34,6 +35,9 @@ export function MapPage() {
   const picking = useStore(discoveryStore, (s) => s.picking)
   const issue = useStore(discoveryStore, (s) => s.issue)
   const locating = useStore(discoveryStore, (s) => s.locating)
+  const available = useStore(mapFiltersStore, (s) => s.available)
+  const unavailable = useStore(mapFiltersStore, (s) => s.unavailable)
+  const unknown = useStore(mapFiltersStore, (s) => s.unknown)
   const coverageShown = location.pathname === RoutePaths.coverage
 
   useEffect(() => {
@@ -84,6 +88,8 @@ export function MapPage() {
             <MapControls
               locating={locating}
               coverageShown={coverageShown}
+              filters={{ available, unavailable, unknown }}
+              onToggleFilter={toggleFilter}
               onLocate={onLocate}
               onToggleCoverage={() => navigate(coverageShown ? RoutePaths.map : RoutePaths.coverage)}
             />
