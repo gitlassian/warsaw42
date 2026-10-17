@@ -34,7 +34,7 @@ function googleMapsUrl(destination: LngLat, origin: LngLat | null) {
   return `https://www.google.com/maps/dir/?${params}`
 }
 
-/** Selected AED card (DESIGN.md §7): time, place, access, entrance, route, details, report. */
+/** Selected AED card (DESIGN.md §7): time, place, access, entrance, route, details, report, then the other compared AEDs. */
 export function AedDetailsPanel() {
   const { id = '' } = useParams()
   const aed = useStore(aedsStore, (s) => s.byId.get(id))
@@ -131,25 +131,6 @@ export function AedDetailsPanel() {
         )}
       </Stack>
 
-      {result && inResult && (
-        <>
-          <AedList
-            title="Inne defibrylatory"
-            aeds={compared.filter((a) => a.id !== aed.id)}
-            now={now}
-            etas={etas}
-            origin={origin}
-          />
-          <AedList
-            title="Dostęp niepotwierdzony"
-            aeds={result.unknownAccessAlternatives}
-            now={now}
-            etas={etas}
-            origin={origin}
-          />
-        </>
-      )}
-
       <div>
         <Disclosure title="Jak użyć defibrylatora">
           <AedUsageGuide withHeading={false} />
@@ -181,6 +162,25 @@ export function AedDetailsPanel() {
       <ButtonLink to={buildPath.report(aed.id)} icon="flag">
         Zgłoś problem
       </ButtonLink>
+
+      {result && inResult && (
+        <>
+          <AedList
+            title="Inne defibrylatory"
+            aeds={compared.filter((a) => a.id !== aed.id)}
+            now={now}
+            etas={etas}
+            origin={origin}
+          />
+          <AedList
+            title="Dostęp niepotwierdzony"
+            aeds={result.unknownAccessAlternatives}
+            now={now}
+            etas={etas}
+            origin={origin}
+          />
+        </>
+      )}
     </Stack>
   )
 }
