@@ -26,6 +26,7 @@ import heartbeat from '@phosphor-icons/core/bold/heartbeat-bold.svg'
 import info from '@phosphor-icons/core/bold/info-bold.svg'
 import listBullets from '@phosphor-icons/core/bold/list-bullets-bold.svg'
 import lockSimple from '@phosphor-icons/core/bold/lock-simple-bold.svg'
+import magnifyingGlass from '@phosphor-icons/core/bold/magnifying-glass-bold.svg'
 import mapPin from '@phosphor-icons/core/bold/map-pin-bold.svg'
 import navigationArrow from '@phosphor-icons/core/bold/navigation-arrow-bold.svg'
 import path from '@phosphor-icons/core/bold/path-bold.svg'
@@ -76,6 +77,7 @@ const ICONS = {
   roundabout_right: arrowClockwise,
   route: path,
   schedule: clock,
+  search: magnifyingGlass,
   sports_score: flagCheckered,
   stairs,
   straight: arrowUp,

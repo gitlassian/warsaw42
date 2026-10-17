@@ -2,7 +2,7 @@
   position: relative;
 }
 
-/* Opens to the left of the control column and grows up: the controls sit above the sheet or the find card. */
+/* Opens to the left of the control column and grows up (narrow: the controls sit above the sheet or the find bar). */
 .menu {
   position: absolute;
   right: calc(100% + var(--space-8));
@@ -58,3 +58,11 @@
   font-size: 0.8125rem;
 }
 
+
+/* Wide: the controls hang from the top-right corner, so the menu grows down. */
+@media (min-width: 840px) {
+  .menu {
+    top: 0;
+    bottom: auto;
+  }
+}

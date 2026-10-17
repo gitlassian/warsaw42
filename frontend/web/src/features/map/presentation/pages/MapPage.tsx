@@ -11,14 +11,16 @@ import { aedsStore, loadAeds, resetViewTime, setTimePickerOpen, setViewTime } fr
 import { FindButton } from '@/features/discovery/presentation/components/FindButton'
 import { OriginIssueNotice } from '@/features/discovery/presentation/components/OriginIssueNotice'
 import { PickOriginBanner } from '@/features/discovery/presentation/components/PickOriginBanner'
-import { clearRoute, discoveryStore, locate, startPicking, stopPicking } from '@/features/discovery/store'
+import { AddressSearch } from '@/features/discovery/presentation/components/AddressSearch'
+import { clearSelection, discoveryStore, locate, startPicking, stopPicking } from '@/features/discovery/store'
 import { NavigationBanner } from '@/features/navigation/presentation/components/NavigationBanner'
+import { showMyPosition } from '@/features/navigation/store'
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery'
 import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
 import { mapFiltersStore, toggleFilter } from '@/features/aeds/filterStore'
-import { AppHeader, InfoButton } from '../components/AppHeader'
+import { AppHeader } from '../components/AppHeader'
 import { MapControls } from '../components/MapControls'
 import { MapView } from '../components/MapView'
 import { TimeBar } from '../components/TimeBar'
@@ -56,17 +58,16 @@ export function MapPage() {
   const navigating = !!handle?.navigation
   const wide = useMediaQuery(WIDE_LAYOUT_QUERY)
   const dockRef = useRef<HTMLDivElement>(null)
-  // Wide layout: the round controls stack above the find card, whatever its height.
-  const [dockHeight, setDockHeight] = useState(0)
   const mapCover = Math.max(cover.sheet, cover.dock)
 
   useEffect(() => {
     const dock = dockRef.current
-    if (!dock) return
-    const observer = new ResizeObserver(() => {
-      setDockHeight(dock.offsetHeight)
-      updateCover({ dock: wide ? 0 : dock.offsetHeight })
-    })
+    // Wide: no bottom bar, the find button sits in the top row.
+    if (!dock) {
+      updateCover({ dock: 0 })
+      return
+    }
+    const observer = new ResizeObserver(() => updateCover({ dock: dock.offsetHeight }))
     observer.observe(dock)
     return () => observer.disconnect()
   }, [wide, updateCover])
@@ -88,11 +89,20 @@ export function MapPage() {
   }
 
   const onClose = () => {
-    if (handle?.close === 'selection') clearRoute()
+    if (handle?.close === 'selection') clearSelection()
     navigate(RoutePaths.map)
   }
 
+  const showControls = mapCover < viewportHeight * 0.7
+
+  const findButton = !navigating && (
+    <div className={styles.find}>
+      <FindButton />
+    </div>
+  )
+
   const onLocate = async () => {
+    if (navigating) return showMyPosition()
     const origin = await locate()
     if (origin) mapCamera.focus(origin)
   }
@@ -102,7 +112,7 @@ export function MapPage() {
       className={styles.layout}
       data-floating={floating || undefined}
       data-navigating={navigating || undefined}
-      style={{ '--sheet-cover': `${mapCover}px`, '--dock-height': `${dockHeight}px` } as CSSProperties}
+      style={{ '--sheet-cover': `${mapCover}px` } as CSSProperties}
     >
       <div className={styles.header}>
         {/* Narrow: the direction banner takes the header's place at the top of the screen. */}
@@ -110,6 +120,15 @@ export function MapPage() {
           <NavigationBanner />
         ) : (
           <AppHeader floating={floating} withInfo={!wide} onClose={wide && handle?.close ? onClose : undefined} />
+        )}
+        {/* Wide start screen: the address search and the find button in the logo's row. */}
+        {wide && floating && (
+          <>
+            <div className={styles.search}>
+              <AddressSearch />
+            </div>
+            {findButton}
+          </>
         )}
       </div>
 
@@ -129,24 +148,30 @@ export function MapPage() {
         </div>
       )}
 
-      {/* Under an open sheet on narrow screens: hidden from focus and screen readers. */}
-      <div ref={dockRef} className={styles.dock} inert={!floating && !wide}>
-        {floating && (
-          <aside className={styles.status} aria-label="Panel">
-            <Outlet />
-          </aside>
-        )}
-        {!navigating && (
-          <div className={styles.find}>
-            <FindButton />
-          </div>
-        )}
-      </div>
+      {/* Narrow: the pinned bottom bar, under an open sheet hidden from focus and screen readers. */}
+      {!wide && (
+        <div ref={dockRef} className={styles.dock} inert={!floating}>
+          {floating && (
+            <aside className={styles.status} aria-label="Panel">
+              <Outlet />
+            </aside>
+          )}
+          {findButton}
+        </div>
+      )}
 
       <div className={styles.mapArea}>
-        <MapView onLoadError={onMapError} />
+        <MapView onLoadError={onMapError} onLocate={onLocate} locating={locating} />
+        {/* Wide, panel open: the find button at the top of the map, right of the panel's logo row. */}
+        {wide && !floating && findButton && <div className={styles.mapFind}>{findButton}</div>}
         <div className={styles.overlay}>
           {navigating && wide && <NavigationBanner />}
+          {floating && !wide && !picking && <AddressSearch />}
+          {floating && wide && (
+            <aside className={styles.status} aria-label="Panel">
+              <Outlet />
+            </aside>
+          )}
           {picking && <PickOriginBanner outside={issue === 'outside_pick'} onCancel={stopPicking} />}
           {issue && !picking && !handle?.showsLocationIssue && (
             <OriginIssueNotice issue={issue} onPick={() => startPicking()} onRetry={onLocate} />
@@ -175,10 +200,13 @@ export function MapPage() {
             />
           )}
         </div>
-        {mapCover < viewportHeight * 0.7 && (
+        {/* Wide navigation: nothing left in the column, the location button sits by the zoom buttons. */}
+        {showControls && !(wide && navigating) && (
           <div className={styles.controls}>
-            {wide && <InfoButton text="Info" />}
+            {/* Navigation: only the location button, no layers, time or filters. */}
             <MapControls
+              withLocate={!wide}
+              locateOnly={navigating}
               locating={locating}
               coverageShown={coverageShown}
               filters={{ available, unavailable }}
@@ -192,7 +220,7 @@ export function MapPage() {
             />
           </div>
         )}
-        {timeOpen && mapCover < viewportHeight * 0.7 && (
+        {timeOpen && showControls && !navigating && (
           <div className={styles.timeBar}>
             <TimeBar
               at={now}

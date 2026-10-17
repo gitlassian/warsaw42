@@ -112,9 +112,10 @@ export function findFrom(origin: Origin): Promise<FindResult | null> {
   return runFind(origin, token)
 }
 
-/** Closing the selected AED also removes its walking route from the map. */
-export function clearRoute() {
-  discoveryStore.set({ route: null, routing: null })
+/** Closing the selected AED also removes its walking route and a picked or typed start point from the map. */
+export function clearSelection() {
+  // A GPS origin is the user's real position and stays.
+  discoveryStore.set((s) => ({ route: null, routing: null, ...(s.origin?.source === 'manual' && { origin: null, etas: {} }) }))
 }
 
 export function cancelSearch() {
@@ -143,6 +144,19 @@ export function pickOrigin({ lng, lat }: LngLat) {
   stopPicking()
   setOrigin(origin)
   then?.(origin)
+}
+
+/** Search from a typed address: the same manual start point as one picked on the map. */
+export function findFromAddress(location: LngLat): Promise<FindResult | null> {
+  // The suggestions are already inside Warsaw; checked again because they come from an outside service.
+  if (!isInsideWarsaw(location)) {
+    discoveryStore.set({ issue: 'outside_pick' })
+    return Promise.resolve(null)
+  }
+  const origin: Origin = { ...location, source: 'manual' }
+  stopPicking()
+  setOrigin(origin)
+  return findFrom(origin)
 }
 
 /** Requests walking times for the nearest of `aedIds` that have none yet. */

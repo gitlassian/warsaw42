@@ -10,12 +10,12 @@ import { Text } from '@/design-system/components/Text'
 import { AedFindingGuide } from '@/features/aeds/presentation/components/AedFindingGuide'
 import { AedUsageGuide } from '@/features/aeds/presentation/components/AedUsageGuide'
 import { aedsStore } from '@/features/aeds/store'
-import { discoveryStore, locate, routeTo } from '@/features/discovery/store'
+import { discoveryStore, routeTo } from '@/features/discovery/store'
 import { mapCamera } from '@/features/map/lib/mapCamera'
 import { formatClock, formatDistance, formatDuration } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
 import { maneuverIcon } from '../../lib/maneuverIcon'
-import { followPosition, navigationStore, previewStep, startNavigation, startTracking, stopNavigation } from '../../store'
+import { followPosition, navigateFromHere, navigationStore, previewStep, startNavigation, stopNavigation } from '../../store'
 import { useNavigationView } from '../useNavigationView'
 import styles from './NavigationPanel.module.css'
 
@@ -53,13 +53,6 @@ export function NavigationPanel() {
   if (!aed) return <LoadingText>Wczytujemy dane…</LoadingText>
 
   const end = () => navigate(buildPath.aed(id))
-
-  // A route from a picked point: start again from the user's real position.
-  const fromHere = async () => {
-    if (!(await locate())) return
-    await routeTo(id)
-    startTracking()
-  }
 
   if (!view) {
     return (
@@ -112,7 +105,7 @@ export function NavigationPanel() {
         <Notice
           title="Trasa z wybranego punktu."
           actions={
-            <Button icon="my_location" onClick={fromHere}>
+            <Button icon="my_location" onClick={() => navigateFromHere(id)}>
               Prowadź z mojej lokalizacji
             </Button>
           }

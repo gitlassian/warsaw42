@@ -48,4 +48,9 @@
     box-shadow: none;
   }
 
+  /* Start screen: as tall as the address search and the find button in its row. */
+  .header[data-floating] .brand {
+    min-height: 56px;
+  }
+
 }

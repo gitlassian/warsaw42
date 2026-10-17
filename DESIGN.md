@@ -119,6 +119,7 @@ Use short, concrete wording. Each message answers one question. Show an explanat
 | Confirmed unavailability | `AED niedostępny` |
 | Entrance instructions | Heading `Wejście`, followed by actual source information |
 | Manual origin selection | `Wybierz punkt na mapie` |
+| Address search | `Szukaj adresu w Warszawie` |
 | Alternatives | `Inne defibrylatory` |
 | Issue reporting | `Zgłoś problem` |
 | Offline map | `Mapa offline` |
@@ -134,7 +135,7 @@ Keep `API`, `PostGIS`, `timestamp`, "AI", and internal status names out of user-
 - Every icon button has a hit area of at least 48 × 48.
 - Indicate selection through background and outline; a switched-on map control also swaps to the filled glyph.
 - Icons inherit the color of their text or semantic state. Do not use multicolored decorative icons.
-- Primary and unfamiliar actions have visible text labels. Round map controls are 56 × 56 tiles with a short caption under the icon (`Info`, `Pozycja`, `Zasięg`, `Pora`, `Filtry`). Close controls and the mobile header info button may be icon-only, with accessible names and web tooltips.
+- Primary and unfamiliar actions have visible text labels. Round map controls are 56 × 56 tiles with a short caption under the icon (`Pozycja`, `Zasięg`, `Pora`, `Filtry`). Close controls and the mobile header info button may be icon-only, with accessible names and web tooltips.
 - Hide decorative icons next to labels from screen readers to avoid repeating the text.
 - Do not substitute emoji or Unicode symbols for icons.
 
@@ -189,7 +190,7 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 - The map fills the available screen. Place a compact DefiWawa name and access to secondary features at the top.
 - Use one bottom sheet for the search start, result, list, or selected AED details. Do not stack sheets on top of one another.
 - One map time: the clock control previews availability at another weekday and hour for markers, the list, filters and coverage. While previewing, a warning banner `Podgląd: <dzień>, <godzina>` with `Wróć do teraz` stays on the map, also after the picker closes. Finding the nearest AED always returns the map to now, because the server searches by the real clock.
-- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button that clears the selection and its route: in the sheet's top-right corner on narrow screens, in the header row next to the logo from 840. The coverage and `O danych` panels get the same close button on every screen size (it does not clear a route). The close icon lines up with the panel content edge; its hit area extends past it.
+- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: in the top row right of the logo; with a panel open, at the top of the map, level with the panel's logo row). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. The start screen also has an address search at the top of the map (from 840: in the top row between the logo and the find button, all three 56 high): a round white field with up to five Warsaw suggestions (street and number, then postal code and city). Choosing one makes it the manual origin, exactly like a point picked on the map: it runs the search and opens the result. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button that clears the selection, its route and a picked or typed start point: in the sheet's top-right corner on narrow screens, in the header row next to the logo from 840. The coverage and `O danych` panels get the same close button on every screen size (it does not clear a route). The close icon lines up with the panel content edge; its hit area extends past it.
 - The result sheet shows travel time, address, access, and entrance instructions. Expand additional details below.
 - Provide compact, medium, and expanded sheet states. At the default text scale, medium occupies about 70% of the available height; content and text scale determine its actual height.
 - Support a button and keyboard interaction as well as dragging to expand the sheet. Accessible button names: `Pokaż szczegóły` / `Zwiń szczegóły`.
@@ -199,7 +200,7 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 ### Wide Screens: 840 and Above
 
 - Place a 360–420-wide panel on the left and the map in the remaining space on the right.
-- The header holds only the logo; the info button (`O danych`) tops the round map controls, which stack right above the find card at the bottom right; their pop-ups open to the left and grow up. The web app has no offline section; offline maps are mobile-only.
+- The start screen's top row holds the logo, the address search, and the find button; notices go below it. The round map controls hang from the top-right corner; their pop-ups open to the left and grow down. Small location and zoom buttons (`Pokaż moją lokalizację`, `Przybliż`, `Oddal`) sit in the bottom-right corner above the attribution, so the round controls have no `Pozycja` here; phones keep `Pozycja` and zoom with gestures. There is no info button on wide screens. The web app has no offline section; offline maps are mobile-only.
 - The panel uses the same information, actions, and order as the mobile version.
 - Available logical width determines when a zoomed interface switches to the narrow layout.
 - Do not add a separate bottom sheet over the side panel.
@@ -274,7 +275,7 @@ The list is a complete way to find an AED without operating the map. Label close
 
 Route: a 5-wide green line over a white casing with a total width of 9. The casing separates it from parks, roads, and coverage areas. Give the origin and destination different icons and accessible names.
 
-User location: a blue dot with a white border and a soft pulsing halo. The translucent accuracy area appears for a moment after each GPS fix, then fades out; it is hidden during navigation, where the user is a direction arrow. Indicate a manually selected origin with a marker rather than a GPS dot.
+User location: a blue dot with a white border and a soft pulsing halo. The translucent accuracy area appears for a moment after each GPS fix, then fades out; it is hidden during navigation, where the user is a direction arrow. Navigation shows only the route, the direction banner, its panel, and the location control (`Pozycja`): no other round map controls and no find button. There `Pozycja` returns the camera to the live position, or starts guidance from it when the route began at a picked point; it never replaces the route's origin silently. Indicate a manually selected origin with a green pin rather than a GPS dot.
 
 The first release shows route geometry, time, distance, and our own entrance instructions. Do not depict turn-by-turn instructions or offline routing as available features in mockups.
 
@@ -288,6 +289,8 @@ For automatic results, evaluate access at the expected arrival time under the co
 | --- | --- |
 | Search in progress | `Szukamy defibrylatora…`; keep the map visible and allow cancellation |
 | Location unavailable or permission denied | `Nie możemy ustalić Twojej lokalizacji.`; `Wybierz punkt na mapie` |
+| Address not found in Warsaw | `Nie znaleźliśmy tego adresu w Warszawie.`; `Wybierz punkt na mapie` |
+| Address search failed | `Nie udało się wyszukać adresu.`; `Wybierz punkt na mapie` |
 | GPS outside the city | `Aplikacja obejmuje Warszawę.`; allow an origin inside the city without substituting the GPS position |
 | No eligible AED | `Nie znaleźliśmy AED dostępnego według danych.`; show unknown-access alternatives separately when available |
 | Route calculation failed | `Nie udało się wyznaczyć trasy.`; retry or view straight-line distances |

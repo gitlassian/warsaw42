@@ -1,6 +1,6 @@
 import type { LocationIssue, Origin, WalkingRoute } from '@/features/discovery/models/routing'
 import { watchPosition } from '@/features/discovery/services/geolocation'
-import { discoveryStore } from '@/features/discovery/store'
+import { discoveryStore, locate, routeTo } from '@/features/discovery/store'
 import { mapCamera } from '@/features/map/lib/mapCamera'
 import { createStore } from '@/shared/lib/store'
 import { headingAt, planRoute, type RoutePlan } from './lib/progress.ts'
@@ -80,6 +80,21 @@ export function previewStep(route: WalkingRoute, index: number) {
   navigationStore.set({ previewIndex: index, following: false })
   const plan = routePlan(route)
   mapCamera.navigate(step.location, plan.coordinates.length > 1 ? headingAt(plan, plan.stepAlongM[index]) : 0)
+}
+
+/** A route from a picked point: start again from the user's real position. */
+export async function navigateFromHere(aedId: string) {
+  if (!(await locate())) return
+  await routeTo(aedId)
+  startTracking()
+}
+
+/** The map's location button while navigating: back to the live position, or start from it. */
+export function showMyPosition() {
+  const { tracking, aedId } = navigationStore.get()
+  // Not `locate()` alone: a new search origin would clear the route being walked.
+  if (tracking === 'on' || tracking === 'waiting' || tracking === 'unavailable') followPosition()
+  else if (aedId) navigateFromHere(aedId)
 }
 
 /** Back to the live position after browsing steps or panning the map. */

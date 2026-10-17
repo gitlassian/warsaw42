@@ -31,8 +31,8 @@ export function AppHeader({ floating = false, withInfo = true, onClose }: AppHea
   )
 }
 
-/** Opens "O danych" and closes it again: in the header on narrow screens, on top of the round map controls from 840 (captioned). */
-export function InfoButton({ text }: { text?: string }) {
+/** Opens "O danych" and closes it again: in the header on narrow screens. */
+function InfoButton() {
   const navigate = useNavigate()
   const shown = useMatch(RoutePaths.data) !== null
   return (
@@ -40,7 +40,6 @@ export function InfoButton({ text }: { text?: string }) {
       variant="floating"
       icon="info"
       label="O danych"
-      text={text}
       pressed={shown}
       onClick={() => navigate(shown ? RoutePaths.map : RoutePaths.data)}
     />

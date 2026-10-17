@@ -100,6 +100,11 @@
   transition: bottom var(--duration-panel) ease-out;
 }
 
+/* Navigation: no controls or find bar in the corner, so no corner scrim. */
+.layout[data-navigating] .mapArea::after {
+  display: none;
+}
+
 /* Navigation: notices sit below the taller direction banner. */
 .layout[data-navigating] .overlay {
   top: calc(env(safe-area-inset-top) + 160px);
@@ -175,21 +180,24 @@
     pointer-events: none;
   }
 
+  /* Notices sit below the top row (logo, address search, find button). */
   .overlay {
-    top: var(--space-16);
+    top: 80px;
     right: auto;
     width: min(420px, calc(100% - 96px));
   }
 
-  /* Round controls stack right above the find card (bottom-right). */
+  /* Round controls stack down from the top-right corner. */
   .controls {
-    bottom: calc(var(--space-48) + var(--dock-height) + var(--space-16));
+    top: var(--space-16);
+    bottom: auto;
   }
 
-  /* The picker opens beside the controls, level with their bottom edge. */
+  /* The picker opens beside the controls, level with their top edge. */
   .timeBar {
+    top: var(--space-16);
     left: auto;
-    bottom: calc(var(--space-48) + var(--dock-height) + var(--space-16));
+    bottom: auto;
     width: min(440px, calc(100% - 2 * var(--space-16) - 56px - var(--space-8)));
   }
 
@@ -198,30 +206,35 @@
     grid-template-columns: 1fr;
   }
 
+  /* One row: logo, address search, find button. Shrinks to its content, clear of the round controls on the right. */
   .layout[data-floating] .header {
     position: absolute;
     top: var(--space-16);
     left: var(--space-16);
-    /* Shrink to the logo so it stays clear of the round controls on the right. */
     right: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-8);
+    max-width: calc(100% - 2 * var(--space-16) - 56px - var(--space-16));
     padding: 0;
     border: 0;
     background: none;
+  }
+
+  /* A width, not a flex basis: the shrink-to-fit row sizes itself from it. */
+  .search {
+    flex: 0 1 auto;
+    width: 360px;
+    min-width: 0;
   }
 
   .layout[data-floating] .mapArea {
     grid-area: 1 / 1 / 3 / 2;
   }
 
-  .layout[data-floating] .overlay {
-    top: 80px;
-  }
-
-  /* Wide: from the screen corner up and left behind the find card (card + 96 px up/left). */
+  /* Nothing sits in the bottom-right corner here. */
   .mapArea::after {
-    bottom: 0;
-    width: calc(min(var(--panel-width), 100% - 2 * var(--space-16)) + 2 * var(--space-48) + var(--space-16));
-    height: calc(var(--dock-height) + 3 * var(--space-48));
+    display: none;
   }
 
   /* The banner is the overlay's first card here. */
@@ -229,16 +242,12 @@
     top: var(--space-16);
   }
 
-  /* Wide: the find button floats bottom-right over the map on every screen. */
-  .dock {
-    left: auto;
-    right: var(--space-16);
-    /* Clears the Mapbox attribution in the corner. */
-    bottom: var(--space-48);
-    width: min(var(--panel-width), calc(100% - 2 * var(--space-16)));
-    padding: 0;
-    border: 0;
-    background: none;
+  /* Panel open: level with the logo row of the side panel (81 px high). */
+  .mapFind {
+    position: absolute;
+    top: var(--space-12);
+    left: var(--space-16);
+    z-index: 1;
   }
 
   .status {
@@ -248,11 +257,10 @@
     box-shadow: var(--shadow-panel);
   }
 
-  /* White container so the green button does not blend into the map. */
+  /* The top-row scrim keeps the green button apart from the map; 56 px like the logo and the search. */
   .find {
-    padding: var(--space-16);
-    border-radius: var(--radius-sheet);
-    background: var(--color-surface);
+    flex: none;
+    border-radius: var(--radius-control);
     box-shadow: var(--shadow-panel);
   }
 }

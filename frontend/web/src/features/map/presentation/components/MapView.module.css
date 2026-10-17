@@ -8,3 +8,29 @@
 .map :global(.mapboxgl-ctrl-bottom-right) {
   bottom: var(--sheet-cover, 0px);
 }
+
+/* Zoom and location buttons: wide screens only (pinch zoom on phones), small, above the attribution. */
+.map :global(.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group) {
+  display: none;
+  margin: 0 var(--space-16) var(--space-8) 0;
+  overflow: hidden;
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-floating);
+}
+
+/* Same 29 px square as the zoom buttons; .map outranks Mapbox's `.mapboxgl-ctrl-group button`. */
+.map .locate {
+  display: grid;
+  place-items: center;
+  color: var(--color-text);
+}
+
+.map .locate:disabled {
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 840px) {
+  .map :global(.mapboxgl-ctrl-bottom-right .mapboxgl-ctrl-group) {
+    display: block;
+  }
+}

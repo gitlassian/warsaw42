@@ -1,8 +1,10 @@
 import mapboxgl, { type GeoJSONSource, type Map as MapboxMap, type MapMouseEvent } from 'mapbox-gl'
 import type { Point } from 'geojson'
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useMatch } from 'react-router'
 import { RoutePaths, buildPath } from '@/app/routePaths'
+import { AppIcon } from '@/design-system/components/AppIcon'
 import { passesFilters } from '@/features/aeds/lib/aedAvailability'
 import { aedStatus } from '@/features/aeds/lib/aedStatus'
 import { aedsStore } from '@/features/aeds/store'
@@ -34,11 +36,15 @@ const sameKeys = (a: VisibleFeature[], b: VisibleFeature[]) =>
 
 type MapViewProps = {
   onLoadError: () => void
+  onLocate: () => void
+  locating: boolean
 }
 
 /** Mapbox Standard (light, flat, north-up) locked to Warsaw, with AED markers, route, origin and coverage. */
-export function MapView({ onLoadError }: MapViewProps) {
+export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
+  // Mapbox control group for the small location button; React renders the button into it.
+  const [locateGroup] = useState(() => Object.assign(document.createElement('div'), { className: 'mapboxgl-ctrl mapboxgl-ctrl-group' }))
   const [map, setMap] = useState<MapboxMap | null>(null)
   const [visible, setVisible] = useState<VisibleFeature[]>([])
 
@@ -82,7 +88,12 @@ export function MapView({ onLoadError }: MapViewProps) {
         minZoom: 10,
         maxBounds: WARSAW_MAX_BOUNDS,
         language: 'pl',
+        locale: { 'NavigationControl.ZoomIn': 'Przybliż', 'NavigationControl.ZoomOut': 'Oddal' },
       })
+      // Small zoom and location buttons in the bottom-right corner, shown on wide screens only (MapView.module.css).
+      instance.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right')
+      // Added later, so Mapbox stacks it above the zoom buttons.
+      instance.addControl({ onAdd: () => locateGroup, onRemove: () => locateGroup.remove() }, 'bottom-right')
       instance.touchZoomRotate.disableRotation()
       instance.keyboard.disableRotation()
     } catch {
@@ -108,7 +119,7 @@ export function MapView({ onLoadError }: MapViewProps) {
       mapCamera.attach(null)
       instance.remove()
     }
-  }, [onLoadError])
+  }, [onLoadError, locateGroup])
 
   useEffect(() => {
     if (!map) return
@@ -253,6 +264,12 @@ export function MapView({ onLoadError }: MapViewProps) {
             renderAed(f.aedId, f.lngLat, f.key)
           ),
         )}
+      {createPortal(
+        <button type="button" className={styles.locate} aria-label="Pokaż moją lokalizację" title="Pokaż moją lokalizację" onClick={onLocate} disabled={locating}>
+          <AppIcon name="my_location" size={20} />
+        </button>,
+        locateGroup,
+      )}
       {/* The selected AED stays visible even inside a cluster. */}
       {map && selectedAed && renderAed(selectedAed.id, selectedAed.location)}
       {map && origin && !livePosition && (

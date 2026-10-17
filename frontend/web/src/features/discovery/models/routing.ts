@@ -2,6 +2,9 @@ import type { LineString } from 'geojson'
 import type { Aed } from '@/features/aeds/models/aed'
 import type { LngLat } from '@/shared/geo/geo'
 
+/** An address suggestion inside Warsaw; `location` is where the walk starts. */
+export type AddressHit = { id: string; name: string; detail: string | null; location: LngLat }
+
 /** Search start: GPS position or a point the user picked on the map (never a silent demo location). */
 export type Origin = LngLat & { source: 'gps' | 'manual'; accuracyM?: number }
 

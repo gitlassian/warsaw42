@@ -4,6 +4,10 @@ import { FilterMenu } from './FilterMenu'
 import styles from './MapControls.module.css'
 
 type MapControlsProps = {
+  /** Narrow only: wide screens have a small location button above the zoom buttons (MapView). */
+  withLocate: boolean
+  /** Navigation: only the location button. */
+  locateOnly?: boolean
   locating: boolean
   coverageShown: boolean
   filters: AedFilters
@@ -18,6 +22,8 @@ type MapControlsProps = {
 
 /** Round floating controls; positioned around the sheet by the page. */
 export function MapControls({
+  withLocate,
+  locateOnly,
   locating,
   coverageShown,
   filters,
@@ -31,31 +37,37 @@ export function MapControls({
 }: MapControlsProps) {
   return (
     <div className={styles.controls}>
-      <IconButton
-        variant="floating"
-        icon="my_location"
-        label="Pokaż moją lokalizację"
-        text="Pozycja"
-        onClick={onLocate}
-        disabled={locating}
-      />
-      <IconButton
-        variant="floating"
-        icon="layers"
-        label="Warstwa: Odległość do najbliższego AED"
-        text="Zasięg"
-        pressed={coverageShown}
-        onClick={onToggleCoverage}
-      />
-      <IconButton
-        variant="floating"
-        icon="schedule"
-        label={timeOpen ? 'Ukryj wybór godziny' : 'Sprawdź dostępność o innej porze'}
-        text="Pora"
-        pressed={timeOpen}
-        onClick={onToggleTime}
-      />
-      <FilterMenu filters={filters} onToggle={onToggleFilter} open={filtersOpen} onOpenChange={onFiltersOpenChange} />
+      {withLocate && (
+        <IconButton
+          variant="floating"
+          icon="my_location"
+          label="Pokaż moją lokalizację"
+          text="Pozycja"
+          onClick={onLocate}
+          disabled={locating}
+        />
+      )}
+      {!locateOnly && (
+        <>
+          <IconButton
+            variant="floating"
+            icon="layers"
+            label="Warstwa: Odległość do najbliższego AED"
+            text="Zasięg"
+            pressed={coverageShown}
+            onClick={onToggleCoverage}
+          />
+          <IconButton
+            variant="floating"
+            icon="schedule"
+            label={timeOpen ? 'Ukryj wybór godziny' : 'Sprawdź dostępność o innej porze'}
+            text="Pora"
+            pressed={timeOpen}
+            onClick={onToggleTime}
+          />
+          <FilterMenu filters={filters} onToggle={onToggleFilter} open={filtersOpen} onOpenChange={onFiltersOpenChange} />
+        </>
+      )}
     </div>
   )
 }

@@ -141,7 +141,7 @@
 
 .origin {
   display: flex;
-  color: var(--color-text);
+  color: var(--color-accent);
   filter: drop-shadow(0 2px 4px rgb(23 35 29 / 25%));
 }
 
