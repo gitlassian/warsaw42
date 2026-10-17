@@ -1,0 +1,4972 @@
+{
+ "622": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146505_8.0111.1056_BUD"
+ },
+ "661": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146505_8.0411.1057_BUD"
+ },
+ "623": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146510_8.0203.62_BUD"
+ },
+ "662": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "b",
+  "building_id": "146506_8.0202.43_BUD"
+ },
+ "628": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146509_8.0926.200_BUD"
+ },
+ "663": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146512_8.0909.322_BUD"
+ },
+ "664": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146511_8.0804.57_BUD"
+ },
+ "665": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146511_8.0804.56_BUD"
+ },
+ "666": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146509_8.0707.188_BUD"
+ },
+ "681": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146505_8.0110.87_BUD"
+ },
+ "682": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146512_8.0907.40_BUD"
+ },
+ "683": {
+  "in_footprint": false,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146512_8.0905.92_BUD"
+ },
+ "701": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146511_8.0807.28_BUD"
+ },
+ "684": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0804.31_BUD"
+ },
+ "685": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0819.30_BUD"
+ },
+ "1630": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146510_8.0511.67_BUD"
+ },
+ "1631": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146516_8.1026.101_BUD"
+ },
+ "1661": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.1112.92_BUD"
+ },
+ "1681": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146503_8.1637.49_BUD"
+ },
+ "689": {
+  "in_footprint": false,
+  "dist_m": 0.1,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146512_8.1106.119_BUD"
+ },
+ "703": {
+  "in_footprint": false,
+  "dist_m": 0.1,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0812.69_BUD"
+ },
+ "1701": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146513_8.1210.14_BUD"
+ },
+ "691": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "m",
+  "building_id": "146512_8.1115.12_BUD"
+ },
+ "1721": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146518_8.0311.105_BUD"
+ },
+ "1722": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146518_8.0311.105_BUD"
+ },
+ "1741": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1742": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1761": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "697": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0808.36_BUD"
+ },
+ "698": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146511_8.0915.136_BUD"
+ },
+ "1743": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146503_8.0710.56_BUD"
+ },
+ "1744": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "699": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.1012.82_BUD"
+ },
+ "704": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146505_8.0215.1112_BUD"
+ },
+ "700": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0819.62_BUD"
+ },
+ "723": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146509_8.0710.280_BUD"
+ },
+ "724": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146518_8.0408.132_BUD"
+ },
+ "725": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146518_8.0605.18_BUD"
+ },
+ "726": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146518_8.0703.122_BUD"
+ },
+ "727": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "b",
+  "building_id": "146504_8.0512.165_BUD"
+ },
+ "728": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146518_8.0708.48_BUD"
+ },
+ "729": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146518_8.0207.109_BUD"
+ },
+ "705": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0815.40_BUD"
+ },
+ "706": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.0551.149_BUD"
+ },
+ "731": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146516_8.0538.181_BUD"
+ },
+ "707": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146516_8.1026.100_BUD"
+ },
+ "733": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146516_8.1026.101_BUD"
+ },
+ "741": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0401.8_BUD"
+ },
+ "742": {
+  "in_footprint": false,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0605.44_BUD"
+ },
+ "743": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146507_8.0401.47_BUD"
+ },
+ "744": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0605.44_BUD"
+ },
+ "747": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146518_8.0207.108_BUD"
+ },
+ "761": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146507_8.0414.68_BUD"
+ },
+ "749": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146519_8.0203.42_BUD"
+ },
+ "750": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "b",
+  "building_id": "146513_8.1022.16_BUD"
+ },
+ "764": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0807.47_BUD"
+ },
+ "753": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.1010.2_BUD"
+ },
+ "752": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146518_8.0404.42_BUD"
+ },
+ "754": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146518_8.0319.72_BUD"
+ },
+ "765": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146518_8.0205.70_BUD"
+ },
+ "766": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.1008.76_BUD"
+ },
+ "767": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146518_8.0607.49_BUD"
+ },
+ "768": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146518_8.0102.68_BUD"
+ },
+ "755": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146511_8.0821.45_BUD"
+ },
+ "782": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.0806.112_BUD"
+ },
+ "801": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146519_8.0107.6_BUD"
+ },
+ "803": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146504_8.0502.82_BUD"
+ },
+ "804": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146504_8.0705.25_BUD"
+ },
+ "786": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146510_8.0510.42_BUD"
+ },
+ "787": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146504_8.0503.4_BUD"
+ },
+ "808": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146505_8.0303.1033_BUD"
+ },
+ "788": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.1109.84_BUD"
+ },
+ "789": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146505_8.0111.1115_BUD"
+ },
+ "810": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.0805.67_BUD"
+ },
+ "790": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "792": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146507_8.0406.96_BUD"
+ },
+ "821": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.0810.592_BUD"
+ },
+ "841": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146504_8.0816.7_BUD"
+ },
+ "842": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146504_8.0703.265_BUD"
+ },
+ "823": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146504_8.0703.265_BUD"
+ },
+ "844": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146505_8.0530.1060_BUD"
+ },
+ "846": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146518_8.0202.59_BUD"
+ },
+ "824": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146513_8.1011.96_BUD"
+ },
+ "825": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146518_8.0206.42_BUD"
+ },
+ "826": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146505_8.0111.1104_BUD"
+ },
+ "847": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146505_8.0420.1029_BUD"
+ },
+ "828": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1016.41_BUD"
+ },
+ "861": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146510_8.0504.123_BUD"
+ },
+ "881": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146519_8.0417.65_BUD"
+ },
+ "882": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146519_8.0114.11_BUD"
+ },
+ "883": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146505_8.0213.1067_BUD"
+ },
+ "862": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146505_8.0530.1064_BUD"
+ },
+ "901": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146509_8.0928.92_BUD"
+ },
+ "902": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.1003.43_BUD"
+ },
+ "903": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.1004.54_BUD"
+ },
+ "886": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146519_8.0119.98_BUD"
+ },
+ "904": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0806.71_BUD"
+ },
+ "887": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146507_8.0207.55_BUD"
+ },
+ "888": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146518_8.0206.79_BUD"
+ },
+ "889": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146511_8.0817.17_BUD"
+ },
+ "905": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146511_8.0921.277_BUD"
+ },
+ "890": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146511_8.1123.118_BUD"
+ },
+ "891": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146511_8.1009.37_BUD"
+ },
+ "906": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "i",
+  "building_id": "146503_8.0309.4_BUD"
+ },
+ "907": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146503_8.0702.255_BUD"
+ },
+ "908": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146502_8.0803.81_BUD"
+ },
+ "921": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146515_8.0603.91_BUD"
+ },
+ "922": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146515_8.0716.143_BUD"
+ },
+ "909": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146508_8.1504.166_BUD"
+ },
+ "923": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146517_8.0406.341_BUD"
+ },
+ "910": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146512_8.1112.128_BUD"
+ },
+ "924": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146512_8.1112.128_BUD"
+ },
+ "925": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "926": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146512_8.1112.73_BUD"
+ },
+ "927": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146512_8.1112.73_BUD"
+ },
+ "911": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146512_8.0907.100_BUD"
+ },
+ "928": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.1118.6_BUD"
+ },
+ "941": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "h",
+  "building_id": "146513_8.1021.3_BUD"
+ },
+ "929": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1112.91_BUD"
+ },
+ "930": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1002.27_BUD"
+ },
+ "931": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1021.26_BUD"
+ },
+ "942": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1018.33_BUD"
+ },
+ "943": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146517_8.0502.159_BUD"
+ },
+ "933": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146508_8.1506.89_BUD"
+ },
+ "945": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.1112.92_BUD"
+ },
+ "946": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146511_8.0929.41_BUD"
+ },
+ "961": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146519_8.0120.28_BUD"
+ },
+ "962": {
+  "in_footprint": false,
+  "dist_m": 0.1,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146502_8.1111.1_BUD"
+ },
+ "963": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146510_8.0205.102_BUD"
+ },
+ "964": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "b",
+  "building_id": "146506_8.0202.43_BUD"
+ },
+ "982": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146502_8.1111.1_BUD"
+ },
+ "983": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146514_8.1507.20_BUD"
+ },
+ "1001": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146510_8.0501.169_BUD"
+ },
+ "1021": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 49,
+  "building_type": "k",
+  "building_id": "146510_8.0309.11_BUD"
+ },
+ "1022": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 49,
+  "building_type": "k",
+  "building_id": "146510_8.0309.11_BUD"
+ },
+ "1041": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "z",
+  "building_id": "146505_8.0120.1140_BUD"
+ },
+ "1061": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146515_8.0303.102_BUD"
+ },
+ "1082": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146507_8.0201.52_BUD"
+ },
+ "1083": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146518_8.0614.142_BUD"
+ },
+ "1084": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146505_8.0112.1064_BUD"
+ },
+ "1101": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0601.37_BUD"
+ },
+ "1121": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146504_8.0501.5_BUD"
+ },
+ "1102": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146504_8.0501.11_BUD"
+ },
+ "1122": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "z",
+  "building_id": "146504_8.0501.8_BUD"
+ },
+ "1103": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146510_8.0311.28_BUD"
+ },
+ "1104": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146518_8.0610.70_BUD"
+ },
+ "1105": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146518_8.0704.9_BUD"
+ },
+ "1123": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146518_8.0314.47_BUD"
+ },
+ "1106": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146518_8.0105.9_BUD"
+ },
+ "1124": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 12,
+  "building_type": "m",
+  "building_id": "146518_8.0107.34_BUD"
+ },
+ "1107": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146518_8.0207.38_BUD"
+ },
+ "1108": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146510_8.0407.203_BUD"
+ },
+ "1109": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146510_8.0613.14_BUD"
+ },
+ "1125": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146518_8.0316.94_BUD"
+ },
+ "1127": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 49,
+  "building_type": "k",
+  "building_id": "146510_8.0309.11_BUD"
+ },
+ "1110": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146514_8.1001.18_BUD"
+ },
+ "1128": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146508_8.1501.112_BUD"
+ },
+ "1129": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146508_8.1501.136_BUD"
+ },
+ "1111": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146510_8.0304.6_BUD"
+ },
+ "1142": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146510_8.0304.12_BUD"
+ },
+ "1143": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "h",
+  "building_id": "146504_8.0810.15_BUD"
+ },
+ "1144": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1145": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1146": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1147": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146519_8.0110.84_BUD"
+ },
+ "1148": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "i",
+  "building_id": "146510_8.0209.70_BUD"
+ },
+ "1149": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146519_8.0209.37_BUD"
+ },
+ "1150": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1161": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146504_8.0507.78_BUD"
+ },
+ "1151": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "t",
+  "building_id": "146510_8.0308.20_BUD"
+ },
+ "1152": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146507_8.0206.78_BUD"
+ },
+ "1162": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1153": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146503_8.0319.75_BUD"
+ },
+ "1154": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146503_8.0319.75_BUD"
+ },
+ "1164": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146504_8.0703.194_BUD"
+ },
+ "1155": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146514_8.1233.51_BUD"
+ },
+ "1165": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1156": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146519_8.0115.183_BUD"
+ },
+ "1157": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "k",
+  "building_id": "146510_8.0402.47_BUD"
+ },
+ "1158": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146508_8.1507.29_BUD"
+ },
+ "1166": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146513_8.1103.26_BUD"
+ },
+ "1159": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146513_8.1103.26_BUD"
+ },
+ "1160": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146513_8.0934.97_BUD"
+ },
+ "1181": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0408.122_BUD"
+ },
+ "1182": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146518_8.0711.67_BUD"
+ },
+ "1183": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146508_8.1203.98_BUD"
+ },
+ "1184": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146518_8.0406.26_BUD"
+ },
+ "1185": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146519_8.0107.20_BUD"
+ },
+ "1168": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146504_8.0814.95_BUD"
+ },
+ "1186": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146504_8.0604.38_BUD"
+ },
+ "1187": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146509_8.0925.82_BUD"
+ },
+ "1188": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146509_8.0050.187_BUD"
+ },
+ "1189": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146509_8.0709.223_BUD"
+ },
+ "1169": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146504_8.0403.159_BUD"
+ },
+ "1190": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146504_8.0403.159_BUD"
+ },
+ "1191": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146504_8.0403.159_BUD"
+ },
+ "1192": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146504_8.0513.135_BUD"
+ },
+ "1193": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "z",
+  "building_id": "146510_8.0103.34_BUD"
+ },
+ "1194": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146519_8.0107.20_BUD"
+ },
+ "1195": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146519_8.0107.20_BUD"
+ },
+ "1171": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146504_8.0703.77_BUD"
+ },
+ "1196": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "m",
+  "building_id": "146513_8.0815.124_BUD"
+ },
+ "1172": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146508_8.1503.30_BUD"
+ },
+ "1197": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1198": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146519_8.0107.20_BUD"
+ },
+ "1199": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1175": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "t",
+  "building_id": "146504_8.1108.209_BUD"
+ },
+ "1176": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146518_8.0204.125_BUD"
+ },
+ "1200": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "t",
+  "building_id": "146504_8.1108.209_BUD"
+ },
+ "1201": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146510_8.0105.27_BUD"
+ },
+ "1177": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "t",
+  "building_id": "146519_8.0201.10_BUD"
+ },
+ "1178": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146510_8.0105.27_BUD"
+ },
+ "1202": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146510_8.0105.27_BUD"
+ },
+ "1179": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146510_8.0105.27_BUD"
+ },
+ "1180": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "t",
+  "building_id": "146517_8.0606.3_BUD"
+ },
+ "1221": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146507_8.0206.78_BUD"
+ },
+ "1222": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146506_8.0321.20_BUD"
+ },
+ "1223": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146518_8.0306.59_BUD"
+ },
+ "1241": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146514_8.0731.184_BUD"
+ },
+ "1242": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146514_8.1232.84_BUD"
+ },
+ "1224": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146514_8.1145.110_BUD"
+ },
+ "1225": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146514_8.0717.159_BUD"
+ },
+ "1226": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146514_8.1352.13_BUD"
+ },
+ "1227": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146514_8.1286.42_BUD"
+ },
+ "1228": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146507_8.0201.242_BUD"
+ },
+ "1243": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146502_8.1210.43_BUD"
+ },
+ "1229": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146510_8.0103.9_BUD"
+ },
+ "1244": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146510_8.0602.2_BUD"
+ },
+ "1245": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146504_8.0901.11_BUD"
+ },
+ "1246": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "b",
+  "building_id": "146518_8.0704.27_BUD"
+ },
+ "1247": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "h",
+  "building_id": "146518_8.0207.114_BUD"
+ },
+ "1261": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1262": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1263": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146507_8.0511.44_BUD"
+ },
+ "1264": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146507_8.0505.22_BUD"
+ },
+ "1265": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146507_8.0416.386_BUD"
+ },
+ "1266": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146507_8.0113.49_BUD"
+ },
+ "1267": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146507_8.0531.86_BUD"
+ },
+ "1268": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146507_8.0605.27_BUD"
+ },
+ "1269": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "z",
+  "building_id": "146518_8.0207.104_BUD"
+ },
+ "1270": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146507_8.0123.40_BUD"
+ },
+ "1271": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "z",
+  "building_id": "146518_8.0207.104_BUD"
+ },
+ "1248": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "z",
+  "building_id": "146507_8.0402.57_BUD"
+ },
+ "1272": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146507_8.0505.28_BUD"
+ },
+ "1249": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146507_8.0520.3_BUD"
+ },
+ "1273": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "z",
+  "building_id": "146518_8.0207.104_BUD"
+ },
+ "1274": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146518_8.0207.16_BUD"
+ },
+ "1275": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0607.1_BUD"
+ },
+ "1250": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146511_8.0820.29_BUD"
+ },
+ "1276": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146511_8.0808.86_BUD"
+ },
+ "1277": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146503_8.0510.87_BUD"
+ },
+ "1278": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146503_8.0306.42_BUD"
+ },
+ "1251": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146503_8.0703.529_BUD"
+ },
+ "1279": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146510_8.0201.31_BUD"
+ },
+ "1280": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146511_8.0820.10_BUD"
+ },
+ "1281": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146504_8.1001.6_BUD"
+ },
+ "1301": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "i",
+  "building_id": "146505_8.0223.1005_BUD"
+ },
+ "1282": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146508_8.1202.24_BUD"
+ },
+ "1305": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146506_8.0312.98_BUD"
+ },
+ "1306": {
+  "in_footprint": false,
+  "dist_m": 2.1,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146503_8.0702.126_BUD"
+ },
+ "1307": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146503_8.0702.133_BUD"
+ },
+ "1283": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146503_8.0609.82_BUD"
+ },
+ "1308": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146518_8.0106.38_BUD"
+ },
+ "1284": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146510_8.0606.60_BUD"
+ },
+ "1309": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146519_8.0305.42_BUD"
+ },
+ "1310": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146503_8.0505.94_BUD"
+ },
+ "1311": {
+  "in_footprint": false,
+  "dist_m": 5.2,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146504_8.1101.55_BUD"
+ },
+ "1285": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146518_8.0110.27_BUD"
+ },
+ "1321": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146513_8.1008.77_BUD"
+ },
+ "1341": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1106.65_BUD"
+ },
+ "1322": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146513_8.1022.44_BUD"
+ },
+ "1323": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146505_8.0118.52_BUD"
+ },
+ "1324": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146505_8.0206.4_BUD"
+ },
+ "1325": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146505_8.0523.1330_BUD"
+ },
+ "1326": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146505_8.0407.1305_BUD"
+ },
+ "1342": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146506_8.0308.78_BUD"
+ },
+ "1327": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146506_8.0315.44_BUD"
+ },
+ "1343": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0108.105_BUD"
+ },
+ "1344": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146508_8.1204.8_BUD"
+ },
+ "1345": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146507_8.0406.64_BUD"
+ },
+ "1346": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146508_8.1405.173_BUD"
+ },
+ "1328": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146504_8.0703.55_BUD"
+ },
+ "1329": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146504_8.0702.34_BUD"
+ },
+ "1330": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146504_8.0404.18_BUD"
+ },
+ "1331": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146504_8.0604.64_BUD"
+ },
+ "1347": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146518_8.0207.103_BUD"
+ },
+ "1332": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146518_8.0318.54_BUD"
+ },
+ "1333": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0504.68_BUD"
+ },
+ "1348": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146505_8.0117.1131_BUD"
+ },
+ "1334": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146510_8.0507.67_BUD"
+ },
+ "1349": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0306.30_BUD"
+ },
+ "1335": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146519_8.0204.37_BUD"
+ },
+ "1350": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146512_8.0906.8_BUD"
+ },
+ "1351": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0808.26_BUD"
+ },
+ "1337": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146507_8.0531.23_BUD"
+ },
+ "1352": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146507_8.0511.9_BUD"
+ },
+ "1353": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146510_8.0311.9_BUD"
+ },
+ "1339": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146518_8.0319.33_BUD"
+ },
+ "1354": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146518_8.0610.46_BUD"
+ },
+ "1355": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146508_8.1204.50_BUD"
+ },
+ "1340": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146518_8.0703.165_BUD"
+ },
+ "1356": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146502_8.1110.113_BUD"
+ },
+ "1357": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146514_8.0721.135_BUD"
+ },
+ "1359": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146503_8.0122.188_BUD"
+ },
+ "1360": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146511_8.1009.11_BUD"
+ },
+ "1361": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0603.13_BUD"
+ },
+ "1362": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146504_8.0502.19_BUD"
+ },
+ "1381": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146511_8.0815.44_BUD"
+ },
+ "1363": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146512_8.0905.92_BUD"
+ },
+ "1364": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.0944.2_BUD"
+ },
+ "1382": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146505_8.0516.1064_BUD"
+ },
+ "1383": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146516_8.1037.53_BUD"
+ },
+ "1401": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146515_8.0406.130_BUD"
+ },
+ "1402": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146507_8.0531.99_BUD"
+ },
+ "1403": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146509_8.0926.211_BUD"
+ },
+ "1404": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "z",
+  "building_id": "146503_8.0707.184_BUD"
+ },
+ "1405": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "z",
+  "building_id": "146503_8.0122.225_BUD"
+ },
+ "1406": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "z",
+  "building_id": "146503_8.0611.61_BUD"
+ },
+ "1384": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146503_8.1638.229_BUD"
+ },
+ "1385": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "z",
+  "building_id": "146507_8.0607.29_BUD"
+ },
+ "1386": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146504_8.0802.11_BUD"
+ },
+ "1407": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146502_8.1501.411_BUD"
+ },
+ "1408": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.1352.11_BUD"
+ },
+ "1387": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146505_8.0212.1128_BUD"
+ },
+ "1388": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146518_8.0608.129_BUD"
+ },
+ "1389": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "z",
+  "building_id": "146515_8.0502.11_BUD"
+ },
+ "1390": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "z",
+  "building_id": "146513_8.1027.42_BUD"
+ },
+ "1391": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1102.59_BUD"
+ },
+ "1392": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "z",
+  "building_id": "146512_8.1116.280_BUD"
+ },
+ "1409": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146516_8.1025.27_BUD"
+ },
+ "1393": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0407.57_BUD"
+ },
+ "1394": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146512_8.0901.342_BUD"
+ },
+ "1395": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "i",
+  "building_id": "146506_8.0101.12_BUD"
+ },
+ "1410": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146502_8.1110.11_BUD"
+ },
+ "1396": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0406.64_BUD"
+ },
+ "1397": {
+  "in_footprint": false,
+  "dist_m": 0.1,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146505_8.0123.25_BUD"
+ },
+ "1398": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146504_8.0813.104_BUD"
+ },
+ "1421": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146504_8.0509.52_BUD"
+ },
+ "1441": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146518_8.0403.7_BUD"
+ },
+ "1442": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "m",
+  "building_id": "146502_8.1214.240_BUD"
+ },
+ "1443": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0201.15_BUD"
+ },
+ "1422": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146504_8.0508.157_BUD"
+ },
+ "1423": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146505_8.0410.26_BUD"
+ },
+ "1424": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146504_8.0503.102_BUD"
+ },
+ "1425": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146504_8.0508.157_BUD"
+ },
+ "1444": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0108.93_BUD"
+ },
+ "1445": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "m",
+  "building_id": "146508_8.1202.11_BUD"
+ },
+ "1461": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146506_8.0101.30_BUD"
+ },
+ "1481": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146507_8.0401.9_BUD"
+ },
+ "1482": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146507_8.0105.9_BUD"
+ },
+ "1501": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146513_8.0821.45_BUD"
+ },
+ "1502": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146505_8.0213.1084_BUD"
+ },
+ "1521": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1210.42_BUD"
+ },
+ "1561": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146505_8.0112.1082_BUD"
+ },
+ "1581": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146510_8.0103.9_BUD"
+ },
+ "1601": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146518_8.0107.124_BUD"
+ },
+ "1621": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146505_8.0305.6_BUD"
+ },
+ "1641": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146505_8.0118.25_BUD"
+ },
+ "1623": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146505_8.0206.1099_BUD"
+ },
+ "1624": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146505_8.0109.1042_BUD"
+ },
+ "1625": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146516_8.0684.127_BUD"
+ },
+ "1626": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146505_8.0420.1034_BUD"
+ },
+ "1627": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146505_8.0120.1134_BUD"
+ },
+ "1628": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146505_8.0311.1095_BUD"
+ },
+ "1629": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146505_8.0522.1016_BUD"
+ },
+ "1762": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1745": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1746": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1763": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1747": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1748": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1749": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1750": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1751": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1752": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1753": {
+  "in_footprint": false,
+  "dist_m": 7.9,
+  "building_floors": 2,
+  "building_type": "t",
+  "building_id": "146510_8.0101.13_BUD"
+ },
+ "1754": {
+  "in_footprint": false,
+  "dist_m": 13.6,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146519_8.0107.29_BUD"
+ },
+ "1755": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1756": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1757": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1758": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1759": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1760": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "p",
+  "building_id": "146510_8.0509.9_BUD"
+ },
+ "1781": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 9,
+  "building_type": "b",
+  "building_id": "146510_8.0504.89_BUD"
+ },
+ "1782": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146505_8.0409.1068_BUD"
+ },
+ "1801": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146518_8.0701.255_BUD"
+ },
+ "1821": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1841": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1822": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1823": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1842": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1824": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1843": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1825": {
+  "in_footprint": false,
+  "dist_m": 3.5,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146510_8.0311.81_BUD"
+ },
+ "1826": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1844": {
+  "in_footprint": false,
+  "dist_m": 9.3,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146505_8.0111.1056_BUD"
+ },
+ "1861": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146508_8.1407.114_BUD"
+ },
+ "1881": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1882": {
+  "in_footprint": false,
+  "dist_m": 11.3,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146508_8.1302.118_BUD"
+ },
+ "1883": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1884": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1885": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1886": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1901": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1887": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1902": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "1903": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "p",
+  "building_id": "146504_8.0801.54_BUD"
+ },
+ "1921": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146507_8.0517.4_BUD"
+ },
+ "1941": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146504_8.0405.21_BUD"
+ },
+ "1961": {
+  "in_footprint": false,
+  "dist_m": 1.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146518_8.0301.2_BUD"
+ },
+ "1962": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146505_8.0303.1027_BUD"
+ },
+ "1982": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146504_8.0512.63_BUD"
+ },
+ "2002": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0211.55_BUD"
+ },
+ "2022": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "p",
+  "building_id": "146504_8.0801.54_BUD"
+ },
+ "2042": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0211.107_BUD"
+ },
+ "2043": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0211.109_BUD"
+ },
+ "2044": {
+  "in_footprint": false,
+  "dist_m": 0.8,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146510_8.0211.14_BUD"
+ },
+ "2045": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146510_8.0211.16_BUD"
+ },
+ "2046": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "2047": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0211.107_BUD"
+ },
+ "2048": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0211.107_BUD"
+ },
+ "2082": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "i",
+  "building_id": "146519_8.0106.22_BUD"
+ },
+ "2102": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146514_8.1120.129_BUD"
+ },
+ "2122": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "i",
+  "building_id": "146514_8.0717.171_BUD"
+ },
+ "2142": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146508_8.1811.62_BUD"
+ },
+ "2162": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "2182": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146512_8.0909.319_BUD"
+ },
+ "2202": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "m",
+  "building_id": "146512_8.1116.247_BUD"
+ },
+ "2222": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146507_8.0408.90_BUD"
+ },
+ "2336": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1112.91_BUD"
+ },
+ "2337": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1018.34_BUD"
+ },
+ "2338": {
+  "in_footprint": false,
+  "dist_m": 10.2,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1010.46_BUD"
+ },
+ "2339": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1113.52_BUD"
+ },
+ "2340": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1113.52_BUD"
+ },
+ "2341": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1019.30_BUD"
+ },
+ "2342": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1002.27_BUD"
+ },
+ "2343": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1109.6_BUD"
+ },
+ "2344": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1011.34_BUD"
+ },
+ "2362": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146513_8.1027.21_BUD"
+ },
+ "2282": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 10,
+  "building_type": "m",
+  "building_id": "146518_8.0203.25_BUD"
+ },
+ "2323": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1103.24_BUD"
+ },
+ "2322": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1002.26_BUD"
+ },
+ "2324": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.0831.169_BUD"
+ },
+ "2325": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1008.18_BUD"
+ },
+ "2326": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1108.70_BUD"
+ },
+ "2327": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1011.34_BUD"
+ },
+ "2328": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1021.26_BUD"
+ },
+ "2329": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1112.91_BUD"
+ },
+ "2330": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1018.34_BUD"
+ },
+ "2245": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146507_8.0114.131_BUD"
+ },
+ "2331": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1106.64_BUD"
+ },
+ "2332": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.0934.204_BUD"
+ },
+ "2333": {
+  "in_footprint": false,
+  "dist_m": 3.4,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1109.66_BUD"
+ },
+ "2334": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1016.7_BUD"
+ },
+ "2335": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.0831.303_BUD"
+ },
+ "2363": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146518_8.0610.28_BUD"
+ },
+ "2364": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146506_8.0309.39_BUD"
+ },
+ "2365": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "i",
+  "building_id": "146503_8.0608.77_BUD"
+ },
+ "2366": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146513_8.1001.4_BUD"
+ },
+ "2367": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1016.7_BUD"
+ },
+ "2368": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1022.46_BUD"
+ },
+ "2369": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1106.64_BUD"
+ },
+ "2382": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146503_8.1634.204_BUD"
+ },
+ "2383": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1010.46_BUD"
+ },
+ "2384": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1009.51_BUD"
+ },
+ "2402": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1019.30_BUD"
+ },
+ "2403": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "m",
+  "building_id": "146519_8.0417.33_BUD"
+ },
+ "2422": {
+  "in_footprint": false,
+  "dist_m": 4.4,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146505_8.0502.1012_BUD"
+ },
+ "2442": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 10,
+  "building_type": "m",
+  "building_id": "146504_8.0602.91_BUD"
+ },
+ "2487": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "h",
+  "building_id": "146511_8.0822.129_BUD"
+ },
+ "2522": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146514_8.1268.25_BUD"
+ },
+ "2542": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "h",
+  "building_id": "146504_8.0403.162_BUD"
+ },
+ "2543": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 45,
+  "building_type": "b",
+  "building_id": "146518_8.0409.112_BUD"
+ },
+ "2544": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146518_8.0104.60_BUD"
+ },
+ "2545": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 9,
+  "building_type": "h",
+  "building_id": "146518_8.0104.201_BUD"
+ },
+ "2562": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 13,
+  "building_type": "m",
+  "building_id": "146518_8.0206.30_BUD"
+ },
+ "2563": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146516_8.0544.488_BUD"
+ },
+ "2564": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146516_8.0544.488_BUD"
+ },
+ "2565": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "2582": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "z",
+  "building_id": "146507_8.0525.45_BUD"
+ },
+ "2583": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "t",
+  "building_id": "146511_8.0813.3_BUD"
+ },
+ "2602": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "2622": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146502_8.1207.132_BUD"
+ },
+ "2623": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146503_8.0306.82_BUD"
+ },
+ "2624": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146503_8.0612.1_BUD"
+ },
+ "2625": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146518_8.0401.40_BUD"
+ },
+ "2626": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146518_8.0408.292_BUD"
+ },
+ "2627": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146518_8.0408.292_BUD"
+ },
+ "2628": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "m",
+  "building_id": "146506_8.0309.20_BUD"
+ },
+ "2629": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 11,
+  "building_type": "m",
+  "building_id": "146519_8.0203.5_BUD"
+ },
+ "2630": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146510_8.0504.68_BUD"
+ },
+ "2631": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 11,
+  "building_type": "m",
+  "building_id": "146504_8.0601.139_BUD"
+ },
+ "2632": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 11,
+  "building_type": "m",
+  "building_id": "146504_8.0702.122_BUD"
+ },
+ "2633": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146516_8.0667.429_BUD"
+ },
+ "2634": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "m",
+  "building_id": "146504_8.1002.55_BUD"
+ },
+ "2635": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146506_8.0201.32_BUD"
+ },
+ "2636": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 10,
+  "building_type": "m",
+  "building_id": "146502_8.1206.16_BUD"
+ },
+ "2642": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 11,
+  "building_type": "m",
+  "building_id": "146504_8.0514.50_BUD"
+ },
+ "2643": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146508_8.1407.35_BUD"
+ },
+ "2644": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146507_8.0201.83_BUD"
+ },
+ "2645": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 11,
+  "building_type": "m",
+  "building_id": "146505_8.0522.3_BUD"
+ },
+ "2662": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146503_8.0103.124_BUD"
+ },
+ "2682": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146518_8.0101.30_BUD"
+ },
+ "2683": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146518_8.0104.38_BUD"
+ },
+ "2702": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.1212.9_BUD"
+ },
+ "2722": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 12,
+  "building_type": "b",
+  "building_id": "146518_8.0406.50_BUD"
+ },
+ "2742": {
+  "in_footprint": false,
+  "dist_m": 3.1,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146518_8.0702.47_BUD"
+ },
+ "2762": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "h",
+  "building_id": "146505_8.0516.1060_BUD"
+ },
+ "2782": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 17,
+  "building_type": "m",
+  "building_id": "146507_8.0526.18_BUD"
+ },
+ "2802": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146503_8.1627.105_BUD"
+ },
+ "2822": {
+  "in_footprint": false,
+  "dist_m": 0.4,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146518_8.0609.57_BUD"
+ },
+ "2842": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146507_8.0306.28_BUD"
+ },
+ "2843": {
+  "in_footprint": false,
+  "dist_m": 0.6,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146514_8.1358.60_BUD"
+ },
+ "2862": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146507_8.0206.321_BUD"
+ },
+ "2882": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146518_8.0307.40_BUD"
+ },
+ "2902": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146516_8.1025.29_BUD"
+ },
+ "2903": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.0685.95_BUD"
+ },
+ "2904": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146516_8.0538.57_BUD"
+ },
+ "2905": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.0551.145_BUD"
+ },
+ "2906": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "z",
+  "building_id": "146506_8.0102.65_BUD"
+ },
+ "2922": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146503_8.0304.30_BUD"
+ },
+ "2923": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146503_8.0119.39_BUD"
+ },
+ "2924": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146505_8.0701.1271_BUD"
+ },
+ "2925": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146518_8.0408.150_BUD"
+ },
+ "2926": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "b",
+  "building_id": "146508_8.1405.206_BUD"
+ },
+ "2927": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146510_8.0502.126_BUD"
+ },
+ "2928": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146510_8.0502.126_BUD"
+ },
+ "2929": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146510_8.0502.126_BUD"
+ },
+ "2930": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146510_8.0502.126_BUD"
+ },
+ "2931": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146510_8.0502.126_BUD"
+ },
+ "2932": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146510_8.0502.126_BUD"
+ },
+ "2933": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146510_8.0502.126_BUD"
+ },
+ "2934": {
+  "in_footprint": false,
+  "dist_m": 3.6,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146505_8.0701.1271_BUD"
+ },
+ "2935": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146505_8.0701.1271_BUD"
+ },
+ "2936": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146505_8.0701.1271_BUD"
+ },
+ "2937": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146505_8.0701.1271_BUD"
+ },
+ "2942": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146509_8.0077.145_BUD"
+ },
+ "2943": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146509_8.0919.114_BUD"
+ },
+ "2944": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146509_8.0919.6_BUD"
+ },
+ "2945": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146509_8.0050.96_BUD"
+ },
+ "2946": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146509_8.2128.84_BUD"
+ },
+ "2947": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146509_8.0050.15_BUD"
+ },
+ "2948": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146509_8.0076.165_BUD"
+ },
+ "2949": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146509_8.0709.223_BUD"
+ },
+ "2950": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146509_8.0710.280_BUD"
+ },
+ "2951": {
+  "in_footprint": false,
+  "dist_m": 5.3,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146510_8.0201.7_BUD"
+ },
+ "2952": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146509_8.0929.134_BUD"
+ },
+ "2953": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146510_8.0208.3_BUD"
+ },
+ "2954": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.1304.53_BUD"
+ },
+ "2955": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146508_8.1406.145_BUD"
+ },
+ "2956": {
+  "in_footprint": false,
+  "dist_m": 10.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146508_8.1201.69_BUD"
+ },
+ "2957": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "m",
+  "building_id": "146510_8.0407.4_BUD"
+ },
+ "2959": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.1208.29_BUD"
+ },
+ "2961": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1002.27_BUD"
+ },
+ "2962": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.1110.113_BUD"
+ },
+ "2982": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146508_8.1504.126_BUD"
+ },
+ "3002": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146502_8.1209.4_BUD"
+ },
+ "3022": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146502_8.1208.28_BUD"
+ },
+ "3023": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "m",
+  "building_id": "146502_8.1102.286_BUD"
+ },
+ "3025": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "b",
+  "building_id": "146514_8.1145.64_BUD"
+ },
+ "3026": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "b",
+  "building_id": "146514_8.1145.64_BUD"
+ },
+ "3027": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.1145.66_BUD"
+ },
+ "3028": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1029.5_BUD"
+ },
+ "3029": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 11,
+  "building_type": "m",
+  "building_id": "146511_8.0815.31_BUD"
+ },
+ "3030": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146518_8.0207.15_BUD"
+ },
+ "3042": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146518_8.0314.19_BUD"
+ },
+ "3062": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1029.5_BUD"
+ },
+ "3063": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146505_8.0112.1061_BUD"
+ },
+ "3082": {
+  "in_footprint": false,
+  "dist_m": 0.9,
+  "building_floors": 7,
+  "building_type": "b",
+  "building_id": "146506_8.0105.15_BUD"
+ },
+ "3083": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146505_8.0238.1018_BUD"
+ },
+ "3103": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "h",
+  "building_id": "146510_8.0310.115_BUD"
+ },
+ "3123": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0605.44_BUD"
+ },
+ "3124": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146507_8.0414.68_BUD"
+ },
+ "3143": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146512_8.0909.380_BUD"
+ },
+ "3163": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146505_8.0209.1014_BUD"
+ },
+ "3183": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0404.115_BUD"
+ },
+ "3184": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0809.138_BUD"
+ },
+ "3185": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0505.77_BUD"
+ },
+ "3186": {
+  "in_footprint": false,
+  "dist_m": 8.7,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146517_8.0829.6_BUD"
+ },
+ "3187": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "3188": {
+  "in_footprint": false,
+  "dist_m": 9.3,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146517_8.0407.10_BUD"
+ },
+ "3189": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146517_8.0404.33_BUD"
+ },
+ "3190": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0806.33_BUD"
+ },
+ "3203": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146517_8.0804.65_BUD"
+ },
+ "3204": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "3191": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146517_8.0819.331_BUD"
+ },
+ "3192": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0402.104_BUD"
+ },
+ "3193": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146517_8.0801.96_BUD"
+ },
+ "3194": {
+  "in_footprint": false,
+  "dist_m": 7.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146503_8.0409.41_BUD"
+ },
+ "3223": {
+  "in_footprint": false,
+  "dist_m": 11.5,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146518_8.0207.108_BUD"
+ },
+ "3243": {
+  "in_footprint": false,
+  "dist_m": 11.5,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146518_8.0207.108_BUD"
+ },
+ "3244": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146518_8.0206.79_BUD"
+ },
+ "3245": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146517_8.0814.160_BUD"
+ },
+ "3246": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146518_8.0318.93_BUD"
+ },
+ "3263": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146518_8.0318.93_BUD"
+ },
+ "3264": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146518_8.0614.108_BUD"
+ },
+ "3247": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146516_8.1025.29_BUD"
+ },
+ "3283": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146504_8.0702.269_BUD"
+ },
+ "3303": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0211.110_BUD"
+ },
+ "3323": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146510_8.0613.54_BUD"
+ },
+ "3324": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "3343": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0114.28_BUD"
+ },
+ "3363": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "3383": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146515_8.0408.104_BUD"
+ },
+ "3384": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146515_8.0405.32_BUD"
+ },
+ "3403": {
+  "in_footprint": false,
+  "dist_m": 1.2,
+  "building_floors": 2,
+  "building_type": "m",
+  "building_id": "146515_8.0405.52_BUD"
+ },
+ "3385": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146515_8.0502.8_BUD"
+ },
+ "3404": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146515_8.0501.429_BUD"
+ },
+ "3386": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146515_8.0708.70_BUD"
+ },
+ "3423": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146518_8.0205.70_BUD"
+ },
+ "3424": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146507_8.0122.62_BUD"
+ },
+ "3425": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146507_8.0603.76_BUD"
+ },
+ "3443": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146507_8.0521.140_BUD"
+ },
+ "3444": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146507_8.0406.73_BUD"
+ },
+ "3445": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0603.13_BUD"
+ },
+ "3446": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146513_8.1114.44_BUD"
+ },
+ "3463": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146513_8.0934.214_BUD"
+ },
+ "3447": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146508_8.1203.121_BUD"
+ },
+ "3448": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146508_8.1401.19_BUD"
+ },
+ "3464": {
+  "in_footprint": false,
+  "dist_m": 5.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1022.68_BUD"
+ },
+ "3449": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146506_8.0309.44_BUD"
+ },
+ "3450": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146507_8.0521.140_BUD"
+ },
+ "3451": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "i",
+  "building_id": "146506_8.0101.12_BUD"
+ },
+ "3452": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 15,
+  "building_type": "m",
+  "building_id": "146502_8.1206.54_BUD"
+ },
+ "3453": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146507_8.0521.140_BUD"
+ },
+ "3483": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146508_8.1204.29_BUD"
+ },
+ "3503": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146508_8.1204.29_BUD"
+ },
+ "3484": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0525.27_BUD"
+ },
+ "3485": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "k",
+  "building_id": "146507_8.0205.16_BUD"
+ },
+ "3486": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146514_8.1225.43_BUD"
+ },
+ "3487": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.1308.166_BUD"
+ },
+ "3488": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.1146.39_BUD"
+ },
+ "3489": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146514_8.1278.81_BUD"
+ },
+ "3490": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "i",
+  "building_id": "146517_8.0806.61_BUD"
+ },
+ "3491": {
+  "in_footprint": false,
+  "dist_m": 4.5,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146508_8.1405.101_BUD"
+ },
+ "3492": {
+  "in_footprint": false,
+  "dist_m": 2.4,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146519_8.0115.12_BUD"
+ },
+ "3493": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146519_8.0116.5_BUD"
+ },
+ "3494": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 15,
+  "building_type": "m",
+  "building_id": "146519_8.0415.99_BUD"
+ },
+ "3495": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 9,
+  "building_type": "m",
+  "building_id": "146519_8.0206.32_BUD"
+ },
+ "3496": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146506_8.0314.59_BUD"
+ },
+ "3497": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146506_8.0202.40_BUD"
+ },
+ "3498": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146506_8.0314.59_BUD"
+ },
+ "3499": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.1109.162_BUD"
+ },
+ "3500": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.0716.97_BUD"
+ },
+ "3504": {
+  "in_footprint": false,
+  "dist_m": 1.8,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146506_8.0309.40_BUD"
+ },
+ "3505": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146514_8.1331.83_BUD"
+ },
+ "3506": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146506_8.0309.44_BUD"
+ },
+ "3507": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146514_8.1136.47_BUD"
+ },
+ "3508": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146519_8.0207.12_BUD"
+ },
+ "3523": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146508_8.1507.111_BUD"
+ },
+ "3509": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 11,
+  "building_type": "m",
+  "building_id": "146507_8.0113.7_BUD"
+ },
+ "3510": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146507_8.0123.4_BUD"
+ },
+ "3511": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146519_8.0206.49_BUD"
+ },
+ "3524": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.1114.222_BUD"
+ },
+ "3512": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146505_8.0117.86_BUD"
+ },
+ "3513": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146519_8.0209.1_BUD"
+ },
+ "3525": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146508_8.1305.188_BUD"
+ },
+ "3563": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146513_8.1021.26_BUD"
+ },
+ "3543": {
+  "in_footprint": false,
+  "dist_m": 0.2,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146505_8.0121.62_BUD"
+ },
+ "3564": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146514_8.1145.66_BUD"
+ },
+ "3565": {
+  "in_footprint": false,
+  "dist_m": 10.9,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146506_8.0309.40_BUD"
+ },
+ "3566": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146506_8.0309.44_BUD"
+ },
+ "3544": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "t",
+  "building_id": "146506_8.0202.60_BUD"
+ },
+ "3567": {
+  "in_footprint": false,
+  "dist_m": null,
+  "building_floors": null,
+  "building_type": null,
+  "building_id": null
+ },
+ "3568": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146505_8.0708.1008_BUD"
+ },
+ "3569": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146505_8.0411.1104_BUD"
+ },
+ "3589": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146507_8.0202.41_BUD"
+ },
+ "3590": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146511_8.1008.166_BUD"
+ },
+ "3609": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146511_8.0815.34_BUD"
+ },
+ "3591": {
+  "in_footprint": false,
+  "dist_m": 2.6,
+  "building_floors": 2,
+  "building_type": "i",
+  "building_id": "146511_8.0807.33_BUD"
+ },
+ "3629": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "m",
+  "building_id": "146503_8.0308.2_BUD"
+ },
+ "3630": {
+  "in_footprint": false,
+  "dist_m": 0.9,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146517_8.0406.100_BUD"
+ },
+ "3631": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146510_8.0501.16_BUD"
+ },
+ "3672": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146507_8.0509.179_BUD"
+ },
+ "3711": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 6,
+  "building_type": "m",
+  "building_id": "146517_8.0503.124_BUD"
+ },
+ "3731": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "b",
+  "building_id": "146519_8.0119.128_BUD"
+ },
+ "3712": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "h",
+  "building_id": "146503_8.0305.23_BUD"
+ },
+ "3735": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "k",
+  "building_id": "146517_8.0402.2_BUD"
+ },
+ "3751": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 8,
+  "building_type": "i",
+  "building_id": "146517_8.0404.84_BUD"
+ },
+ "3771": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146517_8.0801.96_BUD"
+ },
+ "3753": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 7,
+  "building_type": "m",
+  "building_id": "146506_8.0207.54_BUD"
+ },
+ "3791": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146517_8.0712.59_BUD"
+ },
+ "3811": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146517_8.0501.481_BUD"
+ },
+ "3831": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146516_8.1015.34_BUD"
+ },
+ "3851": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.0670.112_BUD"
+ },
+ "3832": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.0670.112_BUD"
+ },
+ "3833": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "b",
+  "building_id": "146516_8.0551.153_BUD"
+ },
+ "3834": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "h",
+  "building_id": "146516_8.0622.15_BUD"
+ },
+ "3835": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.0613.72_BUD"
+ },
+ "3836": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146516_8.1015.60_BUD"
+ },
+ "3837": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.0551.149_BUD"
+ },
+ "3838": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146516_8.1015.65_BUD"
+ },
+ "3852": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146516_8.0538.200_BUD"
+ },
+ "3853": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146516_8.0538.57_BUD"
+ },
+ "3854": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146516_8.1015.34_BUD"
+ },
+ "3871": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146516_8.0685.64_BUD"
+ },
+ "3872": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146510_8.0311.124_BUD"
+ },
+ "3873": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "m",
+  "building_id": "146510_8.0311.124_BUD"
+ },
+ "3856": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146516_8.1037.52_BUD"
+ },
+ "3891": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146503_8.0307.31_BUD"
+ },
+ "3892": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146503_8.0306.76_BUD"
+ },
+ "3893": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 2,
+  "building_type": "k",
+  "building_id": "146503_8.0632.61_BUD"
+ },
+ "3911": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146503_8.0119.39_BUD"
+ },
+ "3912": {
+  "in_footprint": false,
+  "dist_m": 10.7,
+  "building_floors": 3,
+  "building_type": "k",
+  "building_id": "146503_8.1625.226_BUD"
+ },
+ "3931": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "k",
+  "building_id": "146508_8.1811.151_BUD"
+ },
+ "3971": {
+  "in_footprint": false,
+  "dist_m": 8.9,
+  "building_floors": 5,
+  "building_type": "m",
+  "building_id": "146502_8.1111.124_BUD"
+ },
+ "3991": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 4,
+  "building_type": "i",
+  "building_id": "146510_8.0211.110_BUD"
+ },
+ "4011": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 5,
+  "building_type": "b",
+  "building_id": "146510_8.0310.78_BUD"
+ },
+ "4031": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 3,
+  "building_type": "b",
+  "building_id": "146516_8.1037.39_BUD"
+ },
+ "4051": {
+  "in_footprint": true,
+  "dist_m": 0.0,
+  "building_floors": 1,
+  "building_type": "h",
+  "building_id": "146516_8.0622.13_BUD"
+ }
+}

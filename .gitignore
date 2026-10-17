@@ -1,0 +1,12 @@
+# Pre-event raw data snapshot (1.8 GB, files >100 MB) — keep out of git.
+# data/raw and data/out from the plan stay committable.
+data/aed/
+data/geo/
+data/population/
+data/bo/
+data/_fetch_log.json
+
+# secrets and caches
+.env
+__pycache__/
+*.pyc
