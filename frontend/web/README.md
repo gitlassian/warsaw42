@@ -20,7 +20,7 @@ npm test         # node --test for pure domain logic (*.test.ts)
 | Service | Source |
 | --- | --- |
 | `features/aeds/services/aedApi.ts` | table `aeds` (active rows, mapped by `lib/fromRow.ts`, photos from Storage) and `app_data` key `status` via PostgREST |
-| `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Google walking routes) |
+| `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Mapbox walking routes) |
 | `features/report/services/reportApi.ts` | insert into `reports` via PostgREST (simulated without Supabase settings) |
 
 The Edge Functions answer CORS only for origins listed in their `ALLOWED_ORIGINS` secret

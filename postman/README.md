@@ -22,7 +22,7 @@
 
 - маршруты (`aeds-find`, `routes-etas`, `routes-walking`) сохраняют прежний конверт: `{data, meta}` с `request_id` и `generated_at`, ошибка `{error: {code, message, details}, request_id}`;
 - новые эндпоинты: `{data}` и `{error: {code, message}}`, как в последнем разделе ENDPOINTS.md;
-- в любой ошибке нет stack trace и ключей Google;
+- в любой ошибке нет stack trace и токенов Mapbox;
 - ответы Supabase Auth (`/auth/v1/...`) общими проверками не проверяются: это не наш формат.
 
 ## Что изменилось после упрощения API
@@ -50,7 +50,7 @@ supabase functions serve --env-file supabase/functions/.env
 ```
 
 1. Из вывода `supabase status` скопируй `anon key` в переменную окружения `anon_key` в Postman.
-2. В `supabase/functions/.env` нужны `DEFIWAWA_USE_FIXTURES=1` и **настоящий** `GOOGLE_ROUTES_API_KEY`: фейкового провайдера маршрутов в функциях нет. Тестовый ключ попроси у Вити. Production-ключи не нужны.
+2. В `supabase/functions/.env` нужны `DEFIWAWA_USE_FIXTURES=1` и **настоящий** `MAPBOX_ACCESS_TOKEN`: фейкового провайдера маршрутов в функциях нет. Тестовый токен попроси у Вити. Production-ключи не нужны.
 3. Запусти папку LIVE через Collection Runner.
 
 LIVE работает только с `DEFIWAWA_USE_FIXTURES=1`. Без этого флага функции читают базу через `_shared/supabase_repository.ts`: id вида `fx-*` там не находятся (маршрут к ним даст 404), а проверка границы идёт через `is_inside_warsaw()`. Если база недоступна, функции отвечают `503 data_unavailable` (`_shared/http.ts`). С фикстурами этот ответ не воспроизвести, отдельного запроса для него нет.

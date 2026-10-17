@@ -1,7 +1,7 @@
 // Production wiring for the Edge Functions (Deno runtime).
 
-import { createGoogleRoutesProvider } from "./google_routes.ts";
 import { createFixtureEvaluator, createFixtureRepository, FIXTURE_AEDS } from "./fixtures.ts";
+import { createMapboxRoutesProvider } from "./mapbox_routes.ts";
 import { createSupabaseEvaluator, createSupabaseRepository } from "./supabase_repository.ts";
 import type { Deps } from "./ports.ts";
 
@@ -17,7 +17,7 @@ export const DEFAULT_CONFIG: Deps["config"] = {
 };
 
 export function buildDeps(): Deps {
-  const apiKey = requireEnv("GOOGLE_ROUTES_API_KEY");
+  const accessToken = requireEnv("MAPBOX_ACCESS_TOKEN");
 
   // DEFIWAWA_USE_FIXTURES=1 serves the fake AEDs from fixtures.ts instead of the database.
   const useFixtures = Deno.env.get("DEFIWAWA_USE_FIXTURES") === "1";
@@ -30,7 +30,7 @@ export function buildDeps(): Deps {
   return {
     repo: supabase ? createSupabaseRepository(supabase) : createFixtureRepository(FIXTURE_AEDS),
     availability: supabase ? createSupabaseEvaluator(supabase) : createFixtureEvaluator(FIXTURE_AEDS),
-    routes: createGoogleRoutesProvider({ apiKey }),
+    routes: createMapboxRoutesProvider({ accessToken }),
     now: () => new Date(),
     config: {
       ...DEFAULT_CONFIG,

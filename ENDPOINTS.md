@@ -55,7 +55,7 @@ hours stay unknown. Opening hours do not prove that a device works.
 
 Automatic selection checks public access, device status, and opening hours at
 arrival with a two-minute access buffer. Unknown-hours AEDs remain separate
-alternatives. Rank by walking time among checked candidates. Google keys stay on
+alternatives. Rank by walking time among checked candidates. Mapbox tokens stay on
 the server; route geometry is a GeoJSON LineString.
 
 Keep the existing routing response shape: `{ "data": ..., "meta": ... }`.
@@ -97,7 +97,7 @@ Set `manually_edited=true` when correcting an AED so imports can skip it.
 Run imports, hours parsing, coverage generation and offline builds as scripts.
 No job-status, override-history, dataset-version, or per-region APIs are required.
 Keep existing data when an import fails; skip manually edited rows. Upload offline
-files to Storage and store the manifest in `app_data`. Do not store Google routes
+files to Storage and store the manifest in `app_data`. Do not store routes
 in offline packages. Only publish sanitized data in `app_data`.
 
 Use `{ "data": ... }` for new successful responses and
