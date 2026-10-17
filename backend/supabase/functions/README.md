@@ -1,5 +1,8 @@
 # Edge Functions — routing (Вітя)
 
+The simplified API is in [ENDPOINTS.md](../../../ENDPOINTS.md); database setup and
+migration notes are in [../README.md](../README.md). Existing routing responses remain compatible.
+
 | Function | Endpoint | Handler |
 | --- | --- | --- |
 | `routes-etas` | `POST /api/v1/routes/etas` | `_shared/handlers/etas.ts` |
