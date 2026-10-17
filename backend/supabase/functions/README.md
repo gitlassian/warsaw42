@@ -11,7 +11,7 @@ migration notes are in [../README.md](../README.md). Existing routing responses 
 
 Handlers depend only on the interfaces in `_shared/ports.ts`, wired in `_shared/deps.ts`:
 
-- Google Routes: `_shared/google_routes.ts`
+- Mapbox walking routes: `_shared/mapbox_routes.ts`
 - AED data and availability: `_shared/supabase_repository.ts`, which calls the database functions
   `aeds_nearby`, `aed_availability`, `is_inside_warsaw`, `current_dataset_version` and the `aed_public`
   view through PostgREST with the anon key
@@ -32,7 +32,7 @@ until AED data is loaded.
 
 ```sh
 cat > supabase/functions/.env <<EOF
-GOOGLE_ROUTES_API_KEY=...
+MAPBOX_ACCESS_TOKEN=...
 ALLOWED_ORIGINS=http://localhost:3000
 EOF
 supabase start
@@ -41,7 +41,7 @@ supabase functions serve --env-file supabase/functions/.env
 
 Environment:
 
-- `GOOGLE_ROUTES_API_KEY`: server-side Routes API key
+- `MAPBOX_ACCESS_TOKEN`: server-side Mapbox token for the Directions and Matrix APIs (no URL restrictions)
 - `ALLOWED_ORIGINS`: comma-separated web origins for CORS
 - `SUPABASE_URL`, `SUPABASE_ANON_KEY`: provided by the Edge Functions runtime
 - `DEFIWAWA_USE_FIXTURES=1`: optional; serve the fake AEDs instead of the database

@@ -40,7 +40,7 @@ test("404 for an unknown AED", async () => {
   assert.equal(res.body.error.code, "aed_not_found");
 });
 
-test("422 route_not_found when Google has no walking route", async () => {
+test("422 route_not_found when Mapbox has no walking route", async () => {
   const deps = makeDeps({ routes: fakeRoutes({ route: () => null }) });
   const res = await call(createWalkingHandler(deps), post({ origin: ORIGIN, aed_id: "fx-sample" }));
   assert.equal(res.status, 422);
