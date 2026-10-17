@@ -1,0 +1,41 @@
+/* Source of truth: /DESIGN.md. Keep in sync with mobile packages/design_system. */
+:root {
+  --color-accent: #237a57;
+  --color-accent-hover: #1d6b4b;
+  --color-accent-pressed: #185a40;
+  --color-accent-soft: #eaf5ee;
+  --color-background: #f5f8f6;
+  --color-surface: #ffffff;
+  --color-text: #17231d;
+  --color-text-secondary: #506158;
+  --color-text-muted: #5d6e63;
+  --color-border: #d8e2dc;
+  --color-border-control: #75857b;
+  --color-focus: #125a3c;
+  --color-warning: #8a570a;
+  --color-warning-soft: #fff5df;
+  --color-danger: #b23b36;
+  --color-danger-soft: #fcedec;
+  --color-unknown: #56645b;
+  --color-unknown-soft: #eef2ef;
+  --color-location: #2869b1;
+  --color-disabled: #edf1ee;
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-48: 48px;
+
+  --radius-control: 12px;
+  --radius-sheet: 24px;
+  --radius-pill: 999px;
+
+  --shadow-panel: 0 4px 24px rgb(23 35 29 / 12%);
+  --shadow-floating: 0 2px 8px rgb(23 35 29 / 10%);
+
+  /* shortcut: Noto Sans is not bundled yet, falls back to system fonts; add local font files with the first real UI. */
+  --font-family: 'Noto Sans', system-ui, sans-serif;
+}

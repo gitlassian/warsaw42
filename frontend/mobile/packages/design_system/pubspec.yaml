@@ -1,0 +1,12 @@
+name: design_system
+description: DefiWawa design tokens, theme and shared Defi* widgets.
+publish_to: 'none'
+version: 0.1.0
+resolution: workspace
+
+environment:
+  sdk: ^3.12.2
+
+dependencies:
+  flutter:
+    sdk: flutter
