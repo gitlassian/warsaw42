@@ -1821,7 +1821,7 @@
               }
             ],
             "url": "{{api_url}}/reports",
-            "description": "ENDPOINTS.md: «404 for missing records». В базе это проверяет политика submit_own_report (активный AED).",
+            "description": "ENDPOINTS.md: «404 for missing records». Эндпоинт должен проверить AED сам: политика submit_own_report в базе (активный AED) при прямой вставке через PostgREST даёт ошибку прав (403), а не 404.",
             "auth": {
               "type": "bearer",
               "bearer": [
