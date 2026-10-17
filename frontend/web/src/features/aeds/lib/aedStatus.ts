@@ -6,9 +6,9 @@ import { evaluateHours } from './availability'
 export type AedStatus = {
   tone: Tone
   icon: IconName
-  /** Short access status (DESIGN.md §3). */
+  /** Short access status (DESIGN.md §3), e.g. "Dostępny do 18:00". */
   label: string
-  /** Next known change in hours, e.g. "Dostęp do 18:00". */
+  /** Next known change when the label does not say it, e.g. "Otwarcie o 08:00". */
   detail: string | null
   /** Open according to known hours and public: the only status shown as available. */
   available: boolean
@@ -26,7 +26,7 @@ export function aedStatus(aed: Aed, at: Date): AedStatus {
   switch (hours.state) {
     case 'open':
       return hours.until
-        ? { tone: 'accent', icon: 'check_circle', label: 'Dostępny według godzin', detail: `Dostęp do ${hours.until}`, available: true }
+        ? { tone: 'accent', icon: 'check_circle', label: `Dostępny do ${hours.until}`, detail: null, available: true }
         : { tone: 'accent', icon: 'check_circle', label: 'Dostęp całodobowy', detail: null, available: true }
     case 'closed':
       return {

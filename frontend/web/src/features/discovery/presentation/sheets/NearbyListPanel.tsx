@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { RoutePaths } from '@/app/routePaths'
 import { Button } from '@/design-system/components/Button'
 import { Notice } from '@/design-system/components/Notice'
 import { PanelHeader } from '@/design-system/components/PanelHeader'
@@ -8,7 +7,6 @@ import { Stack } from '@/design-system/components/Stack'
 import { aedStatus } from '@/features/aeds/lib/aedStatus'
 import { aedsStore } from '@/features/aeds/store'
 import { WARSAW_CENTER, distanceMeters } from '@/shared/geo/geo'
-import { useSafeBack } from '@/shared/hooks/useSafeBack'
 import { useStore } from '@/shared/lib/store'
 import { discoveryStore, locate, requestEtas, startPicking } from '../../store'
 import { AedList } from '../components/AedList'
@@ -18,7 +16,6 @@ const PAGE_SIZE = 20
 
 /** Complete list access to every AED, without operating the map (DESIGN.md §7). */
 export function NearbyListPanel() {
-  const back = useSafeBack(RoutePaths.map)
   const aeds = useStore(aedsStore, (s) => s.aeds)
   const aedsStatus = useStore(aedsStore, (s) => s.status)
   const now = useStore(aedsStore, (s) => s.now)
@@ -47,7 +44,7 @@ export function NearbyListPanel() {
 
   return (
     <Stack gap={24}>
-      <PanelHeader title="Defibrylatory w pobliżu" onBack={back} />
+      <PanelHeader title="Defibrylatory w pobliżu" />
 
       {!origin && (
         <Notice

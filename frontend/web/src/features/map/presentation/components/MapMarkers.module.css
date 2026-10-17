@@ -6,16 +6,22 @@
   text-decoration: none;
 }
 
+/* Keeps a 48 px hit area around the compact pin (DESIGN.md §4). */
+.aed::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+}
+
 .pin {
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  height: 40px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
   margin-bottom: 8px;
-  padding: 0 var(--space-12) 0 var(--space-8);
   border: 2px solid var(--tone-fg);
-  border-radius: var(--radius-control);
+  border-radius: 10px;
   background: var(--color-surface);
   box-shadow: var(--shadow-floating);
   color: var(--color-text);
@@ -36,20 +42,14 @@
   transform: translateX(-50%) rotate(45deg);
 }
 
-.label {
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
-}
-
 .status {
   position: absolute;
-  top: -10px;
-  right: -10px;
+  top: -8px;
+  right: -8px;
   display: grid;
   place-items: center;
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
   border: 2px solid var(--tone-fg);
   border-radius: 50%;
   background: var(--color-surface);
@@ -66,7 +66,7 @@
 
 .pill {
   position: absolute;
-  top: 8px;
+  top: 4px;
   left: calc(100% + 8px);
   display: flex;
   align-items: center;
@@ -89,22 +89,6 @@
   background: var(--color-unknown-soft);
 }
 
-.cluster {
-  display: grid;
-  place-items: center;
-  min-width: 48px;
-  height: 48px;
-  padding: 0 var(--space-8);
-  border: 2px solid var(--color-border-control);
-  border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-floating);
-  font-size: 16px;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-}
-
 .gps {
   display: block;
   width: 20px;
@@ -119,4 +103,43 @@
   display: flex;
   color: var(--color-text);
   filter: drop-shadow(0 2px 4px rgb(23 35 29 / 25%));
+}
+
+/* Cluster of nearby AEDs: count in a pill; tap zooms in. */
+.cluster {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 var(--space-8);
+  border: 2px solid var(--color-border-control);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-text);
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+/* Keeps a 48 px hit area (DESIGN.md §4). */
+.cluster::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+
+/* At least one AED in the cluster is available now. */
+.cluster[data-available] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.cluster:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
 }

@@ -1,40 +1,46 @@
-import { useCallback, useEffect, useState, type CSSProperties } from 'react'
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from 'react'
 import { Outlet, useLocation, useMatches, useNavigate } from 'react-router'
 import type { RouteHandle } from '@/app/router'
 import { RoutePaths } from '@/app/routePaths'
 import { Button, ButtonLink } from '@/design-system/components/Button'
 import { Notice } from '@/design-system/components/Notice'
-import { Sheet } from '@/design-system/components/Sheet'
+import { Sheet, WIDE_LAYOUT_QUERY } from '@/design-system/components/Sheet'
 import { nextWarsawWeekday } from '@/features/aeds/lib/viewTime'
 import { aedsStore, loadAeds, resetViewTime, setViewTime } from '@/features/aeds/store'
+import { FindButton } from '@/features/discovery/presentation/components/FindButton'
 import { OriginIssueNotice } from '@/features/discovery/presentation/components/OriginIssueNotice'
 import { PickOriginBanner } from '@/features/discovery/presentation/components/PickOriginBanner'
-import { discoveryStore, locate, startPicking, stopPicking } from '@/features/discovery/store'
+import { clearRoute, discoveryStore, locate, startPicking, stopPicking } from '@/features/discovery/store'
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery'
 import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
 import { mapFiltersStore, toggleFilter } from '../../store'
-import { AppHeader } from '../components/AppHeader'
+import { AppHeader, AppMenu } from '../components/AppHeader'
 import { MapControls } from '../components/MapControls'
 import { MapView } from '../components/MapView'
 import { TimeBar } from '../components/TimeBar'
 import styles from './MapPage.module.css'
 
-/** App shell: the map stays mounted; the active route renders into the sheet / side panel. */
+/** App shell: the map stays mounted; the active route renders into the sheet / side panel; the find button is pinned. */
 export function MapPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const handle = useMatches().at(-1)?.handle as RouteHandle | undefined
   const viewportHeight = useViewportHeight()
-  const [cover, setCover] = useState(0)
   const [mapFailed, setMapFailed] = useState(false)
   const [timeOpen, setTimeOpen] = useState(false)
   const onMapError = useCallback(() => setMapFailed(true), [])
+  // Map bottom covered by the sheet or the pinned find bar (narrow layout only); an open sheet covers the bar.
+  const [cover, setCover] = useState({ sheet: 0, dock: 0 })
+  const covers = useRef(cover)
   // The sheet reports its height before the map reacts to the new route, so camera moves use the final inset.
-  const onCoverChange = useCallback((px: number) => {
-    mapCamera.setBottomInset(px)
-    setCover(px)
+  const updateCover = useCallback((next: Partial<typeof cover>) => {
+    covers.current = { ...covers.current, ...next }
+    mapCamera.setBottomInset(Math.max(covers.current.sheet, covers.current.dock))
+    setCover(covers.current)
   }, [])
+  const onCoverChange = useCallback((sheet: number) => updateCover({ sheet }), [updateCover])
   const picking = useStore(discoveryStore, (s) => s.picking)
   const issue = useStore(discoveryStore, (s) => s.issue)
   const locating = useStore(discoveryStore, (s) => s.locating)
@@ -44,6 +50,18 @@ export function MapPage() {
   const unavailable = useStore(mapFiltersStore, (s) => s.unavailable)
   const unknown = useStore(mapFiltersStore, (s) => s.unknown)
   const coverageShown = location.pathname === RoutePaths.coverage
+  const floating = !!handle?.floating
+  const wide = useMediaQuery(WIDE_LAYOUT_QUERY)
+  const dockRef = useRef<HTMLDivElement>(null)
+  const mapCover = Math.max(cover.sheet, cover.dock)
+
+  useEffect(() => {
+    const dock = dockRef.current
+    if (!dock) return
+    const observer = new ResizeObserver(() => updateCover({ dock: wide ? 0 : dock.offsetHeight }))
+    observer.observe(dock)
+    return () => observer.disconnect()
+  }, [wide, updateCover])
 
   useEffect(() => {
     loadAeds()
@@ -55,21 +73,50 @@ export function MapPage() {
     setTimeOpen(!timeOpen)
   }
 
+  const onClose = () => {
+    clearRoute()
+    navigate(RoutePaths.map)
+  }
+
   const onLocate = async () => {
     const origin = await locate()
     if (origin) mapCamera.focus(origin)
   }
 
   return (
-    <div className={styles.layout} style={{ '--sheet-cover': `${cover}px` } as CSSProperties}>
+    <div
+      className={styles.layout}
+      data-floating={floating || undefined}
+      style={{ '--sheet-cover': `${mapCover}px` } as CSSProperties}
+    >
       <div className={styles.header}>
-        <AppHeader />
+        <AppHeader floating={floating} withMenu={!wide} onClose={wide && handle?.closable ? onClose : undefined} />
       </div>
 
-      <div className={styles.panel}>
-        <Sheet key={location.pathname} label="Panel" initialSnap={handle?.sheet} onCoverChange={onCoverChange}>
-          <Outlet />
-        </Sheet>
+      {!floating && (
+        <div className={styles.panel}>
+          <Sheet
+            key={location.pathname}
+            label="Panel"
+            initialSnap={handle?.sheet}
+            onCoverChange={onCoverChange}
+            onClose={!wide && handle?.closable ? onClose : undefined}
+          >
+            <Outlet />
+          </Sheet>
+        </div>
+      )}
+
+      {/* Under an open sheet on narrow screens: hidden from focus and screen readers. */}
+      <div ref={dockRef} className={styles.dock} inert={!floating && !wide}>
+        {floating && (
+          <aside className={styles.status} aria-label="Panel">
+            <Outlet />
+          </aside>
+        )}
+        <div className={styles.find}>
+          <FindButton />
+        </div>
       </div>
 
       <div className={styles.mapArea}>
@@ -94,8 +141,9 @@ export function MapPage() {
             />
           )}
         </div>
-        {cover < viewportHeight * 0.7 && (
+        {mapCover < viewportHeight * 0.7 && (
           <div className={styles.controls}>
+            {wide && <AppMenu />}
             <MapControls
               locating={locating}
               coverageShown={coverageShown}
@@ -108,19 +156,15 @@ export function MapPage() {
             />
           </div>
         )}
-        {cover < viewportHeight * 0.7 && (
-          <>
-            {timeOpen && (
-              <div className={styles.timeBar}>
-                <TimeBar
-                  at={now}
-                  live={live}
-                  onChange={(day, minutes) => setViewTime(nextWarsawWeekday(day, minutes, new Date()))}
-                  onNow={resetViewTime}
-                />
-              </div>
-            )}
-          </>
+        {timeOpen && mapCover < viewportHeight * 0.7 && (
+          <div className={styles.timeBar}>
+            <TimeBar
+              at={now}
+              live={live}
+              onChange={(day, minutes) => setViewTime(nextWarsawWeekday(day, minutes, new Date()))}
+              onNow={resetViewTime}
+            />
+          </div>
         )}
       </div>
     </div>

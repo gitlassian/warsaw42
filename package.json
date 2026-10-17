@@ -1,0 +1,10 @@
+{
+  "name": "warsaw42",
+  "private": true,
+  "scripts": {
+    "dev": "npm run --prefix frontend/web dev",
+    "build": "npm run --prefix frontend/web build",
+    "lint": "npm run --prefix frontend/web lint",
+    "test": "npm run --prefix frontend/web test"
+  }
+}

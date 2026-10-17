@@ -19,7 +19,10 @@ import { AedMarker, ClusterMarker, OriginMarker } from './MapMarkers'
 import styles from './MapView.module.css'
 
 /** A rendered point of the clustered AED source: one AED or a cluster. */
-type VisibleFeature = { key: string; lngLat: LngLat } & ({ aedId: string } | { clusterId: number; count: number })
+type VisibleFeature = { key: string; lngLat: LngLat } & (
+  | { aedId: string }
+  | { clusterId: number; count: number; available: number }
+)
 
 const sameKeys = (a: VisibleFeature[], b: VisibleFeature[]) =>
   a.length === b.length && a.every((f, i) => f.key === b[i].key)
@@ -28,7 +31,7 @@ type MapViewProps = {
   onLoadError: () => void
 }
 
-/** Mapbox Standard (light, 3D) locked to Warsaw, with AED markers, route, origin and coverage. */
+/** Mapbox Standard (light, flat, north-up) locked to Warsaw, with AED markers, route, origin and coverage. */
 export function MapView({ onLoadError }: MapViewProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [map, setMap] = useState<MapboxMap | null>(null)
@@ -61,18 +64,26 @@ export function MapView({ onLoadError }: MapViewProps) {
         container: containerRef.current!,
         accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
         style: 'mapbox://styles/mapbox/standard',
-        config: { basemap: { lightPreset: 'day', show3dObjects: true } },
+        config: { basemap: { lightPreset: 'day', show3dObjects: false } },
         center: [WARSAW_CENTER.lng, WARSAW_CENTER.lat],
         zoom: 11,
-        pitch: 45,
+        // Flat map: no tilt, no rotation.
+        maxPitch: 0,
+        dragRotate: false,
+        touchPitch: false,
         minZoom: 10,
         maxBounds: WARSAW_MAX_BOUNDS,
         language: 'pl',
       })
+      instance.touchZoomRotate.disableRotation()
+      instance.keyboard.disableRotation()
     } catch {
       onLoadError()
       return
     }
+    // Mapbox tracks only window resizes; the side panel appears and disappears with the route.
+    const resizeObserver = new ResizeObserver(() => instance.resize())
+    resizeObserver.observe(containerRef.current!)
     instance.on('error', () => {
       if (!loaded) onLoadError()
     })
@@ -83,6 +94,7 @@ export function MapView({ onLoadError }: MapViewProps) {
       setMap(instance)
     })
     return () => {
+      resizeObserver.disconnect()
       mapCamera.attach(null)
       instance.remove()
     }
@@ -97,7 +109,7 @@ export function MapView({ onLoadError }: MapViewProps) {
         .filter((a) => passesFilters(a, now, { available: showAvailable, unavailable: showUnavailable, unknown: showUnknown }))
         .map((a) => ({
           type: 'Feature',
-          properties: { id: a.id },
+          properties: { id: a.id, available: aedStatus(a, now).available ? 1 : 0 },
           geometry: { type: 'Point', coordinates: [a.location.lng, a.location.lat] },
         })),
     })
@@ -113,7 +125,7 @@ export function MapView({ onLoadError }: MapViewProps) {
         const p = f.properties ?? {}
         const [lng, lat] = (f.geometry as Point).coordinates
         const feature: VisibleFeature = p.cluster
-          ? { key: `c${p.cluster_id}`, lngLat: { lng, lat }, clusterId: p.cluster_id, count: p.point_count }
+          ? { key: `c${p.cluster_id}`, lngLat: { lng, lat }, clusterId: p.cluster_id, count: p.point_count, available: p.available }
           : { key: `a${p.id}`, lngLat: { lng, lat }, aedId: String(p.id) }
         seen.set(feature.key, feature)
       }
@@ -205,7 +217,7 @@ export function MapView({ onLoadError }: MapViewProps) {
         visible.map((f) =>
           'clusterId' in f ? (
             <MapMarker key={f.key} map={map} lngLat={f.lngLat} anchor="center">
-              <ClusterMarker count={f.count} onExpand={() => expandCluster(f.clusterId, f.lngLat)} />
+              <ClusterMarker count={f.count} available={f.available} onExpand={() => expandCluster(f.clusterId, f.lngLat)} />
             </MapMarker>
           ) : f.aedId === selectedId ? null : (
             renderAed(f.aedId, f.lngLat, f.key)

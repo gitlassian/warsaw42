@@ -3,7 +3,7 @@
 React 19 + TypeScript + Vite SPA. Product rules: `/PLAN.md`, `/DESIGN.md`; API contract: `/ENDPOINTS.md`; architecture rules mirror `frontend/AGENTS.md`.
 
 ```sh
-cp .env.example .env.local   # set VITE_MAPBOX_TOKEN (public pk.* token)
+cp .env.example .env.local   # set VITE_MAPBOX_TOKEN, VITE_SUPABASE_URL, VITE_SUPABASE_PUBLISHABLE_KEY
 npm install
 npm run dev      # local dev server
 npm run build    # type-check + production build
@@ -11,18 +11,26 @@ npm run lint     # oxlint
 npm test         # node --test for pure domain logic (*.test.ts)
 ```
 
-## Mock data
+## Data
 
-All services are mocks with the shapes from `ENDPOINTS.md`, marked `shortcut:` in code:
+`shared/lib/supabase.ts` calls the Supabase project with the publishable key (`fetch`, no SDK). Without
+`VITE_SUPABASE_URL`/`VITE_SUPABASE_PUBLISHABLE_KEY` the AED list falls back to the 17.10.2026 snapshot in
+`public/mock/aeds.json`; finding and routing always need the Edge Functions.
 
-| Service | Mocks | Data |
+| Service | Source |
+| --- | --- |
+| `features/aeds/services/aedApi.ts` | table `aeds` (active rows, mapped by `lib/fromRow.ts`, photos from Storage) and `app_data` key `status` via PostgREST |
+| `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Google walking routes) |
+| `features/report/services/reportApi.ts` | insert into `reports` via PostgREST (simulated without Supabase settings) |
+
+The Edge Functions answer CORS only for origins listed in their `ALLOWED_ORIGINS` secret
+(`supabase secrets set ALLOWED_ORIGINS=... --project-ref <ref>`); add every dev and deployed web origin.
+
+Still mocks, marked `shortcut:` in code (callers and stores stay the same when they are replaced):
+
+| Service | Mocks | Why |
 | --- | --- | --- |
-| `features/aeds/services/aedApi.ts` | `GET /aeds`, `/data/status` | `public/mock/aeds.json` — 710 AEDs from the 17.10.2026 Warsaw snapshot (`backend/data/out/aed.json`) |
-| `features/discovery/services/routingApi.ts` | `POST /aeds/find`, `/routes/etas`, `/routes/walking` | straight line × 1.3 at 1.3 m/s, L-shaped route geometry |
-| `features/coverage/services/coverageApi.ts` | `GET /coverage` | 250 m grid inside the city boundary, computed in the browser |
-| `features/report/services/reportApi.ts` | OTP request/resend/verify, `POST /reports` | SMS code is always `123456` |
-
-Swapping a mock for the real API means replacing the function bodies; callers and stores stay the same.
+| `features/coverage/services/coverageApi.ts` | `GET /coverage` | `app_data` has no `coverage` document yet; 250 m grid over the real AEDs, computed in the browser |
 
 ## Structure
 
@@ -38,14 +46,14 @@ src/
                                 # Notice, TextField, ChoiceGroup, Disclosure, PanelHeader, Sheet, Spinner
   shared/
     geo/                        # Warsaw boundary (OSM), bounds, distance, isInsideWarsaw
-    hooks/                      # useMediaQuery, useViewportHeight, useSafeBack
+    hooks/                      # useMediaQuery, useViewportHeight
     lib/                        # createStore/useStore, Polish formatters, ApiError, mockLatency
   features/
     aeds/                       # domain: Aed model, hours evaluator, status labels, data store, AED widgets
     discovery/                  # origin (GPS / picked point), find, ETAs, routes; Start/Details/List panels
     map/                        # MapPage shell, Mapbox view, HTML markers, header/menu, camera controller
     coverage/                   # "Zasięg AED" layer: scenarios, threshold, legend, area details
-    report/                     # "Zgłoś problem": draft → Kod SMS → confirmation
+    report/                     # "Zgłoś problem": draft → confirmation
     offline/                    # web explainer for the mobile offline maps
     dataInfo/                   # data source, freshness, status legend
 ```

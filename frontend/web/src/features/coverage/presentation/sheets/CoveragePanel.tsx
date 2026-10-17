@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { RoutePaths, buildPath } from '@/app/routePaths'
+import { buildPath } from '@/app/routePaths'
 import { Button, ButtonLink } from '@/design-system/components/Button'
 import { ChoiceGroup } from '@/design-system/components/ChoiceGroup'
 import { Notice } from '@/design-system/components/Notice'
@@ -9,7 +9,6 @@ import { Stack } from '@/design-system/components/Stack'
 import { Text } from '@/design-system/components/Text'
 import { TextField } from '@/design-system/components/TextField'
 import { aedsStore } from '@/features/aeds/store'
-import { useSafeBack } from '@/shared/hooks/useSafeBack'
 import { formatDateTime, formatDistance } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
 import { COVERAGE_SCENARIOS, COVERAGE_THRESHOLDS, type CoverageScenario } from '../../models/coverage'
@@ -23,7 +22,6 @@ const toInputValue = (date: Date) => new Date(date.getTime() - date.getTimezoneO
 
 /** "Zasięg AED" layer mode (DESIGN.md §11). */
 export function CoveragePanel() {
-  const back = useSafeBack(RoutePaths.map)
   const scenario = useStore(coverageStore, (s) => s.scenario)
   const thresholdM = useStore(coverageStore, (s) => s.thresholdM)
   const at = useStore(coverageStore, (s) => s.at)
@@ -40,7 +38,7 @@ export function CoveragePanel() {
   return (
     <Stack gap={24}>
       <Stack gap={8}>
-        <PanelHeader title="Zasięg AED" onBack={back} />
+        <PanelHeader title="Zasięg AED" />
         <Text tone="secondary">Luki w dostępnych danych. Próg: {formatDistance(thresholdM)}.</Text>
       </Stack>
 

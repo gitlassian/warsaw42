@@ -38,8 +38,8 @@ export type FindResult = {
   selected: FindCandidate | null
   route: WalkingRoute | null
   alternatives: FindCandidate[]
-  /** Unknown hours or restricted access; never treated as eligible. */
-  unknownAccessAlternatives: FindCandidate[]
+  /** Unknown hours or restricted access; never treated as eligible and carry no walking time. */
+  unknownAccessAlternatives: Aed[]
   evaluatedCount: number
   searchedRadiusM: number
 }
