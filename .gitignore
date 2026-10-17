@@ -10,5 +10,7 @@ data/_fetch_log.json
 .env
 __pycache__/
 *.pyc
+backend/supabase/functions/.env
+node_modules/
 
 endpoints_example.md
