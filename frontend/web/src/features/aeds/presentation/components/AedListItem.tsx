@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
-import { Badge } from '@/design-system/components/Badge'
+import { StatusText } from '@/design-system/components/StatusText'
 import type { AedStatus } from '../../lib/aedStatus'
 import type { Aed } from '../../models/aed'
 import styles from './AedListItem.module.css'
@@ -21,9 +21,7 @@ export function AedListItem({ aed, status, to, travel, selected }: AedListItemPr
         {travel}
         <span className={styles.name}>{aed.venueName}</span>
         <span className={styles.address}>{aed.address}</span>
-        <Badge tone={status.tone} icon={status.icon}>
-          {status.label}
-        </Badge>
+        <StatusText tone={status.tone}>{status.label}</StatusText>
       </Link>
     </li>
   )

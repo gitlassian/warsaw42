@@ -187,7 +187,7 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 
 - The map fills the available screen. Place a compact DefiWawa name and access to secondary features at the top.
 - Use one bottom sheet for the search start, result, list, or selected AED details. Do not stack sheets on top of one another.
-- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button in the top-right corner that clears the selection and its route.
+- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button that clears the selection and its route: in the sheet's top-right corner on narrow screens, in the header row next to the logo from 840.
 - The result sheet shows travel time, address, access, and entrance instructions. Expand additional details below.
 - Provide compact, medium, and expanded sheet states. At the default text scale, medium occupies about 70% of the available height; content and text scale determine its actual height.
 - Support a button and keyboard interaction as well as dragging to expand the sheet. Accessible button names: `Pokaż szczegóły` / `Zwiń szczegóły`.
@@ -242,7 +242,7 @@ Content order:
 
 1. Prominent walking time, with distance alongside in regular text. Offline, emphasize straight-line distance instead.
 2. Venue name and full address.
-3. Short access status and the next known change in hours.
+3. Short access status and the next known change in hours, as colored text without a chip (e.g. `Dostępny do 18:00` in `color.accent`).
 4. `Wejście`: actual entrance instructions, spanning multiple lines when needed.
 5. Route action and access to alternatives.
 6. Expandable hours, device information, source, and dates.

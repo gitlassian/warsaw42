@@ -79,7 +79,7 @@ export function MapPage() {
       style={{ '--sheet-cover': `${mapCover}px` } as CSSProperties}
     >
       <div className={styles.header}>
-        <AppHeader floating={floating} withMenu={!wide} />
+        <AppHeader floating={floating} withMenu={!wide} onClose={wide && handle?.closable ? onClose : undefined} />
       </div>
 
       {!floating && (
@@ -89,7 +89,7 @@ export function MapPage() {
             label="Panel"
             initialSnap={handle?.sheet}
             onCoverChange={onCoverChange}
-            onClose={handle?.closable ? onClose : undefined}
+            onClose={!wide && handle?.closable ? onClose : undefined}
           >
             <Outlet />
           </Sheet>
