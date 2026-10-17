@@ -10,6 +10,8 @@ type AedsState = {
   /** Evaluation time for hours; ticks every minute while `live`, otherwise the time picked on the map. */
   now: Date
   live: boolean
+  /** The one time picker for the map (clock button, coverage panel). */
+  pickerOpen: boolean
 }
 
 export const aedsStore = createStore<AedsState>({
@@ -19,6 +21,7 @@ export const aedsStore = createStore<AedsState>({
   dataStatus: null,
   now: new Date(),
   live: true,
+  pickerOpen: false,
 })
 
 let clock: ReturnType<typeof setInterval> | undefined
@@ -36,7 +39,9 @@ export async function loadAeds() {
   }
 }
 
-/** Preview AED availability at another time; routing still uses the real clock. */
+/** Preview AED availability at another time; finding and routing still use the real clock. */
 export const setViewTime = (at: Date) => aedsStore.set({ now: at, live: false })
 
 export const resetViewTime = () => aedsStore.set({ now: new Date(), live: true })
+
+export const setTimePickerOpen = (pickerOpen: boolean) => aedsStore.set({ pickerOpen })

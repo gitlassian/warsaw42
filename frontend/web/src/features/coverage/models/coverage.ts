@@ -5,7 +5,7 @@ export type CoverageScenario = 'all_public' | 'available_at' | 'always_open'
 
 export const COVERAGE_SCENARIOS = [
   { value: 'all_public', label: 'Wszystkie publiczne' },
-  { value: 'available_at', label: 'Dostępne o wybranej porze' },
+  { value: 'available_at', label: 'Dostępne o tej porze' },
   { value: 'always_open', label: 'Całodobowe' },
 ] as const satisfies readonly { value: CoverageScenario; label: string }[]
 

@@ -1,4 +1,4 @@
-import { aedsStore } from '@/features/aeds/store'
+import { aedsStore, resetViewTime } from '@/features/aeds/store'
 import { distanceMeters, isInsideWarsaw, type LngLat } from '@/shared/geo/geo'
 import { createStore } from '@/shared/lib/store'
 import type { EtaEntry, FindResult, LocationIssue, Origin, WalkingRoute } from './models/routing'
@@ -71,6 +71,8 @@ export async function locate(): Promise<Origin | null> {
 }
 
 async function runFind(origin: Origin, token: number): Promise<FindResult | null> {
+  // The server finds by the real clock, so the map leaves any time preview to match the result.
+  resetViewTime()
   try {
     const result = await findAed(origin)
     if (token !== searchToken) return null

@@ -6,7 +6,8 @@ import { Button, ButtonLink } from '@/design-system/components/Button'
 import { Notice } from '@/design-system/components/Notice'
 import { Sheet, WIDE_LAYOUT_QUERY } from '@/design-system/components/Sheet'
 import { nextWarsawWeekday } from '@/features/aeds/lib/viewTime'
-import { aedsStore, loadAeds, resetViewTime, setViewTime } from '@/features/aeds/store'
+import { formatWarsawTime } from '@/features/aeds/lib/availability'
+import { aedsStore, loadAeds, resetViewTime, setTimePickerOpen, setViewTime } from '@/features/aeds/store'
 import { FindButton } from '@/features/discovery/presentation/components/FindButton'
 import { OriginIssueNotice } from '@/features/discovery/presentation/components/OriginIssueNotice'
 import { PickOriginBanner } from '@/features/discovery/presentation/components/PickOriginBanner'
@@ -29,7 +30,8 @@ export function MapPage() {
   const handle = useMatches().at(-1)?.handle as RouteHandle | undefined
   const viewportHeight = useViewportHeight()
   const [mapFailed, setMapFailed] = useState(false)
-  const [timeOpen, setTimeOpen] = useState(false)
+  // One pop-up next to the round controls at a time: the time picker or the AED filters.
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const onMapError = useCallback(() => setMapFailed(true), [])
   // Map bottom covered by the sheet or the pinned find bar (narrow layout only); an open sheet covers the bar.
   const [cover, setCover] = useState({ sheet: 0, dock: 0 })
@@ -71,10 +73,16 @@ export function MapPage() {
     loadAeds()
   }, [])
 
-  // Closing the picker returns to the real time, so the map never keeps showing a hidden preview.
+  // One time for the whole map; a preview stays visible in its banner after the picker closes.
+  const timeOpen = useStore(aedsStore, (s) => s.pickerOpen)
+  // Only one pop-up next to the round controls at a time.
   const toggleTime = () => {
-    if (timeOpen) resetViewTime()
-    setTimeOpen(!timeOpen)
+    if (!timeOpen) setFiltersOpen(false)
+    setTimePickerOpen(!timeOpen)
+  }
+  const onFiltersOpenChange = (open: boolean) => {
+    if (open) setTimePickerOpen(false)
+    setFiltersOpen(open)
   }
 
   const onClose = () => {
@@ -104,7 +112,7 @@ export function MapPage() {
             label="Panel"
             initialSnap={handle?.sheet}
             onCoverChange={onCoverChange}
-            onClose={!wide && handle?.close === 'selection' ? onClose : undefined}
+            onClose={!wide && handle?.close ? onClose : undefined}
           >
             <Outlet />
           </Sheet>
@@ -129,6 +137,15 @@ export function MapPage() {
           {picking && <PickOriginBanner outside={issue === 'outside_pick'} onCancel={stopPicking} />}
           {issue && !picking && !handle?.showsLocationIssue && (
             <OriginIssueNotice issue={issue} onPick={() => startPicking()} />
+          )}
+          {!live && (
+            <Notice
+              tone="warning"
+              title={`Podgląd: ${formatWarsawTime(now)}`}
+              actions={<Button onClick={resetViewTime}>Wróć do teraz</Button>}
+            >
+              Mapa pokazuje dostępność o tej porze, nie teraz.
+            </Notice>
           )}
           {mapFailed && (
             <Notice
@@ -155,6 +172,8 @@ export function MapPage() {
               onToggleFilter={toggleFilter}
               timeOpen={timeOpen}
               onToggleTime={toggleTime}
+              filtersOpen={filtersOpen}
+              onFiltersOpenChange={onFiltersOpenChange}
               onLocate={onLocate}
               onToggleCoverage={() => navigate(coverageShown ? RoutePaths.map : RoutePaths.coverage)}
             />

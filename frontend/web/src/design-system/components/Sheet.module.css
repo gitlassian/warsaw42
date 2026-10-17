@@ -58,10 +58,19 @@
   background: var(--color-surface);
 }
 
-/* Close button in the top-right corner of the sheet / side panel; floats over the content's first row. */
+/* Close button in the top-right corner of the sheet / side panel. */
 .close {
   position: absolute;
   top: var(--space-8);
   right: var(--space-8);
   z-index: 1;
+}
+
+/* With a close button the handle row grows to 48 and holds it, so long titles never run under it. */
+.sheet[data-closable] .handle {
+  height: 48px;
+}
+
+.sheet .close {
+  top: 0;
 }

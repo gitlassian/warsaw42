@@ -57,7 +57,7 @@ Usage rules:
 - A green button indicates an action; a green status indicates access according to known hours. Shape, icon, and label distinguish their meanings.
 - Reserve red and amber for their semantic states. Selecting a point does not change its status.
 - Place regular text on opaque surfaces. Labels over the map have their own white background.
-- Do not use gradients, glows, glass panels, or decorative colored blocks.
+- Do not use gradients, glows, glass panels, or decorative colored blocks. The one exception: soft dark gradient scrims (`color.text` at about 30–45% fading to transparent) behind controls that sit on the map, so they stay readable, and a slight 24-wide shadow (20%) from the desktop side panel onto the map.
 
 Calculated contrast for the main pairs:
 
@@ -122,7 +122,7 @@ Use short, concrete wording. Each message answers one question. Show an explanat
 | Alternatives | `Inne defibrylatory` |
 | Issue reporting | `Zgłoś problem` |
 | Offline map | `Mapa offline` |
-| Coverage | `Zasięg AED` |
+| Coverage | `Odległość do najbliższego AED` |
 
 Keep `API`, `PostGIS`, `timestamp`, "AI", and internal status names out of user-facing labels.
 
@@ -187,7 +187,8 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 
 - The map fills the available screen. Place a compact DefiWawa name and access to secondary features at the top.
 - Use one bottom sheet for the search start, result, list, or selected AED details. Do not stack sheets on top of one another.
-- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button that clears the selection and its route: in the sheet's top-right corner on narrow screens, in the header row next to the logo from 840. From 840 the coverage and `O danych` panels get the same header close button (it does not clear a route). The close icon lines up with the panel content edge; its hit area extends past it.
+- One map time: the clock control previews availability at another weekday and hour for markers, the list, filters and coverage. While previewing, a warning banner `Podgląd: <dzień>, <godzina>` with `Wróć do teraz` stays on the map, also after the picker closes. Finding the nearest AED always returns the map to now, because the server searches by the real clock.
+- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button that clears the selection and its route: in the sheet's top-right corner on narrow screens, in the header row next to the logo from 840. The coverage and `O danych` panels get the same close button on every screen size (it does not clear a route). The close icon lines up with the panel content edge; its hit area extends past it.
 - The result sheet shows travel time, address, access, and entrance instructions. Expand additional details below.
 - Provide compact, medium, and expanded sheet states. At the default text scale, medium occupies about 70% of the available height; content and text scale determine its actual height.
 - Support a button and keyboard interaction as well as dragging to expand the sheet. Accessible button names: `Pokaż szczegóły` / `Zwiń szczegóły`.
@@ -205,7 +206,7 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 Shared rules:
 
 - Keep the primary action in a stable area of the panel. Change its label only when the task changes.
-- Make `Zasięg AED`, nearby AEDs, data information, and mobile downloads available through a menu with text labels. Coverage is also accessible through the map layers control.
+- Make `Odległość do najbliższego AED` (coverage), nearby AEDs, data information, and mobile downloads available through a menu with text labels. Coverage is also accessible through the map layers control.
 - On web, "Mapa offline" explains the mobile capability; offer downloads in the mobile app.
 - Put address search inside the origin selection flow. Keep the initial screen focused on automatic AED discovery.
 - Restrict map bounds and selectable origins to Warsaw, online and offline, as specified in PLAN.md.
@@ -242,7 +243,7 @@ Content order:
 
 1. Prominent walking time, with distance alongside in regular text. Offline, emphasize straight-line distance instead.
 2. Venue name and full address.
-3. Short access status and the next known change in hours, as colored text without a chip (e.g. `Dostępny do 18:00` in `color.accent`).
+3. Short access status and the next known change in hours, as colored text without a chip, after a clock icon in the same color (e.g. `Dostępny do 18:00` in `color.accent`).
 4. `Wejście`: actual entrance instructions, spanning multiple lines when needed.
 5. Route action and access to alternatives.
 6. Expandable hours, device information, source, and dates.
@@ -322,9 +323,9 @@ Keep the existing package usable during updates and after update failures. Show 
 
 ## 11. AED Coverage
 
-Open `Zasięg AED` as a separate layer mode. Retain the map and the shared control styling.
+Open `Odległość do najbliższego AED` as a separate layer mode; its sheet opens at the same medium height as AED details. Retain the map and the shared control styling.
 
-Provide `Wszystkie publiczne`, `Dostępne o wybranej porze`, and `Całodobowe` scenarios. Show date and time for the second scenario. Label the threshold setting `Odległość od AED`, initially 500 m as specified in PLAN.md.
+Provide `Wszystkie publiczne`, `Dostępne o tej porze`, and `Całodobowe` scenarios. The second one uses the map time, shown as `Pora: teraz` (or the previewed time) with `Zmień` opening the same time picker as the clock control. Label the threshold setting `Odległość od AED`, initially 500 m as specified in PLAN.md.
 
 Show gaps with a translucent amber fill and hatching; AEDs without information do not cover any area. Include text in the legend. Routes and AEDs remain distinguishable over the layer.
 

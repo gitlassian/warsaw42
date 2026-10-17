@@ -7,7 +7,9 @@ import type { AedStatus } from '../../lib/aedStatus'
 export function AedStatusView({ status }: { status: AedStatus }) {
   return (
     <Stack gap={4}>
-      <StatusText tone={status.tone}>{status.label}</StatusText>
+      <StatusText tone={status.tone} icon="schedule">
+        {status.label}
+      </StatusText>
       {status.detail && <Text>{status.detail}</Text>}
     </Stack>
   )

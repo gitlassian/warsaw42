@@ -52,7 +52,7 @@ src/
     aeds/                       # domain: Aed model, hours evaluator, status labels, data store, AED widgets
     discovery/                  # origin (GPS / picked point), find, ETAs, routes; Start/Details/List panels
     map/                        # MapPage shell, Mapbox view, HTML markers, header/menu, camera controller
-    coverage/                   # "Zasięg AED" layer: scenarios, threshold, legend, area details
+    coverage/                   # "Odległość do najbliższego AED" layer: scenarios, threshold, legend, area details
     report/                     # "Zgłoś problem": draft → confirmation
     dataInfo/                   # data source, freshness, status legend
 ```

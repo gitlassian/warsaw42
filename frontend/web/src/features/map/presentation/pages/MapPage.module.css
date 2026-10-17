@@ -13,6 +13,32 @@
   z-index: 4;
 }
 
+/* Dark gradient scrims keep the white map controls readable on a light map; they never catch taps. */
+.header::before,
+.controls::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Full screen width, also when the wide header shrinks to the logo. */
+.header::before {
+  /* Reaches the screen top on both layouts (header top: 12 px narrow, 16 px wide). */
+  top: calc(-1 * (env(safe-area-inset-top) + var(--space-16)));
+  bottom: calc(-1 * var(--space-32));
+  left: calc(-1 * var(--space-16));
+  width: 100vw;
+  background: linear-gradient(to bottom, rgb(23 35 29 / 45%), rgb(23 35 29 / 0%));
+}
+
+.controls::before {
+  inset: calc(-1 * var(--space-48)) calc(-1 * var(--space-16)) calc(-1 * var(--space-48)) calc(-1 * var(--space-48));
+  /* Lighter than the corner peak: along the whole edge it reads as dark as the corner scrim below. */
+  background: linear-gradient(to left, rgb(23 35 29 / 30%), rgb(23 35 29 / 0%));
+  mask-image: linear-gradient(to bottom, transparent, #000 var(--space-48), #000 calc(100% - var(--space-48)), transparent);
+}
+
 .mapArea {
   position: absolute;
   inset: 0;
@@ -59,6 +85,21 @@
   transition: bottom var(--duration-panel) ease-out;
 }
 
+/* Bottom-right corner scrim in the map layer: under the round controls and the find bar, joining the
+   controls scrim. Narrow: right above the bar or sheet, moving with it like the controls. */
+.mapArea::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: var(--sheet-cover);
+  width: 70%;
+  height: 160px;
+  /* An ellipse that reaches transparent exactly at the box edges: no visible borders. */
+  background: radial-gradient(farthest-side at 100% 100%, rgb(23 35 29 / 45%), rgb(23 35 29 / 0%));
+  pointer-events: none;
+  transition: bottom var(--duration-panel) ease-out;
+}
+
 /* Pinned find bar on every screen: a white bar on the bottom edge. Below the sheet (z 3): an open sheet covers it. */
 .dock {
   position: absolute;
@@ -92,6 +133,11 @@
     grid-template-rows: auto 1fr;
   }
 
+  /* The header is the top of the side panel here, not over the map. */
+  .layout:not([data-floating]) .header::before {
+    display: none;
+  }
+
   .header {
     position: static;
     grid-area: 1 / 1;
@@ -109,6 +155,17 @@
   .mapArea {
     position: relative;
     grid-area: 1 / 2 / 3 / 3;
+  }
+
+  /* A slight shadow from the side panel onto the map, along its edge only. */
+  .layout:not([data-floating]) .mapArea::before {
+    content: '';
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 1;
+    width: var(--space-24);
+    background: linear-gradient(to right, rgb(23 35 29 / 20%), rgb(23 35 29 / 0%));
+    pointer-events: none;
   }
 
   .overlay {
@@ -151,6 +208,13 @@
 
   .layout[data-floating] .overlay {
     top: 80px;
+  }
+
+  /* Wide: from the screen corner up and left behind the find card (card + 96 px up/left). */
+  .mapArea::after {
+    bottom: 0;
+    width: calc(min(var(--panel-width), 100% - 2 * var(--space-16)) + 2 * var(--space-48) + var(--space-16));
+    height: calc(var(--dock-height) + 3 * var(--space-48));
   }
 
   /* Wide: the find button floats bottom-right over the map on every screen. */

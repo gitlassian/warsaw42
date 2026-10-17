@@ -1,3 +1,4 @@
+import { aedsStore } from '@/features/aeds/store'
 import { createStore } from '@/shared/lib/store'
 import type { CoverageCell, CoverageLayer, CoverageScenario } from './models/coverage'
 import { fetchCoverage } from './services/coverageApi'
@@ -6,8 +7,6 @@ type CoverageState = {
   scenario: CoverageScenario
   /** PLAN.md §9 planning assumption, not an emergency-response standard. */
   thresholdM: number
-  /** Evaluation time for the `available_at` scenario. */
-  at: Date
   status: 'idle' | 'loading' | 'ready' | 'error'
   /** Stays visible, with its own label, while a newer layer is calculated. */
   layer: CoverageLayer | null
@@ -17,7 +16,6 @@ type CoverageState = {
 export const coverageStore = createStore<CoverageState>({
   scenario: 'available_at',
   thresholdM: 500,
-  at: new Date(),
   status: 'idle',
   layer: null,
   selected: null,
@@ -26,7 +24,9 @@ export const coverageStore = createStore<CoverageState>({
 let requestToken = 0
 
 export async function loadCoverage() {
-  const { scenario, thresholdM, at } = coverageStore.get()
+  const { scenario, thresholdM } = coverageStore.get()
+  // The time-based scenario uses the one map time (live: the clock).
+  const at = aedsStore.get().now
   const token = ++requestToken
   coverageStore.set({ status: 'loading', selected: null })
   try {
@@ -37,7 +37,7 @@ export async function loadCoverage() {
   }
 }
 
-export function setCoverageQuery(patch: Partial<Pick<CoverageState, 'scenario' | 'thresholdM' | 'at'>>) {
+export function setCoverageQuery(patch: Partial<Pick<CoverageState, 'scenario' | 'thresholdM'>>) {
   coverageStore.set(patch)
   loadCoverage()
 }

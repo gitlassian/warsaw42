@@ -17,8 +17,8 @@ export type RouteHandle = {
   /** A white card over the map (bottom on narrow, bottom-right on wide) instead of the sheet / side panel. */
   floating?: boolean
   /**
-   * Close button back to the start screen. `selection`: the selected AED (sheet corner on narrow screens,
-   * header on wide ones), closing also clears its route. `panel`: header close button on wide screens only.
+   * Close button back to the start screen, in the sheet corner on narrow screens and the header on wide ones.
+   * `selection`: the selected AED, closing also clears its route. `panel`: coverage and data panels.
    */
   close?: 'selection' | 'panel'
 }
@@ -34,7 +34,7 @@ export const appRouter = createBrowserRouter([
       { path: RoutePaths.aeds, element: <NearbyListPanel />, handle: handle({ sheet: 'medium', showsLocationIssue: true }) },
       { path: RoutePaths.aed, element: <AedDetailsPanel />, handle: handle({ sheet: 'medium', showsLocationIssue: true, close: 'selection' }) },
       { path: RoutePaths.report, element: <ReportPanel />, handle: handle({ sheet: 'expanded', close: 'selection' }) },
-      { path: RoutePaths.coverage, element: <CoveragePanel />, handle: handle({ sheet: 'compact', close: 'panel' }) },
+      { path: RoutePaths.coverage, element: <CoveragePanel />, handle: handle({ sheet: 'medium', close: 'panel' }) },
       { path: RoutePaths.data, element: <DataInfoPanel />, handle: handle({ sheet: 'medium', close: 'panel' }) },
       { path: '*', element: <Navigate to={RoutePaths.map} replace /> },
     ],

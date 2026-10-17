@@ -8,10 +8,12 @@ type MapControlsProps = {
   coverageShown: boolean
   filters: AedFilters
   timeOpen: boolean
+  filtersOpen: boolean
   onLocate: () => void
   onToggleCoverage: () => void
   onToggleFilter: (group: AedAvailability) => void
   onToggleTime: () => void
+  onFiltersOpenChange: (open: boolean) => void
 }
 
 /** Round floating controls; positioned around the sheet by the page. */
@@ -20,10 +22,12 @@ export function MapControls({
   coverageShown,
   filters,
   timeOpen,
+  filtersOpen,
   onLocate,
   onToggleCoverage,
   onToggleFilter,
   onToggleTime,
+  onFiltersOpenChange,
 }: MapControlsProps) {
   return (
     <div className={styles.controls}>
@@ -37,7 +41,7 @@ export function MapControls({
       <IconButton
         variant="floating"
         icon="layers"
-        label="Warstwa: Zasięg AED"
+        label="Warstwa: Odległość do najbliższego AED"
         pressed={coverageShown}
         onClick={onToggleCoverage}
       />
@@ -48,7 +52,7 @@ export function MapControls({
         pressed={timeOpen}
         onClick={onToggleTime}
       />
-      <FilterMenu filters={filters} onToggle={onToggleFilter} />
+      <FilterMenu filters={filters} onToggle={onToggleFilter} open={filtersOpen} onOpenChange={onFiltersOpenChange} />
     </div>
   )
 }

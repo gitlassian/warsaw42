@@ -21,7 +21,9 @@ export function AedListItem({ aed, status, to, travel, selected }: AedListItemPr
         {travel}
         <span className={styles.name}>{aed.venueName}</span>
         <span className={styles.address}>{aed.address}</span>
-        <StatusText tone={status.tone}>{status.label}</StatusText>
+        <StatusText tone={status.tone} icon="schedule">
+          {status.label}
+        </StatusText>
       </Link>
     </li>
   )

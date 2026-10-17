@@ -1,3 +1,4 @@
+import { WEEKDAY_NAMES } from '../../../shared/lib/format.ts'
 import type { Interval, Schedule } from '../models/aed'
 
 // Shared hours evaluator (PLAN.md §5–6). Pure and dependency-free so the offline
@@ -22,6 +23,12 @@ const clockFormat = new Intl.DateTimeFormat('en-GB', {
 export function warsawClock(at: Date): { day: number; minutes: number } {
   const parts = Object.fromEntries(clockFormat.formatToParts(at).map((p) => [p.type, p.value]))
   return { day: WEEKDAY_INDEX[parts.weekday], minutes: Number(parts.hour) * 60 + Number(parts.minute) }
+}
+
+/** "Poniedziałek, 10:00" in Warsaw time, for the map time preview. */
+export function formatWarsawTime(at: Date): string {
+  const { day, minutes } = warsawClock(at)
+  return `${WEEKDAY_NAMES[day]}, ${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
 }
 
 const toMinutes = (hhmm: string) => {

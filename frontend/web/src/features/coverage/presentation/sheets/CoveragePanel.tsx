@@ -7,8 +7,8 @@ import { PanelHeader } from '@/design-system/components/PanelHeader'
 import { LoadingText } from '@/design-system/components/Spinner'
 import { Stack } from '@/design-system/components/Stack'
 import { Text } from '@/design-system/components/Text'
-import { TextField } from '@/design-system/components/TextField'
-import { aedsStore } from '@/features/aeds/store'
+import { formatWarsawTime } from '@/features/aeds/lib/availability'
+import { aedsStore, setTimePickerOpen } from '@/features/aeds/store'
 import { formatDateTime, formatDistance } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
 import { COVERAGE_RADIUS, COVERAGE_SCENARIOS, type CoverageScenario } from '../../models/coverage'
@@ -17,14 +17,10 @@ import styles from './CoveragePanel.module.css'
 
 const scenarioLabel = (scenario: CoverageScenario) => COVERAGE_SCENARIOS.find((s) => s.value === scenario)!.label
 
-// shortcut: datetime-local uses the browser time zone; fine for users in Warsaw, convert explicitly for remote viewers.
-const toInputValue = (date: Date) => new Date(date.getTime() - date.getTimezoneOffset() * 60_000).toISOString().slice(0, 16)
-
-/** "Zasięg AED" layer mode (DESIGN.md §11). */
+/** "Odległość do najbliższego AED" coverage layer mode (DESIGN.md §11). */
 export function CoveragePanel() {
   const scenario = useStore(coverageStore, (s) => s.scenario)
   const thresholdM = useStore(coverageStore, (s) => s.thresholdM)
-  const at = useStore(coverageStore, (s) => s.at)
   const status = useStore(coverageStore, (s) => s.status)
   const layer = useStore(coverageStore, (s) => s.layer)
   const selected = useStore(coverageStore, (s) => s.selected)
@@ -38,17 +34,18 @@ export function CoveragePanel() {
   }, [radius, thresholdM])
   const nearestAed = useStore(aedsStore, (s) => (selected?.nearestAedId ? s.byId.get(selected.nearestAedId) : undefined))
 
-  // In the time-based scenario the layer follows the time picked on the map (live: the clock).
+  // The time-based scenario follows the one map time (live: the clock); scenario changes reload on their own.
   const now = useStore(aedsStore, (s) => s.now)
+  const live = useStore(aedsStore, (s) => s.live)
   useEffect(() => {
-    if (scenario === 'available_at' && coverageStore.get().at.getTime() !== now.getTime()) setCoverageQuery({ at: now })
-    else if (coverageStore.get().status === 'idle') loadCoverage()
-  }, [now, scenario])
+    const { scenario: current, status: loaded } = coverageStore.get()
+    if (current === 'available_at' || loaded === 'idle') loadCoverage()
+  }, [now])
 
   return (
     <Stack gap={24}>
       <Stack gap={8}>
-        <PanelHeader title="Zasięg AED" />
+        <PanelHeader title="Odległość do najbliższego AED" />
         <Text tone="secondary">
           Białe koła: zasięg dostępnych AED ({formatDistance(thresholdM)}). Czerwone obszary: tam nie ma dostępnego AED w pobliżu.
         </Text>
@@ -61,12 +58,12 @@ export function CoveragePanel() {
         onChange={(value) => setCoverageQuery({ scenario: value })}
       />
       {scenario === 'available_at' && (
-        <TextField
-          type="datetime-local"
-          label="Data i godzina"
-          value={toInputValue(at)}
-          onChange={(value) => value && setCoverageQuery({ at: new Date(value) })}
-        />
+        <div className={styles.time}>
+          <Text>Pora: {live ? 'teraz' : formatWarsawTime(now)}</Text>
+          <Button variant="link" onClick={() => setTimePickerOpen(true)}>
+            Zmień
+          </Button>
+        </div>
       )}
       <div className={styles.radius}>
         <label htmlFor="coverage-radius" className={styles.radiusLabel}>

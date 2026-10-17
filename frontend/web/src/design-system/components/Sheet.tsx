@@ -109,7 +109,13 @@ export function Sheet({
   }
 
   return (
-    <section className={styles.sheet} style={{ height }} data-dragging={dragHeight !== null || undefined} aria-label={label}>
+    <section
+      className={styles.sheet}
+      style={{ height }}
+      data-dragging={dragHeight !== null || undefined}
+      data-closable={onClose ? true : undefined}
+      aria-label={label}
+    >
       <button
         type="button"
         className={styles.handle}
