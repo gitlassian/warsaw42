@@ -22,6 +22,7 @@ import { ACCURACY_LAYER, ACCURACY_OPACITY, AEDS_LAYER, COVERAGE_HALO_LAYER, COVE
 import { MapMarker } from './MapMarker'
 import { AedMarker, ClusterMarker, HeadingMarker, OriginMarker } from './MapMarkers'
 import styles from './MapView.module.css'
+import { locale, t } from '@/i18n'
 
 /** A rendered point of the clustered AED source: one AED or a cluster. */
 type VisibleFeature = { key: string; lngLat: LngLat } & (
@@ -87,9 +88,9 @@ export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
         touchPitch: false,
         minZoom: 10,
         maxBounds: WARSAW_MAX_BOUNDS,
-        language: 'pl',
+        language: locale,
         attributionControl: false,
-        locale: { 'NavigationControl.ZoomIn': 'Przybliż', 'NavigationControl.ZoomOut': 'Oddal' },
+        locale: { 'NavigationControl.ZoomIn': t('Przybliż'), 'NavigationControl.ZoomOut': t('Oddal') },
       })
       // Small zoom and location buttons in the bottom-right corner, shown on wide screens only (MapView.module.css).
       instance.addControl(new mapboxgl.NavigationControl({ showCompass: false }), 'bottom-right')
@@ -254,7 +255,7 @@ export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
   }
 
   return (
-    <div ref={containerRef} className={styles.map} role="region" aria-label="Mapa defibrylatorów w Warszawie">
+    <div ref={containerRef} className={styles.map} role="region" aria-label={t('Mapa defibrylatorów w Warszawie')}>
       {map &&
         visible.map((f) =>
           'clusterId' in f ? (
@@ -266,7 +267,7 @@ export function MapView({ onLoadError, onLocate, locating }: MapViewProps) {
           ),
         )}
       {createPortal(
-        <button type="button" className={styles.locate} aria-label="Pokaż moją lokalizację" title="Pokaż moją lokalizację" onClick={onLocate} disabled={locating}>
+        <button type="button" className={styles.locate} aria-label={t('Pokaż moją lokalizację')} title={t('Pokaż moją lokalizację')} onClick={onLocate} disabled={locating}>
           <AppIcon name="my_location" size={20} />
         </button>,
         locateGroup,

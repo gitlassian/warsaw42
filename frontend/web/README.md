@@ -64,3 +64,14 @@ Dependencies point one way: `map` → `discovery`/`coverage`/`report` → `aeds`
 Layout: below 840 px the map is full screen with one bottom sheet (compact / medium / expanded); from 840 px
 the same panel content sits in a 400 px side panel. Import across folders with `@/`.
 Styling: CSS variables from `design-system/tokens.css` + CSS Modules (`*.module.css`).
+
+## Languages
+
+Polish is the default; English lives under `/en/...` (for example `/en/aed/12`, `/en/coverage`). The router gets
+`basename: '/en'` on those URLs, so routes and links inside the app are identical and a language change is a full page
+load (the `PL`/`EN` pill in the header). Hosting must serve `index.html` for `/en/*` like for every other deep link.
+
+Texts are written in Polish and passed through `t('Polski tekst {n}', { n })` from `@/i18n`; the English version is looked
+up by the exact Polish text in `src/i18n/en.*.ts`. Without an entry the Polish text shows. `npm test` fails when a `t(...)`
+literal has no English entry or loses a `{placeholder}`. Modules imported by node tests import `t` with the relative
+`.ts` path. Data from the database (venue names, addresses, source hours wording) is not translated.

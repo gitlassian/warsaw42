@@ -4,6 +4,7 @@ import { IconButton } from '@/design-system/components/IconButton'
 import type { AedAvailability, AedFilters } from '@/features/aeds/lib/aedAvailability'
 import { FilterMenu } from './FilterMenu'
 import styles from './MapControls.module.css'
+import { t } from '@/i18n'
 
 type MapControlsProps = {
   /** Narrow only: layers, time and filters fold behind a small "more" button. */
@@ -34,7 +35,7 @@ export function MapControls({
   children,
 }: MapControlsProps) {
   const [moreOpen, setMoreOpen] = useState(false)
-  const moreLabel = moreOpen ? 'Ukryj opcje mapy' : 'Więcej opcji mapy'
+  const moreLabel = moreOpen ? t('Ukryj opcje mapy') : t('Więcej opcji mapy')
 
   return (
     <div className={styles.controls}>
@@ -43,16 +44,16 @@ export function MapControls({
           <IconButton
             variant="floating"
             icon="layers"
-            label="Warstwa: Odległość do najbliższego AED"
-            text="Zasięg"
+            label={t('Warstwa: Odległość do najbliższego AED')}
+            text={t('Zasięg')}
             pressed={coverageShown}
             onClick={onToggleCoverage}
           />
           <IconButton
             variant="floating"
             icon="schedule"
-            label={timeOpen ? 'Ukryj wybór godziny' : 'Sprawdź dostępność o innej porze'}
-            text="Pora"
+            label={timeOpen ? t('Ukryj wybór godziny') : t('Sprawdź dostępność o innej porze')}
+            text={t('Pora')}
             pressed={timeOpen}
             onClick={onToggleTime}
           />

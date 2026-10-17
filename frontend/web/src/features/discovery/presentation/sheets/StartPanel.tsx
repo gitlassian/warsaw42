@@ -10,6 +10,7 @@ import type { FindResult } from '../../models/routing'
 import { discoveryStore, findFrom, findNearest, startPicking } from '../../store'
 import { AedList } from '../components/AedList'
 import { OriginIssueNotice } from '../components/OriginIssueNotice'
+import { t } from '@/i18n'
 
 /** Start screen status above the pinned find button: search outcome, location and data problems (DESIGN.md §6). */
 export function StartPanel() {
@@ -35,7 +36,7 @@ export function StartPanel() {
       {issue && <OriginIssueNotice issue={issue} onPick={onPick} onRetry={onFind} />}
 
       {search.status === 'failed' && (
-        <Notice tone="danger" title="Nie udało się wyznaczyć trasy." actions={<Button onClick={onFind}>Spróbuj ponownie</Button>} />
+        <Notice tone="danger" title={t('Nie udało się wyznaczyć trasy.')} actions={<Button onClick={onFind}>{t('Spróbuj ponownie')}</Button>} />
       )}
 
       {result && (
@@ -44,14 +45,17 @@ export function StartPanel() {
             tone="warning"
             title={
               result.status === 'routing_unavailable'
-                ? 'Nie udało się wyznaczyć trasy.'
-                : 'Nie znaleźliśmy AED dostępnego według danych.'
+                ? t('Nie udało się wyznaczyć trasy.')
+                : t('Nie znaleźliśmy AED dostępnego według danych.')
             }
           >
-            Sprawdziliśmy {result.evaluatedCount} defibrylatorów w promieniu {formatDistance(result.searchedRadiusM)}.
+            {t('Sprawdziliśmy {count} defibrylatorów w promieniu {radius}.', {
+              count: result.evaluatedCount,
+              radius: formatDistance(result.searchedRadiusM),
+            })}
           </Notice>
           <AedList
-            title="Dostęp niepotwierdzony"
+            title={t('Dostęp niepotwierdzony')}
             aeds={result.unknownAccessAlternatives}
             now={now}
             etas={etas}
@@ -63,8 +67,8 @@ export function StartPanel() {
       {aedsStatus === 'error' && (
         <Notice
           tone="danger"
-          title="Nie udało się wczytać defibrylatorów."
-          actions={<Button onClick={loadAeds}>Spróbuj ponownie</Button>}
+          title={t('Nie udało się wczytać defibrylatorów.')}
+          actions={<Button onClick={loadAeds}>{t('Spróbuj ponownie')}</Button>}
         />
       )}
     </Stack>

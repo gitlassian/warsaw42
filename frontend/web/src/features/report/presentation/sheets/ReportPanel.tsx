@@ -9,13 +9,14 @@ import { Stack } from '@/design-system/components/Stack'
 import { Text } from '@/design-system/components/Text'
 import { TextField } from '@/design-system/components/TextField'
 import { aedsStore } from '@/features/aeds/store'
+import { t } from '@/i18n'
 import { useStore } from '@/shared/lib/store'
 import { DESCRIPTION_MAX, REPORT_CATEGORIES, validateDraft, type DraftErrors } from '../../models/report'
 import { getFlow, openFlow, reportStore, resetFlow, submit, updateDraft } from '../../store'
 
 const ERROR_MESSAGES: Record<string, string> = {
-  rate_limited: 'Wysłano zbyt wiele zgłoszeń. Spróbuj ponownie później.',
-  network: 'Nie udało się połączyć. Zgłoszenie jest zachowane, spróbuj ponownie.',
+  rate_limited: t('Wysłano zbyt wiele zgłoszeń. Spróbuj ponownie później.'),
+  network: t('Nie udało się połączyć. Zgłoszenie jest zachowane, spróbuj ponownie.'),
 }
 const errorMessage = (code: string) => ERROR_MESSAGES[code] ?? ERROR_MESSAGES.network
 
@@ -46,7 +47,7 @@ export function ReportPanel() {
   return (
     <Stack gap={24}>
       <Stack gap={4}>
-        <PanelHeader title="Zgłoś problem" />
+        <PanelHeader title={t('Zgłoś problem')} />
         {aed && (
           <Text tone="secondary">
             {aed.venueName}, {aed.address}
@@ -58,7 +59,7 @@ export function ReportPanel() {
         <form onSubmit={onSubmit} noValidate>
           <Stack gap={24}>
             <ChoiceGroup
-              legend="Rodzaj problemu"
+              legend={t('Rodzaj problemu')}
               options={REPORT_CATEGORIES}
               value={draft.category}
               onChange={(value) => setField('category', value)}
@@ -66,8 +67,8 @@ export function ReportPanel() {
             />
             <TextField
               multiline
-              label="Opis"
-              hint="Co się stało? Np. szafka jest zamknięta albo godziny są inne."
+              label={t('Opis')}
+              hint={t('Co się stało? Np. szafka jest zamknięta albo godziny są inne.')}
               value={draft.description}
               onChange={(value) => setField('description', value)}
               maxLength={DESCRIPTION_MAX}
@@ -76,7 +77,7 @@ export function ReportPanel() {
             {/* Honeypot: hidden from people and assistive technology, filled in by naive bots. */}
             <div className="visually-hidden" aria-hidden="true">
               <label>
-                Strona internetowa
+                {t('Strona internetowa')}
                 <input
                   type="text"
                   name="homepage"
@@ -88,8 +89,8 @@ export function ReportPanel() {
               </label>
             </div>
             {error && <Notice tone="danger" title={errorMessage(error)} />}
-            <Button type="submit" variant="primary" loading={busy} loadingLabel="Wysyłamy zgłoszenie…">
-              Wyślij zgłoszenie
+            <Button type="submit" variant="primary" loading={busy} loadingLabel={t('Wysyłamy zgłoszenie…')}>
+              {t('Wyślij zgłoszenie')}
             </Button>
           </Stack>
         </form>
@@ -97,11 +98,11 @@ export function ReportPanel() {
 
       {flow.step === 'done' && (
         <Stack gap={16}>
-          <Notice tone="accent" title="Dziękujemy. Zgłoszenie czeka na sprawdzenie.">
-            Zgłoszenie nie zmienia od razu statusu defibrylatora.
+          <Notice tone="accent" title={t('Dziękujemy. Zgłoszenie czeka na sprawdzenie.')}>
+            {t('Zgłoszenie nie zmienia od razu statusu defibrylatora.')}
           </Notice>
           <ButtonLink variant="primary" to={buildPath.aed(id)} onClick={() => resetFlow(id)}>
-            Wróć do AED
+            {t('Wróć do AED')}
           </ButtonLink>
         </Stack>
       )}

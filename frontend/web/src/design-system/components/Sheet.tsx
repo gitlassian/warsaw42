@@ -3,6 +3,7 @@ import { useMediaQuery } from '@/shared/hooks/useMediaQuery'
 import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
 import { IconButton } from './IconButton'
 import styles from './Sheet.module.css'
+import { t } from '@/i18n'
 
 export type SheetSnap = 'compact' | 'medium' | 'expanded'
 
@@ -52,7 +53,7 @@ export function Sheet({
 
   const close = onClose && (
     <span className={styles.close}>
-      <IconButton icon="close" label="Zamknij" onClick={onClose} />
+      <IconButton icon="close" label={t('Zamknij')} onClick={onClose} />
     </span>
   )
 
@@ -119,7 +120,7 @@ export function Sheet({
       <button
         type="button"
         className={styles.handle}
-        aria-label={snap === 'expanded' ? 'Zwiń szczegóły' : 'Pokaż szczegóły'}
+        aria-label={snap === 'expanded' ? t('Zwiń szczegóły') : t('Pokaż szczegóły')}
         aria-expanded={snap === 'expanded'}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}

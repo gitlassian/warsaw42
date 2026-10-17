@@ -1,6 +1,7 @@
 import { Link } from 'react-router'
 import { RoutePaths } from '@/app/routePaths'
 import logo from '@/assets/brand/defiwawa-horizontal.svg'
+import { t } from '@/i18n'
 import { IconButton } from '@/design-system/components/IconButton'
 import styles from './AppHeader.module.css'
 
@@ -15,16 +16,23 @@ type AppHeaderProps = {
 export function AppHeader({ floating = false, onClose }: AppHeaderProps) {
   return (
     <header className={styles.header} data-floating={floating || undefined}>
-      <Link to={RoutePaths.map} className={styles.brand}>
-        <h1 className={styles.name}>
-          <img src={logo} alt="DefiWawa" className={styles.logo} />
-        </h1>
-      </Link>
-      {onClose && (
-        <span className={styles.close}>
-          <IconButton icon="close" label="Zamknij" onClick={onClose} />
-        </span>
+      {/* Start screen: the D in the search field is the logo, the lockup stays only as the page heading. */}
+      {floating ? (
+        <h1 className={styles.srOnly}>DefiWawa</h1>
+      ) : (
+        <Link to={RoutePaths.map} className={styles.brand}>
+          <h1 className={styles.name}>
+            <img src={logo} alt="DefiWawa" className={styles.logo} />
+          </h1>
+        </Link>
       )}
+      <span className={styles.end}>
+        {onClose && (
+          <span className={styles.close}>
+            <IconButton icon="close" label={t('Zamknij')} onClick={onClose} />
+          </span>
+        )}
+      </span>
     </header>
   )
 }

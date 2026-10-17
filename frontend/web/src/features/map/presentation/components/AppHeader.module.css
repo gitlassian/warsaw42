@@ -34,6 +34,20 @@
   width: auto;
 }
 
+/* Language switch (and the close button) at the end of the header row. */
+.end {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  margin-left: auto;
+}
+
+/* Start screen: the header holds only the hidden heading and the switch; it goes to the end of the search row. */
+.header[data-floating] {
+  order: 99;
+  align-self: flex-start;
+}
+
 /* The 24 px glyph lines up with the panel content edge; the 48 px hit area and hover reach past it. */
 .close {
   display: flex;
@@ -53,9 +67,22 @@
     box-shadow: none;
   }
 
-  /* Start screen: as tall as the address search and the find button in its row. */
+  /* In the side panel the switch is an outlined pill instead of a floating one. */
+  .header:not([data-floating])   /* Start screen: as tall as the address search and the find button in its row. */
   .header[data-floating] .brand {
     min-height: 56px;
   }
 
+}
+
+/* Heading for screen readers only. */
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }

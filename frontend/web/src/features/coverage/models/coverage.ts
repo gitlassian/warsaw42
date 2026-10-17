@@ -1,12 +1,13 @@
 import type { FeatureCollection, MultiPolygon } from 'geojson'
+import { t } from '../../../i18n/index.ts'
 
 /** GET /coverage scenarios (ENDPOINTS.md §5). */
 export type CoverageScenario = 'all_public' | 'available_at' | 'always_open'
 
 export const COVERAGE_SCENARIOS = [
-  { value: 'all_public', label: 'Wszystkie publiczne' },
-  { value: 'available_at', label: 'Dostępne o tej porze' },
-  { value: 'always_open', label: 'Całodobowe' },
+  { value: 'all_public', label: t('Wszystkie publiczne') },
+  { value: 'available_at', label: t('Dostępne o tej porze') },
+  { value: 'always_open', label: t('Całodobowe') },
 ] as const satisfies readonly { value: CoverageScenario; label: string }[]
 
 /** Reach radius in meters, picked with a slider. */

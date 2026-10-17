@@ -1,6 +1,7 @@
 import { formatDistance, formatDuration } from '@/shared/lib/format'
 import type { EtaEntry } from '../../models/routing'
 import styles from './TravelTime.module.css'
+import { t } from '@/i18n'
 
 type TravelTimeProps = {
   eta?: EtaEntry
@@ -16,14 +17,14 @@ export function TravelTime({ eta, straightLineM, size = 'row' }: TravelTimeProps
     return (
       <span className={className}>
         <span className={styles.placeholder} />
-        <span className="visually-hidden">Obliczamy czas dojścia</span>
+        <span className="visually-hidden">{t('Obliczamy czas dojścia')}</span>
       </span>
     )
   }
   if (eta?.status === 'ok') {
     return (
       <span className={className}>
-        <strong className={styles.time}>{formatDuration(eta.durationSeconds)} pieszo</strong>
+        <strong className={styles.time}>{formatDuration(eta.durationSeconds)} {t('pieszo')}</strong>
         <span>· {formatDistance(eta.distanceM)}</span>
       </span>
     )
@@ -34,14 +35,14 @@ export function TravelTime({ eta, straightLineM, size = 'row' }: TravelTimeProps
         <strong className={styles.time} aria-hidden="true">
           —
         </strong>
-        <span className={styles.note}>Nie udało się obliczyć czasu</span>
+        <span className={styles.note}>{t('Nie udało się obliczyć czasu')}</span>
       </span>
     )
   }
   if (straightLineM == null) return null
   return (
     <span className={`${className} ${styles.straight}`}>
-      {formatDistance(straightLineM)} <span className={styles.note}>w linii prostej</span>
+      {formatDistance(straightLineM)} <span className={styles.note}>{t('w linii prostej')}</span>
     </span>
   )
 }

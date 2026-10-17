@@ -23,11 +23,12 @@ import { discoveryStore, requestEtas, routeTo, startPicking } from '../../store'
 import { AedList } from '../components/AedList'
 import { OriginIssueNotice } from '../components/OriginIssueNotice'
 import { TravelTime } from '../components/TravelTime'
+import { t } from '@/i18n'
 
 const DEVICE_CONDITION: Record<Aed['operationalStatus'], string> = {
-  unknown: 'Stan urządzenia nie jest potwierdzony. Status dotyczy tylko godzin dostępu.',
-  confirmed_unavailable: 'Urządzenie jest oznaczone jako niedostępne.',
-  confirmed_operational: 'Urządzenie zostało sprawdzone.',
+  unknown: t('Stan urządzenia nie jest potwierdzony. Status dotyczy tylko godzin dostępu.'),
+  confirmed_unavailable: t('Urządzenie jest oznaczone jako niedostępne.'),
+  confirmed_operational: t('Urządzenie zostało sprawdzone.'),
 }
 
 /** Walking directions in Google Maps; without an origin it uses the device location. */
@@ -59,9 +60,9 @@ export function AedDetailsPanel() {
 
   if (!aed) {
     return aedsStatus === 'error' || aedsStatus === 'ready' ? (
-      <Notice tone="warning" title="Nie znaleźliśmy tego defibrylatora." />
+      <Notice tone="warning" title={t('Nie znaleźliśmy tego defibrylatora.')} />
     ) : (
-      <LoadingText>Wczytujemy dane…</LoadingText>
+      <LoadingText>{t('Wczytujemy dane…')}</LoadingText>
     )
   }
 
@@ -79,7 +80,7 @@ export function AedDetailsPanel() {
       <Stack gap={8}>
         {fastest && (
           <Text variant="label" tone="accent">
-            Najszybszy z porównanych
+            {t('Najszybszy z porównanych')}
           </Text>
         )}
         <TravelTime size="hero" eta={etas[aed.id]} />
@@ -95,9 +96,9 @@ export function AedDetailsPanel() {
 
       <Stack gap={4}>
         <Text variant="heading" as="h3">
-          Wejście
+          {t('Wejście')}
         </Text>
-        <Text>{aed.entrance ?? 'Brak informacji o wejściu.'}</Text>
+        <Text>{aed.entrance ?? t('Brak informacji o wejściu.')}</Text>
         <Text tone="secondary">{placementLabel(aed)}</Text>
         {wide && <AedPhoto aed={aed} />}
       </Stack>
@@ -106,10 +107,10 @@ export function AedDetailsPanel() {
         {routeShown ? (
           <>
             <ButtonLink variant="primary" icon="navigation" to={buildPath.navigate(aed.id)}>
-              Prowadź do defibrylatora
+              {t('Prowadź do defibrylatora')}
             </ButtonLink>
             <ButtonLink icon="google_maps" to={googleMapsUrl(aed.location, origin)} target="_blank" rel="noopener noreferrer">
-              Otwórz w Google Maps
+              {t('Otwórz w Google Maps')}
             </ButtonLink>
           </>
         ) : (
@@ -117,19 +118,19 @@ export function AedDetailsPanel() {
             variant="primary"
             icon="directions_walk"
             loading={routingState === 'loading'}
-            loadingLabel="Wyznaczamy trasę…"
+            loadingLabel={t('Wyznaczamy trasę…')}
             onClick={() => routeTo(aed.id)}
           >
-            Wyznacz trasę
+            {t('Wyznacz trasę')}
           </Button>
         )}
         {routingState === 'failed' && (
           <Notice
             tone="danger"
-            title="Nie udało się wyznaczyć trasy."
-            actions={<Button onClick={() => routeTo(aed.id)}>Spróbuj ponownie</Button>}
+            title={t('Nie udało się wyznaczyć trasy.')}
+            actions={<Button onClick={() => routeTo(aed.id)}>{t('Spróbuj ponownie')}</Button>}
           >
-            {straightLineM != null && `Odległość w linii prostej: ${formatDistance(straightLineM)}.`}
+            {straightLineM != null && t('Odległość w linii prostej: {distance}.', { distance: formatDistance(straightLineM) })}
           </Notice>
         )}
         {issue && (
@@ -138,25 +139,25 @@ export function AedDetailsPanel() {
       </Stack>
 
       <div>
-        <Disclosure title="Jak użyć defibrylatora">
+        <Disclosure title={t('Jak użyć defibrylatora')}>
           <AedUsageGuide withHeading={false} />
         </Disclosure>
-        <Disclosure title="Godziny dostępu">
+        <Disclosure title={t('Godziny dostępu')}>
           <AedHours schedule={aed.schedule} sourceHours={aed.sourceHours} unverified={aed.unverifiedSchedule} />
         </Disclosure>
-        <Disclosure title="Informacje ze źródła">
-          <Text>{aed.sourceHours ?? 'Źródło nie podaje godzin.'}</Text>
+        <Disclosure title={t('Informacje ze źródła')}>
+          <Text>{aed.sourceHours ?? t('Źródło nie podaje godzin.')}</Text>
           {!wide && <AedPhoto aed={aed} />}
         </Disclosure>
-        <Disclosure title="Urządzenie i dane">
+        <Disclosure title={t('Urządzenie i dane')}>
           <Text>{DEVICE_CONDITION[aed.operationalStatus]}</Text>
-          {aed.source === 'osm' && <Text tone="secondary">Punkt spoza rejestru miasta: dane z OpenStreetMap, nieoficjalne.</Text>}
-          {aed.hoursSource === 'osm' && <Text tone="secondary">Godziny z OpenStreetMap.</Text>}
-          {aed.hoursSource === 'city_osm' && <Text tone="secondary">Godziny z rejestru miasta, potwierdzone w OpenStreetMap.</Text>}
+          {aed.source === 'osm' && <Text tone="secondary">{t('Punkt spoza rejestru miasta: dane z OpenStreetMap, nieoficjalne.')}</Text>}
+          {aed.hoursSource === 'osm' && <Text tone="secondary">{t('Godziny z OpenStreetMap.')}</Text>}
+          {aed.hoursSource === 'city_osm' && <Text tone="secondary">{t('Godziny z rejestru miasta, potwierdzone w OpenStreetMap.')}</Text>}
           {dataStatus && (
             <>
               <Text variant="meta" tone="muted">
-                Dane pobrano: {formatDateTime(dataStatus.fetchedAt)}
+                {t('Dane pobrano: {time}', { time: formatDateTime(dataStatus.fetchedAt) })}
               </Text>
               <Text variant="meta" tone="muted">
                 {dataStatus.attribution}
@@ -167,20 +168,20 @@ export function AedDetailsPanel() {
       </div>
 
       <ButtonLink to={buildPath.report(aed.id)} icon="flag">
-        Zgłoś problem
+        {t('Zgłoś problem')}
       </ButtonLink>
 
       {result && inResult && (
         <>
           <AedList
-            title="Inne defibrylatory"
+            title={t('Inne defibrylatory')}
             aeds={compared.filter((a) => a.id !== aed.id)}
             now={now}
             etas={etas}
             origin={origin}
           />
           <AedList
-            title="Dostęp niepotwierdzony"
+            title={t('Dostęp niepotwierdzony')}
             aeds={result.unknownAccessAlternatives}
             now={now}
             etas={etas}

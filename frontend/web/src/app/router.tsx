@@ -1,5 +1,6 @@
 import { Navigate, createBrowserRouter } from 'react-router'
 import { RoutePaths } from '@/app/routePaths'
+import { basename } from '@/i18n'
 import type { SheetSnap } from '@/design-system/components/Sheet'
 import { CoveragePanel } from '@/features/coverage/presentation/sheets/CoveragePanel'
 import { DataInfoPanel } from '@/features/dataInfo/presentation/sheets/DataInfoPanel'
@@ -43,4 +44,4 @@ export const appRouter = createBrowserRouter([
       { path: '*', element: <Navigate to={RoutePaths.map} replace /> },
     ],
   },
-])
+], { basename })

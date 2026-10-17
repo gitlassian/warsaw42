@@ -11,6 +11,7 @@ import { useStore } from '@/shared/lib/store'
 import { discoveryStore, locate, requestEtas, startPicking } from '../../store'
 import { AedList } from '../components/AedList'
 import { OriginIssueNotice } from '../components/OriginIssueNotice'
+import { t } from '@/i18n'
 
 const PAGE_SIZE = 20
 
@@ -44,32 +45,32 @@ export function NearbyListPanel() {
 
   return (
     <Stack gap={24}>
-      <PanelHeader title="Defibrylatory w pobliżu" />
+      <PanelHeader title={t('Defibrylatory w pobliżu')} />
 
       {!origin && (
         <Notice
-          title="Kolejność od centrum Warszawy."
+          title={t('Kolejność od centrum Warszawy.')}
           actions={
             <>
-              <Button icon="my_location" loading={locating} loadingLabel="Ustalamy lokalizację…" onClick={locate}>
-                Użyj mojej lokalizacji
+              <Button icon="my_location" loading={locating} loadingLabel={t('Ustalamy lokalizację…')} onClick={locate}>
+                {t('Użyj mojej lokalizacji')}
               </Button>
               <Button icon="location_on" onClick={() => startPicking()}>
-                Wybierz punkt na mapie
+                {t('Wybierz punkt na mapie')}
               </Button>
             </>
           }
         >
-          Ustal punkt startowy, aby zobaczyć czas dojścia.
+          {t('Ustal punkt startowy, aby zobaczyć czas dojścia.')}
         </Notice>
       )}
       {issue && <OriginIssueNotice issue={issue} onPick={() => startPicking()} onRetry={locate} />}
-      {aedsStatus !== 'ready' && aedsStatus !== 'error' && <LoadingText>Wczytujemy dane…</LoadingText>}
+      {aedsStatus !== 'ready' && aedsStatus !== 'error' && <LoadingText>{t('Wczytujemy dane…')}</LoadingText>}
 
-      <AedList title="Dostępne teraz" aeds={available} now={now} etas={etas} origin={origin} />
-      <AedList title="Zamknięte i niedostępne" aeds={others} now={now} etas={etas} origin={origin} />
+      <AedList title={t('Dostępne teraz')} aeds={available} now={now} etas={etas} origin={origin} />
+      <AedList title={t('Zamknięte i niedostępne')} aeds={others} now={now} etas={etas} origin={origin} />
 
-      {limit < sorted.length && <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>Pokaż więcej</Button>}
+      {limit < sorted.length && <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>{t('Pokaż więcej')}</Button>}
     </Stack>
   )
 }

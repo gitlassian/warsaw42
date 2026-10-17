@@ -1,7 +1,7 @@
-/* One white card: the round field, with the suggestions opening inside it. */
+/* One white card with the radius of the buttons around it; the suggestions open inside it. */
 .search {
   overflow: hidden;
-  border-radius: var(--radius-sheet);
+  border-radius: var(--radius-control);
   background: var(--color-surface);
 }
 
@@ -10,8 +10,16 @@
   align-items: center;
   gap: var(--space-8);
   min-height: 48px;
-  padding: 0 var(--space-4) 0 var(--space-16);
+  padding: 0 var(--space-4) 0 var(--space-12);
   color: var(--color-text-secondary);
+}
+
+/* The D of the logo, as the Google Maps pin in its search field. */
+.mark {
+  flex: none;
+  display: block;
+  width: 28px;
+  height: 28px;
 }
 
 .input {
@@ -92,10 +100,6 @@
 
 /* Wide: in the top row, as tall as the logo and the find button beside it. */
 @media (min-width: 840px) {
-  .search {
-    border-radius: 28px;
-  }
-
   .field {
     min-height: 56px;
   }

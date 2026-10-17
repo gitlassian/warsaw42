@@ -3,10 +3,11 @@ import { AppIcon, type IconName } from '@/design-system/components/AppIcon'
 import { IconButton } from '@/design-system/components/IconButton'
 import type { AedAvailability, AedFilters } from '@/features/aeds/lib/aedAvailability'
 import styles from './FilterMenu.module.css'
+import { t } from '@/i18n'
 
 const OPTIONS: { group: AedAvailability; icon: IconName; label: string }[] = [
-  { group: 'available', icon: 'check_circle', label: 'Otwarte' },
-  { group: 'unavailable', icon: 'lock', label: 'Zamknięte i niedostępne' },
+  { group: 'available', icon: 'check_circle', label: t('Otwarte') },
+  { group: 'unavailable', icon: 'lock', label: t('Zamknięte i niedostępne') },
 ]
 
 type FilterMenuProps = {
@@ -46,15 +47,15 @@ export function FilterMenu({ filters, onToggle, open, onOpenChange }: FilterMenu
       <IconButton
         variant="floating"
         icon="filter_list"
-        label="Filtry AED"
-        text="Filtry"
+        label={t('Filtry AED')}
+        text={t('Filtry')}
         pressed={open}
         aria-expanded={open}
         aria-controls={menuId}
         onClick={() => onOpenChange(!open)}
       />
       {open && (
-        <div id={menuId} className={styles.menu} role="group" aria-label="Filtry AED">
+        <div id={menuId} className={styles.menu} role="group" aria-label={t('Filtry AED')}>
           {OPTIONS.map(({ group, icon, label }) => (
             <button
               key={group}
@@ -67,7 +68,7 @@ export function FilterMenu({ filters, onToggle, open, onOpenChange }: FilterMenu
               {label}
             </button>
           ))}
-          <p className={styles.hint}>{anyOn ? 'Pokazujemy tylko zaznaczone grupy.' : 'Brak filtrów: pokazujemy wszystkie AED.'}</p>
+          <p className={styles.hint}>{anyOn ? t('Pokazujemy tylko zaznaczone grupy.') : t('Brak filtrów: pokazujemy wszystkie AED.')}</p>
         </div>
       )}
     </div>

@@ -1,13 +1,14 @@
 import { useEffect, useId, useState, type KeyboardEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { buildPath } from '@/app/routePaths'
-import { AppIcon } from '@/design-system/components/AppIcon'
+import symbol from '@/assets/brand/defiwawa-symbol.svg'
 import { Button } from '@/design-system/components/Button'
 import { IconButton } from '@/design-system/components/IconButton'
 import type { AddressHit, FindResult } from '../../models/routing'
 import { searchAddresses } from '../../services/geocodingApi'
 import { findFrom, findFromAddress, startPicking } from '../../store'
 import styles from './AddressSearch.module.css'
+import { t } from '@/i18n'
 
 const MIN_LENGTH = 3
 const DEBOUNCE_MS = 300
@@ -89,17 +90,18 @@ export function AddressSearch() {
   return (
     <div className={styles.search}>
       <div className={styles.field}>
-        <AppIcon name="search" />
+        {/* Like Google Maps: the brand mark sits at the start of the field, the magnifier at its end. */}
+        <img src={symbol} alt="" className={styles.mark} />
         <input
           className={styles.input}
           type="search"
           role="combobox"
-          aria-label="Adres"
+          aria-label={t('Adres')}
           aria-autocomplete="list"
           aria-expanded={showList}
           aria-controls={listId}
           aria-activedescendant={showList && active >= 0 ? `${id}-${active}` : undefined}
-          placeholder="Szukaj adresu"
+          placeholder={t('Szukaj adresu')}
           autoComplete="off"
           enterKeyHint="search"
           value={query}
@@ -112,12 +114,17 @@ export function AddressSearch() {
           onBlur={() => setOpen(false)}
           onKeyDown={onKeyDown}
         />
-        {query && <IconButton icon="close" label="Wyczyść adres" onClick={clear} />}
+        {query && <IconButton icon="close" label={t('Wyczyść adres')} onClick={clear} />}
+        <IconButton
+          icon="search"
+          label={t('Szukaj')}
+          onClick={() => (hits.length ? choose(hits[Math.max(active, 0)]) : setOpen(true))}
+        />
       </div>
 
       {/* Mouse down on the list would blur the input and close it before the click lands. */}
       <div className={styles.results} hidden={!showList} onMouseDown={(e) => e.preventDefault()}>
-        <ul id={listId} role="listbox" aria-label="Adresy" className={styles.list}>
+        <ul id={listId} role="listbox" aria-label={t('Adresy')} className={styles.list}>
           {hits.map((hit, i) => (
             <li
               key={hit.id}
@@ -133,14 +140,14 @@ export function AddressSearch() {
           ))}
         </ul>
         <p className={styles.message} role="status">
-          {lookup.status === 'loading' && 'Szukamy…'}
-          {lookup.status === 'done' && !hits.length && 'Nie znaleźliśmy tego adresu w Warszawie.'}
-          {lookup.status === 'failed' && 'Nie udało się wyszukać adresu.'}
+          {lookup.status === 'loading' && t('Szukamy…')}
+          {lookup.status === 'done' && !hits.length && t('Nie znaleźliśmy tego adresu w Warszawie.')}
+          {lookup.status === 'failed' && t('Nie udało się wyszukać adresu.')}
         </p>
         {(lookup.status === 'failed' || (lookup.status === 'done' && !hits.length)) && (
           <div className={styles.action}>
             <Button icon="location_on" onClick={pickOnMap}>
-              Wybierz punkt na mapie
+              {t('Wybierz punkt na mapie')}
             </Button>
           </div>
         )}

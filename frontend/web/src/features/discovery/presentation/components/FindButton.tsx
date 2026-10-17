@@ -6,6 +6,7 @@ import { Stack } from '@/design-system/components/Stack'
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery'
 import { useStore } from '@/shared/lib/store'
 import { cancelSearch, discoveryStore, findNearest } from '../../store'
+import { t } from '@/i18n'
 
 /** "Znajdź najbliższy defibrylator": pinned on every screen, outside the sheet and panels. */
 export function FindButton() {
@@ -26,11 +27,11 @@ export function FindButton() {
 
   return (
     <Stack gap={8}>
-      <Button variant="primary" icon="aed" loading={searching} loadingLabel="Szukamy defibrylatora…" onClick={onFind}>
-        Znajdź najbliższy defibrylator
+      <Button variant="primary" icon="aed" loading={searching} loadingLabel={t('Szukamy defibrylatora…')} onClick={onFind}>
+        {t('Znajdź najbliższy defibrylator')}
       </Button>
       {/* Phones only: no cancel button on the wide (desktop) layout. */}
-      {searching && !wide && <Button onClick={cancelSearch}>Anuluj</Button>}
+      {searching && !wide && <Button onClick={cancelSearch}>{t('Anuluj')}</Button>}
     </Stack>
   )
 }

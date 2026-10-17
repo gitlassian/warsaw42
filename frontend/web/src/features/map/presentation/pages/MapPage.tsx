@@ -26,6 +26,7 @@ import { MapControls } from '../components/MapControls'
 import { MapView } from '../components/MapView'
 import { TimeBar } from '../components/TimeBar'
 import styles from './MapPage.module.css'
+import { t } from '@/i18n'
 
 /** App shell: the map stays mounted; the active route renders into the sheet / side panel; the find button is pinned. */
 export function MapPage() {
@@ -111,8 +112,8 @@ export function MapPage() {
     <button
       type="button"
       className={styles.locate}
-      aria-label="Pokaż moją lokalizację"
-      title="Pokaż moją lokalizację"
+      aria-label={t('Pokaż moją lokalizację')}
+      title={t('Pokaż moją lokalizację')}
       onClick={onLocate}
       disabled={locating}
     >
@@ -147,7 +148,7 @@ export function MapPage() {
         <div className={styles.panel}>
           <Sheet
             key={location.pathname}
-            label="Panel"
+            label={t('Panel')}
             initialSnap={handle?.sheet}
             // The expanded sheet stops below the taller direction banner.
             topOffset={navigating ? 160 : undefined}
@@ -163,7 +164,7 @@ export function MapPage() {
       {!wide && (
         <div ref={dockRef} className={styles.dock} inert={!floating}>
           {floating && (
-            <aside className={styles.status} aria-label="Panel">
+            <aside className={styles.status} aria-label={t('Panel')}>
               <Outlet />
             </aside>
           )}
@@ -178,7 +179,7 @@ export function MapPage() {
         <div className={styles.overlay}>
           {navigating && wide && <NavigationBanner />}
           {floating && wide && (
-            <aside className={styles.status} aria-label="Panel">
+            <aside className={styles.status} aria-label={t('Panel')}>
               <Outlet />
             </aside>
           )}
@@ -189,21 +190,21 @@ export function MapPage() {
           {!live && (
             <Notice
               tone="warning"
-              title={`Podgląd: ${formatWarsawTime(now)}`}
-              actions={<Button onClick={resetViewTime}>Wróć do teraz</Button>}
+              title={t('Podgląd: {time}', { time: formatWarsawTime(now) })}
+              actions={<Button onClick={resetViewTime}>{t('Wróć do teraz')}</Button>}
             >
-              Mapa pokazuje dostępność o tej porze, nie teraz.
+              {t('Mapa pokazuje dostępność o tej porze, nie teraz.')}
             </Notice>
           )}
           {mapFailed && (
             <Notice
               tone="danger"
-              title="Nie udało się wczytać mapy."
+              title={t('Nie udało się wczytać mapy.')}
               actions={
                 <>
-                  <Button onClick={() => window.location.reload()}>Spróbuj ponownie</Button>
+                  <Button onClick={() => window.location.reload()}>{t('Spróbuj ponownie')}</Button>
                   <ButtonLink to={RoutePaths.aeds} icon="list">
-                    Lista defibrylatorów
+                    {t('Lista defibrylatorów')}
                   </ButtonLink>
                 </>
               }

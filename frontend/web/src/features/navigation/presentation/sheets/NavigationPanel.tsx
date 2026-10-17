@@ -18,11 +18,12 @@ import { maneuverIcon } from '../../lib/maneuverIcon'
 import { followPosition, navigateFromHere, navigationStore, previewStep, startNavigation, stopNavigation } from '../../store'
 import { useNavigationView } from '../useNavigationView'
 import styles from './NavigationPanel.module.css'
+import { t } from '@/i18n'
 
 const TRACKING_NOTICE = {
-  denied: 'Brak dostępu do lokalizacji. Przeglądaj kroki strzałkami na górze ekranu.',
-  unavailable: 'Słaby sygnał GPS. Wskazówki wrócą, gdy pozycja się odświeży.',
-  insecure: 'Lokalizacja działa tylko na stronie HTTPS. Przeglądaj kroki strzałkami na górze ekranu.',
+  denied: t('Brak dostępu do lokalizacji. Przeglądaj kroki strzałkami na górze ekranu.'),
+  unavailable: t('Słaby sygnał GPS. Wskazówki wrócą, gdy pozycja się odświeży.'),
+  insecure: t('Lokalizacja działa tylko na stronie HTTPS. Przeglądaj kroki strzałkami na górze ekranu.'),
 } as const
 
 /** Turn-by-turn mode (sheet / side panel): time left, GPS state, step list, then finding and using the AED. */
@@ -50,7 +51,7 @@ export function NavigationPanel() {
     return () => clearInterval(timer)
   }, [])
 
-  if (!aed) return <LoadingText>Wczytujemy dane…</LoadingText>
+  if (!aed) return <LoadingText>{t('Wczytujemy dane…')}</LoadingText>
 
   const end = () => navigate(buildPath.aed(id))
 
@@ -61,14 +62,14 @@ export function NavigationPanel() {
           {aed.venueName}
         </Text>
         {routing === 'loading' ? (
-          <LoadingText>Wyznaczamy trasę…</LoadingText>
+          <LoadingText>{t('Wyznaczamy trasę…')}</LoadingText>
         ) : (
           <Notice
             tone={routing === 'failed' ? 'danger' : 'neutral'}
-            title={routing === 'failed' ? 'Nie udało się wyznaczyć trasy.' : 'Najpierw wyznacz trasę.'}
+            title={routing === 'failed' ? t('Nie udało się wyznaczyć trasy.') : t('Najpierw wyznacz trasę.')}
             actions={
               <Button variant="primary" icon="directions_walk" onClick={() => routeTo(id)}>
-                Wyznacz trasę
+                {t('Wyznacz trasę')}
               </Button>
             }
           />
@@ -88,38 +89,38 @@ export function NavigationPanel() {
       <div className={styles.summary}>
         <div className={styles.eta}>
           <Text variant="time" tone="accent" as="p">
-            {arrived ? 'Na miejscu' : formatDuration(view.remainingSeconds)}
+            {arrived ? t('Na miejscu') : formatDuration(view.remainingSeconds)}
           </Text>
           <Text variant="meta" tone="secondary">
-            {arrived ? aed.venueName : `${formatDistance(view.remainingM)} · przybycie ${formatClock(arrival)}`}
+            {arrived ? aed.venueName : t('{distance} · przybycie {time}', { distance: formatDistance(view.remainingM), time: formatClock(arrival) })}
           </Text>
         </div>
         <span className={styles.end}>
           <Button icon="close" onClick={end}>
-            Zakończ
+            {t('Zakończ')}
           </Button>
         </span>
       </div>
 
       {tracking === 'off' && (
         <Notice
-          title="Trasa z wybranego punktu."
+          title={t('Trasa z wybranego punktu.')}
           actions={
             <Button icon="my_location" onClick={() => navigateFromHere(id)}>
-              Prowadź z mojej lokalizacji
+              {t('Prowadź z mojej lokalizacji')}
             </Button>
           }
         >
-          Przeglądaj kroki strzałkami na górze ekranu albo wybierz krok z listy.
+          {t('Przeglądaj kroki strzałkami na górze ekranu albo wybierz krok z listy.')}
         </Notice>
       )}
-      {tracking === 'waiting' && <LoadingText>Szukamy Twojej pozycji…</LoadingText>}
+      {tracking === 'waiting' && <LoadingText>{t('Szukamy Twojej pozycji…')}</LoadingText>}
       {(tracking === 'denied' || tracking === 'unavailable' || tracking === 'insecure') && (
         <Notice tone="warning" title={TRACKING_NOTICE[tracking]} />
       )}
       {tracking === 'on' && !following && (
         <Button icon="near_me" onClick={followPosition}>
-          Wróć do mojej pozycji
+          {t('Wróć do mojej pozycji')}
         </Button>
       )}
 
@@ -133,7 +134,7 @@ export function NavigationPanel() {
       {steps.length > 0 && (
         <section className={styles.section}>
           <Text variant="heading" as="h3">
-            Wskazówki
+            {t('Wskazówki')}
           </Text>
           <ol className={styles.steps}>
             {steps.map((step, i) => (
@@ -166,7 +167,7 @@ export function NavigationPanel() {
       )}
 
       <Text variant="meta" tone="muted">
-        Trasa: Mapbox, © OpenStreetMap. Uważaj na ruch uliczny; wskazówki mogą nie uwzględniać przejść i zamkniętych bram.
+        {t('Trasa: Mapbox, © OpenStreetMap. Uważaj na ruch uliczny; wskazówki mogą nie uwzględniać przejść i zamkniętych bram.')}
       </Text>
     </Stack>
   )

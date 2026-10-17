@@ -2,6 +2,7 @@ import { mockLatency } from '@/shared/lib/mockLatency'
 import { restGet, storagePublicUrl, supabaseEnabled } from '@/shared/lib/supabase'
 import { AED_COLUMNS, aedFromRow, type AedRow } from '../lib/fromRow'
 import type { Aed, DataStatus } from '../models/aed'
+import { t } from '@/i18n'
 
 // With VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY set, AEDs and the data status come from the
 // database (`aeds`, `app_data.status`); without them the mock snapshot below is used.
@@ -10,7 +11,7 @@ import type { Aed, DataStatus } from '../models/aed'
 // 17.10.2026 Warsaw snapshot in public/mock/aeds.json, for running without Supabase.
 
 const SNAPSHOT_FETCHED_AT = '2026-10-17T10:00:00+02:00'
-const SNAPSHOT_ATTRIBUTION = 'Dane: m.st. Warszawa, SCB (CC BY)'
+const SNAPSHOT_ATTRIBUTION = t('Dane: m.st. Warszawa, SCB (CC BY)')
 // Mock-only: exercises the confirmed-unavailable state; the snapshot has no device condition data.
 const DEMO_UNAVAILABLE_ID = '663'
 

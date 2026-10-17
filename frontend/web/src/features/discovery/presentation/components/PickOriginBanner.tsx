@@ -1,5 +1,6 @@
 import { IconButton } from '@/design-system/components/IconButton'
 import styles from './PickOriginBanner.module.css'
+import { t } from '@/i18n'
 
 type PickOriginBannerProps = {
   /** The last tapped point was outside Warsaw. */
@@ -12,12 +13,12 @@ export function PickOriginBanner({ outside, onCancel }: PickOriginBannerProps) {
   return (
     <div className={styles.banner} role="status">
       <p className={styles.text}>
-        <strong>Wybierz punkt na mapie</strong>
+        <strong>{t('Wybierz punkt na mapie')}</strong>
         <span className={outside ? styles.error : undefined}>
-          {outside ? 'Ten punkt jest poza Warszawą. Wybierz punkt w granicach miasta.' : 'Dotknij mapy w miejscu startu.'}
+          {outside ? t('Ten punkt jest poza Warszawą. Wybierz punkt w granicach miasta.') : t('Dotknij mapy w miejscu startu.')}
         </span>
       </p>
-      <IconButton icon="close" label="Anuluj wybór punktu" onClick={onCancel} />
+      <IconButton icon="close" label={t('Anuluj wybór punktu')} onClick={onCancel} />
     </div>
   )
 }

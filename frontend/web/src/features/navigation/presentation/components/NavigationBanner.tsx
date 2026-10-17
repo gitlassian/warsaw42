@@ -10,6 +10,7 @@ import { maneuverIcon } from '../../lib/maneuverIcon'
 import { navigationStore, previewStep } from '../../store'
 import { useNavigationView } from '../useNavigationView'
 import styles from './NavigationBanner.module.css'
+import { t } from '@/i18n'
 
 const SWIPE_PX = 48
 
@@ -29,7 +30,7 @@ export function NavigationBanner() {
       <div className={styles.banner} role="status">
         <div className={styles.main}>
           <span className={styles.arrow}>{rerouting ? <Spinner /> : <AppIcon name="route" size={40} />}</span>
-          <p className={styles.instruction}>{rerouting ? 'Wyznaczamy trasę…' : 'Brak trasy do tego defibrylatora.'}</p>
+          <p className={styles.instruction}>{rerouting ? t('Wyznaczamy trasę…') : t('Brak trasy do tego defibrylatora.')}</p>
         </div>
       </div>
     )
@@ -43,7 +44,7 @@ export function NavigationBanner() {
             <AppIcon name="aed" size={40} />
           </span>
           <div className={styles.text}>
-            <span className={styles.distance}>Jesteś na miejscu</span>
+            <span className={styles.distance}>{t('Jesteś na miejscu')}</span>
             <span className={styles.instruction}>{aed.entrance ?? placementLabel(aed)}</span>
           </div>
         </div>
@@ -75,7 +76,7 @@ export function NavigationBanner() {
     <div className={styles.stack}>
       <section
         className={styles.banner}
-        aria-label="Wskazówki"
+        aria-label={t('Wskazówki')}
         onPointerDown={onPointerDown}
         onPointerUp={onPointerUp}
         onPointerCancel={() => (swipeX.current = null)}
@@ -86,7 +87,7 @@ export function NavigationBanner() {
           </span>
           <div className={styles.text}>
             {distanceM !== null && <span className={styles.distance}>{formatDistance(distanceM)}</span>}
-            <span className={styles.instruction}>{step?.instruction ?? 'Idź wyznaczoną trasą do defibrylatora.'}</span>
+            <span className={styles.instruction}>{step?.instruction ?? t('Idź wyznaczoną trasą do defibrylatora.')}</span>
           </div>
         </div>
         {/* Distance changes with every GPS fix; only the instruction is announced. */}
@@ -97,13 +98,13 @@ export function NavigationBanner() {
           <div className={styles.then}>
             {next && (
               <span className={styles.thenStep}>
-                <span>Następnie</span>
+                <span>{t('Następnie')}</span>
                 <AppIcon name={maneuverIcon(next)} size={20} label={next.instruction} />
               </span>
             )}
             {browsable && (
               <span className={styles.pager}>
-                <button type="button" className={styles.page} aria-label="Poprzedni krok" disabled={index === 0} onClick={() => go(index - 1)}>
+                <button type="button" className={styles.page} aria-label={t('Poprzedni krok')} disabled={index === 0} onClick={() => go(index - 1)}>
                   <AppIcon name="chevron_left" />
                 </button>
                 <span className={styles.count}>
@@ -112,7 +113,7 @@ export function NavigationBanner() {
                 <button
                   type="button"
                   className={styles.page}
-                  aria-label="Następny krok"
+                  aria-label={t('Następny krok')}
                   disabled={index === steps.length - 1}
                   onClick={() => go(index + 1)}
                 >
@@ -125,9 +126,9 @@ export function NavigationBanner() {
       </section>
       {view.offRoute && position && (
         <div className={styles.alert} role="alert">
-          <span>Zboczono z trasy</span>
+          <span>{t('Zboczono z trasy')}</span>
           <button type="button" className={styles.reroute} disabled={rerouting} onClick={() => rerouteFrom(position, aedId)}>
-            {rerouting ? 'Wyznaczamy…' : 'Wyznacz nową trasę'}
+            {rerouting ? t('Wyznaczamy…') : t('Wyznacz nową trasę')}
           </button>
         </div>
       )}

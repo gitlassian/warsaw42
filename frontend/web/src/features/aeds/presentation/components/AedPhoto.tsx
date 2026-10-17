@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { Aed } from '../../models/aed'
 import styles from './AedGuide.module.css'
+import { t } from '@/i18n'
 
 /** Photo of the cabinet's surroundings; nothing when the AED has none or it fails to load. */
 export function AedPhoto({ aed }: { aed: Aed }) {
@@ -11,7 +12,7 @@ export function AedPhoto({ aed }: { aed: Aed }) {
     <img
       className={styles.photo}
       src={aed.photoUrl}
-      alt={`Miejsce defibrylatora: ${aed.venueName}`}
+      alt={t('Miejsce defibrylatora: {name}', { name: aed.venueName })}
       loading="lazy"
       onError={() => setFailedPhoto(aed.photoUrl ?? null)}
     />

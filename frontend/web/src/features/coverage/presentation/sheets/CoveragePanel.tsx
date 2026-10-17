@@ -15,6 +15,7 @@ import { useStore } from '@/shared/lib/store'
 import { COVERAGE_RADIUS, COVERAGE_SCENARIOS } from '../../models/coverage'
 import { coverageStore, loadCoverage, setCoverageQuery } from '../../store'
 import styles from './CoveragePanel.module.css'
+import { t } from '@/i18n'
 
 /** "Odległość do najbliższego AED" coverage layer mode (DESIGN.md §11). */
 export function CoveragePanel() {
@@ -43,37 +44,37 @@ export function CoveragePanel() {
   return (
     <Stack gap={24}>
       <Stack gap={12}>
-        <PanelHeader title="Odległość do najbliższego AED" />
+        <PanelHeader title={t('Odległość do najbliższego AED')} />
         {/* The legend explains the map right under the title. */}
         <ul className={styles.legend}>
           <li>
             <span className={`${styles.swatch} ${styles.covered}`} />
-            Do {formatDistance(thresholdM)} od AED
+            {t('Do {distance} od AED', { distance: formatDistance(thresholdM) })}
           </li>
           <li>
             <span className={`${styles.swatch} ${styles.gap}`} />
-            Dalej niż {formatDistance(thresholdM)}
+            {t('Dalej niż {distance}', { distance: formatDistance(thresholdM) })}
           </li>
         </ul>
       </Stack>
 
       <ChoiceGroup
-        legend="Scenariusz"
+        legend={t('Scenariusz')}
         options={COVERAGE_SCENARIOS}
         value={scenario}
         onChange={(value) => setCoverageQuery({ scenario: value })}
       />
       {scenario === 'available_at' && (
         <div className={styles.time}>
-          <Text>Pora: {live ? 'teraz' : formatWarsawTime(now)}</Text>
+          <Text>{t('Pora: {time}', { time: live ? t('teraz') : formatWarsawTime(now) })}</Text>
           <Button variant="link" onClick={() => setTimePickerOpen(true)}>
-            Zmień
+            {t('Zmień')}
           </Button>
         </div>
       )}
       <div className={styles.radius}>
         <label htmlFor="coverage-radius" className={styles.radiusLabel}>
-          Promień: <strong>{formatDistance(radius)}</strong>
+          {t('Promień:')} <strong>{formatDistance(radius)}</strong>
         </label>
         <RangeSlider
           id="coverage-radius"
@@ -88,22 +89,22 @@ export function CoveragePanel() {
         />
       </div>
 
-      {status === 'loading' && <LoadingText>Obliczamy zasięg…</LoadingText>}
+      {status === 'loading' && <LoadingText>{t('Obliczamy zasięg…')}</LoadingText>}
       {status === 'error' && (
         <Notice
           tone="danger"
-          title="Nie udało się obliczyć zasięgu."
-          actions={<Button onClick={loadCoverage}>Spróbuj ponownie</Button>}
+          title={t('Nie udało się obliczyć zasięgu.')}
+          actions={<Button onClick={loadCoverage}>{t('Spróbuj ponownie')}</Button>}
         />
       )}
 
       {selected ? (
-        <Notice title="Wybrany obszar">
+        <Notice title={t('Wybrany obszar')}>
           <Stack gap={4}>
             <Text>
               {selected.nearestDistanceM === null
-                ? 'Brak AED spełniającego warunki scenariusza.'
-                : `Najbliższy AED: ${formatDistance(selected.nearestDistanceM)} w linii prostej.`}
+                ? t('Brak AED spełniającego warunki scenariusza.')
+                : t('Najbliższy AED: {distance} w linii prostej.', { distance: formatDistance(selected.nearestDistanceM) })}
             </Text>
             {nearestAed && (
               <ButtonLink variant="link" to={buildPath.aed(nearestAed.id)}>
@@ -113,11 +114,11 @@ export function CoveragePanel() {
           </Stack>
         </Notice>
       ) : (
-        layer && <Text tone="secondary">Wybierz obszar na mapie, aby zobaczyć odległość.</Text>
+        layer && <Text tone="secondary">{t('Wybierz obszar na mapie, aby zobaczyć odległość.')}</Text>
       )}
 
       <Text variant="meta" tone="muted">
-        Odległość w linii prostej. Dane mogą być niepełne.
+        {t('Odległość w linii prostej. Dane mogą być niepełne.')}
       </Text>
     </Stack>
   )
