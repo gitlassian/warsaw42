@@ -107,7 +107,7 @@ Use short, concrete wording. Each message answers one question. Show an explanat
 
 | Meaning | Interface label |
 | --- | --- |
-| Primary action | `Znajdź defibrylator` |
+| Primary action | `Znajdź najbliższy defibrylator` |
 | Time and distance | `4 min pieszo · 280 m` |
 | Automatic selection result | `Najszybszy z porównanych` |
 | Access according to listed hours | `Dostępny według godzin` |
@@ -156,7 +156,7 @@ Keep `OTP`, `API`, `PostGIS`, `timestamp`, "AI", and internal status names out o
 | Report an issue | `flag` |
 | Layers | `layers` |
 | AED list | `list` |
-| Back, close, expand | `arrow_back`, `close`, `expand_more` |
+| Close, expand | `close`, `expand_more` |
 
 One shared `AppIcon` component uses local assets from the chosen family on web and mobile. Bundle icons with the app so they work offline. Do not mix them with built-in Material Icons, SF Symbols, or another library. Preserve map provider attribution in its required form.
 
@@ -187,16 +187,17 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 
 - The map fills the available screen. Place a compact DefiWawa name and access to secondary features at the top.
 - Use one bottom sheet for the search start, result, list, or selected AED details. Do not stack sheets on top of one another.
-- The starting sheet shows "Znajdź defibrylator". Offer manual origin selection as a secondary action nearby.
+- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button in the top-right corner that clears the selection and its route.
 - The result sheet shows travel time, address, access, and entrance instructions. Expand additional details below.
-- Provide compact, medium, and expanded sheet states. At the default text scale, medium occupies about half the available height; content and text scale determine its actual height.
+- Provide compact, medium, and expanded sheet states. At the default text scale, medium occupies about 70% of the available height; content and text scale determine its actual height.
 - Support a button and keyboard interaction as well as dragging to expand the sheet. Accessible button names: `Pokaż szczegóły` / `Zwiń szczegóły`.
 - Long content scrolls after expansion; controls must not obscure the final row.
-- With large text or a short landscape viewport, details may occupy the full screen. Keep the map accessible through a back action.
+- With large text or a short landscape viewport, details may occupy the full screen. Keep the map accessible through the logo link.
 
 ### Wide Screens: 840 and Above
 
 - Place a 360–420-wide panel on the left and the map in the remaining space on the right.
+- The header holds only the logo; the menu button sits at the top of the round map controls on the right, above location and layers.
 - The panel uses the same information, actions, and order as the mobile version.
 - Available logical width determines when a zoomed interface switches to the narrow layout.
 - Do not add a separate bottom sheet over the side panel.
@@ -232,7 +233,7 @@ Inputs have a visible label above the field, a white background, and a `color.bo
 - Each individually displayed nearby AED has a small white travel time label, such as `4 min`, using 14/20 text at weight 600. Let the label grow with text scaling.
 - While calculating time, use a static neutral placeholder. On failure, show `—` and explain `Nie udało się obliczyć czasu` in the details card.
 - Do not show minutes without a selected origin. Offline, show distance such as `280 m`, with an explicit `Odległość w linii prostej` label above the results.
-- At overview zoom levels, group points into numbered clusters. Resolve overlapping labels through clustering and the list rather than smaller type.
+- At overview zoom levels, group points into numbered clusters. Resolve overlapping labels through clustering and the list rather than smaller type. Below zoom 15 a cluster shows the AED count; a cluster with at least one AED available now uses `color.accent` and the soft green background. Tapping a cluster zooms in until it splits. The selected AED is never hidden inside a cluster.
 - The accessible name includes AED, venue, access, and travel time or distance. Announce the meaning of `—` in words.
 
 ### Selected AED Card
@@ -291,7 +292,7 @@ For automatic results, evaluate access at the expected arrival time under the co
 | Basemap failed to load | `Nie udało się wczytać mapy.`; retry and continue through the AED list |
 | Offline with a downloaded package | `Offline. Dostępność mogła się zmienić.`; show the data date and straight-line distances |
 | Offline without a package | `Brak pobranej mapy.`; show only genuinely saved information, if any |
-| Stale data | `Dane mogą być nieaktualne.`; show the actual last synchronization date |
+| Stale data | No warning; the last synchronization date is shown in `O danych` |
 | Entrance instructions missing | `Brak informacji o wejściu.` |
 | Request rate limited | Briefly explain the wait and allow retrying at the time provided by the server |
 

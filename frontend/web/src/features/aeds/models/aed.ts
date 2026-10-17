@@ -28,15 +28,13 @@ export type Aed = {
   schedule: Schedule
   /** Original access/hours wording from Warsaw Open Data. */
   sourceHours: string | null
-  sourceNote: string | null
 }
 
+/** `app_data` key `status`. */
 export type DataStatus = {
-  datasetVersion: string
-  /** Last successful fetch; not a physical inspection of any device. */
+  /** Last successful import; not a physical inspection of any device. */
   fetchedAt: string
-  sync: 'fresh' | 'stale' | 'unavailable'
   aedCount: number
-  source: string
-  license: string
+  /** Source and licence line, e.g. "Dane: m.st. Warszawa, SCB (CC BY)". */
+  attribution: string
 }

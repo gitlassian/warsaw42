@@ -1,10 +1,9 @@
 import { useEffect } from 'react'
 import { useParams } from 'react-router'
-import { RoutePaths, buildPath } from '@/app/routePaths'
+import { buildPath } from '@/app/routePaths'
 import { Button, ButtonLink } from '@/design-system/components/Button'
 import { Disclosure } from '@/design-system/components/Disclosure'
 import { Notice } from '@/design-system/components/Notice'
-import { PanelHeader } from '@/design-system/components/PanelHeader'
 import { LoadingText } from '@/design-system/components/Spinner'
 import { Stack } from '@/design-system/components/Stack'
 import { Text } from '@/design-system/components/Text'
@@ -15,7 +14,6 @@ import { AedStatusView } from '@/features/aeds/presentation/components/AedStatus
 import { aedsStore } from '@/features/aeds/store'
 import { mapCamera } from '@/features/map/lib/mapCamera'
 import { distanceMeters } from '@/shared/geo/geo'
-import { useSafeBack } from '@/shared/hooks/useSafeBack'
 import { formatDateTime, formatDistance } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
 import { discoveryStore, requestEtas, routeTo, startPicking } from '../../store'
@@ -32,7 +30,6 @@ const DEVICE_CONDITION: Record<Aed['operationalStatus'], string> = {
 /** Selected AED card (DESIGN.md §7): time, place, access, entrance, route, details, report. */
 export function AedDetailsPanel() {
   const { id = '' } = useParams()
-  const back = useSafeBack(RoutePaths.map)
   const aed = useStore(aedsStore, (s) => s.byId.get(id))
   const aedsStatus = useStore(aedsStore, (s) => s.status)
   const dataStatus = useStore(aedsStore, (s) => s.dataStatus)
@@ -50,10 +47,7 @@ export function AedDetailsPanel() {
 
   if (!aed) {
     return aedsStatus === 'error' || aedsStatus === 'ready' ? (
-      <Stack gap={16}>
-        <PanelHeader onBack={back} />
-        <Notice tone="warning" title="Nie znaleźliśmy tego defibrylatora." />
-      </Stack>
+      <Notice tone="warning" title="Nie znaleźliśmy tego defibrylatora." />
     ) : (
       <LoadingText>Wczytujemy dane…</LoadingText>
     )
@@ -71,7 +65,6 @@ export function AedDetailsPanel() {
   return (
     <Stack gap={24}>
       <Stack gap={8}>
-        <PanelHeader onBack={back} />
         {fastest && (
           <Text variant="label" tone="accent">
             Najszybszy z porównanych
@@ -135,7 +128,7 @@ export function AedDetailsPanel() {
           />
           <AedList
             title="Dostęp niepotwierdzony"
-            aeds={result.unknownAccessAlternatives.map((c) => c.aed)}
+            aeds={result.unknownAccessAlternatives}
             now={now}
             etas={etas}
             origin={origin}
@@ -149,7 +142,6 @@ export function AedDetailsPanel() {
         </Disclosure>
         <Disclosure title="Informacje ze źródła">
           <Text>{aed.sourceHours ?? 'Źródło nie podaje godzin.'}</Text>
-          {aed.sourceNote && <Text tone="secondary">{aed.sourceNote}</Text>}
         </Disclosure>
         <Disclosure title="Urządzenie i dane">
           <Text>{DEVICE_CONDITION[aed.operationalStatus]}</Text>
@@ -159,7 +151,7 @@ export function AedDetailsPanel() {
                 Dane pobrano: {formatDateTime(dataStatus.fetchedAt)}
               </Text>
               <Text variant="meta" tone="muted">
-                Źródło: {dataStatus.source}, licencja {dataStatus.license}
+                {dataStatus.attribution}
               </Text>
             </>
           )}

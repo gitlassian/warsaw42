@@ -1,31 +1,26 @@
-import { RoutePaths } from '@/app/routePaths'
 import { Badge } from '@/design-system/components/Badge'
-import { Notice } from '@/design-system/components/Notice'
 import { PanelHeader } from '@/design-system/components/PanelHeader'
 import { LoadingText } from '@/design-system/components/Spinner'
 import { Stack } from '@/design-system/components/Stack'
 import { Text } from '@/design-system/components/Text'
 import { aedsStore } from '@/features/aeds/store'
-import { useSafeBack } from '@/shared/hooks/useSafeBack'
 import { formatDateTime } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
 
 /** Data source, freshness and the meaning of each status. */
 export function DataInfoPanel() {
-  const back = useSafeBack(RoutePaths.map)
   const dataStatus = useStore(aedsStore, (s) => s.dataStatus)
 
   return (
     <Stack gap={24}>
-      <PanelHeader title="O danych" onBack={back} />
+      <PanelHeader title="O danych" />
 
       {dataStatus ? (
         <Stack gap={8}>
-          {dataStatus.sync === 'stale' && <Notice tone="warning" title="Dane mogą być nieaktualne." />}
           <Text>Dane pobrano: {formatDateTime(dataStatus.fetchedAt)}</Text>
           <Text>Defibrylatory w danych: {dataStatus.aedCount}</Text>
           <Text tone="secondary">
-            Źródło: {dataStatus.source}, licencja {dataStatus.license}. Dane odświeżamy co 2 godziny.
+            {dataStatus.attribution}. Dane odświeżamy co 2 godziny.
           </Text>
         </Stack>
       ) : (

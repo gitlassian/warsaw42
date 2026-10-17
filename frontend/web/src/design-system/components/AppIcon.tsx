@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react'
-import arrowBack from '@material-symbols/svg-500/rounded/arrow_back.svg'
 import checkCircle from '@material-symbols/svg-500/rounded/check_circle.svg'
 import close from '@material-symbols/svg-500/rounded/close.svg'
 import directionsWalk from '@material-symbols/svg-500/rounded/directions_walk.svg'
@@ -26,7 +25,6 @@ import styles from './AppIcon.module.css'
 // `heart_bolt` is not in the published set, so the AED icon is `ecg_heart`.
 const ICONS = {
   aed: ecgHeart,
-  arrow_back: arrowBack,
   check_circle: checkCircle,
   close,
   directions_walk: directionsWalk,

@@ -74,7 +74,7 @@ async function runFind(origin: Origin, token: number): Promise<FindResult | null
   try {
     const result = await findAed(origin)
     if (token !== searchToken) return null
-    const found = [result.selected, ...result.alternatives, ...result.unknownAccessAlternatives].flatMap((c) =>
+    const found = [result.selected, ...result.alternatives].flatMap((c) =>
       c ? [[c.aed.id, { status: 'ok' as const, durationSeconds: c.durationSeconds, distanceM: c.distanceM }]] : [],
     )
     discoveryStore.set((s) => ({
@@ -108,6 +108,11 @@ export function findFrom(origin: Origin): Promise<FindResult | null> {
   const token = ++searchToken
   discoveryStore.set({ search: { status: 'searching' } })
   return runFind(origin, token)
+}
+
+/** Closing the selected AED also removes its walking route from the map. */
+export function clearRoute() {
+  discoveryStore.set({ route: null, routing: null })
 }
 
 export function cancelSearch() {

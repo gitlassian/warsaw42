@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type PointerEvent, type ReactNode } from 'react'
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery'
 import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
+import { IconButton } from './IconButton'
 import styles from './Sheet.module.css'
 
 export type SheetSnap = 'compact' | 'medium' | 'expanded'
@@ -9,7 +10,7 @@ export type SheetSnap = 'compact' | 'medium' | 'expanded'
 export const WIDE_LAYOUT_QUERY = '(min-width: 840px)'
 
 const SNAPS: SheetSnap[] = ['compact', 'medium', 'expanded']
-const SNAP_FRACTION: Record<SheetSnap, number> = { compact: 0.32, medium: 0.55, expanded: 1 }
+const SNAP_FRACTION: Record<SheetSnap, number> = { compact: 0.32, medium: 0.7, expanded: 1 }
 const MIN_HEIGHT = 168
 const DRAG_THRESHOLD_PX = 6
 
@@ -20,10 +21,19 @@ type SheetProps = {
   topOffset?: number
   /** Height the sheet covers at the bottom of the screen; 0 in the wide layout. */
   onCoverChange?: (px: number) => void
+  /** Shows a close button in the top-right corner. */
+  onClose?: () => void
   children: ReactNode
 }
 
-export function Sheet({ label, initialSnap = 'medium', topOffset = 80, onCoverChange, children }: SheetProps) {
+export function Sheet({
+  label,
+  initialSnap = 'medium',
+  topOffset = 80,
+  onCoverChange,
+  onClose,
+  children,
+}: SheetProps) {
   const wide = useMediaQuery(WIDE_LAYOUT_QUERY)
   const viewportHeight = useViewportHeight()
   const [snap, setSnap] = useState(initialSnap)
@@ -37,10 +47,19 @@ export function Sheet({ label, initialSnap = 'medium', topOffset = 80, onCoverCh
   const cover = wide ? 0 : height
 
   useEffect(() => onCoverChange?.(cover), [cover, onCoverChange])
+  // Unmounted, the sheet no longer covers the map.
+  useEffect(() => () => onCoverChange?.(0), [onCoverChange])
+
+  const close = onClose && (
+    <span className={styles.close}>
+      <IconButton icon="close" label="Zamknij" onClick={onClose} />
+    </span>
+  )
 
   if (wide) {
     return (
       <aside className={styles.panel} aria-label={label}>
+        {close}
         {children}
       </aside>
     )
@@ -105,6 +124,7 @@ export function Sheet({ label, initialSnap = 'medium', topOffset = 80, onCoverCh
       >
         <span className={styles.grip} />
       </button>
+      {close}
       <div className={styles.content}>{children}</div>
     </section>
   )

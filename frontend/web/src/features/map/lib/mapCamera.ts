@@ -28,6 +28,6 @@ export const mapCamera = {
     if (!map) return
     const bounds = new mapboxgl.LngLatBounds()
     route.geometry.coordinates.forEach(([lng, lat]) => bounds.extend([lng, lat]))
-    map.fitBounds(bounds, { padding: padding(), maxZoom: 17, pitch: map.getPitch() })
+    map.fitBounds(bounds, { padding: padding(), maxZoom: 17 })
   },
 }

@@ -71,15 +71,12 @@
   color: var(--color-accent);
 }
 
-/* Wide layout: the header is the top of the side panel. */
+/* Wide layout: the header is the top of the side panel (unless it floats over the map). */
 @media (min-width: 840px) {
-  .brand {
+  .header:not([data-floating]) .brand {
     padding-inline: 0;
     background: none;
     box-shadow: none;
   }
 
-  .menuAnchor > button {
-    box-shadow: none;
-  }
 }

@@ -15,3 +15,6 @@ backend/supabase/.temp/
 node_modules/
 
 endpoints_example.md
+
+# Playwright MCP browser logs and snapshots
+.playwright-mcp/
