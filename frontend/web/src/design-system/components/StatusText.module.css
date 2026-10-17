@@ -1,0 +1,6 @@
+.status {
+  color: var(--tone-fg);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}

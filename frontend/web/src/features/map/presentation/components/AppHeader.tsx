@@ -11,8 +11,16 @@ const MENU: { to: string; icon: IconName; label: string }[] = [
   { to: RoutePaths.data, icon: 'info', label: 'O danych' },
 ]
 
-/** Compact name, plus the menu on narrow screens (DESIGN.md §6). `floating`: over the map, also in the wide layout. */
-export function AppHeader({ floating = false, withMenu = true }: { floating?: boolean; withMenu?: boolean }) {
+type AppHeaderProps = {
+  /** Over the map, also in the wide layout. */
+  floating?: boolean
+  withMenu?: boolean
+  /** Wide layout: closes the selected AED from the header row. */
+  onClose?: () => void
+}
+
+/** Compact name, plus the menu on narrow screens or the selected AED's close button on wide ones (DESIGN.md §6). */
+export function AppHeader({ floating = false, withMenu = true, onClose }: AppHeaderProps) {
   return (
     <header className={styles.header} data-floating={floating || undefined}>
       <Link to={RoutePaths.map} className={styles.brand}>
@@ -21,6 +29,7 @@ export function AppHeader({ floating = false, withMenu = true }: { floating?: bo
         </h1>
       </Link>
       {withMenu && <AppMenu />}
+      {onClose && <IconButton icon="close" label="Zamknij" onClick={onClose} />}
     </header>
   )
 }
