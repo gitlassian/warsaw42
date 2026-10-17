@@ -7,6 +7,7 @@ Writes data/aed/photos_public/<defibrillator_id>.webp  resized copies, safe to s
        data/aed/photos_public/manifest.json            size, dimensions and sha256 per file
 
 The EXIF orientation is applied to the pixels before the metadata is dropped, so photos stay upright.
+Also writes backend/data/out/aed_photos.json (ids that have a photo).
 Upload photos_public/ to a Supabase Storage bucket and store the bucket-relative name in aed_photo.public_file_name.
 """
 import argparse
@@ -56,6 +57,9 @@ def main():
                 failed[sid] = err
     with open(os.path.join(OUT, "manifest.json"), "w", encoding="utf-8") as f:
         json.dump({"max_side": a.max_side, "quality": a.quality, "photos": manifest, "failed": failed}, f, indent=1)
+    # committed list of ids that have a public photo, so pipeline.seed_sql needs no image files
+    with open(os.path.join(REPO, "backend", "data", "out", "aed_photos.json"), "w", encoding="utf-8") as f:
+        json.dump(sorted(manifest, key=int), f)
     total = sum(v["bytes"] for v in manifest.values())
     print(f"{len(manifest)} photos, {total / 1e6:.1f} MB total, avg {total / max(len(manifest), 1) / 1e3:.0f} KB, failed: {len(failed)}")
 

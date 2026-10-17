@@ -3,7 +3,8 @@
     python -m pipeline.seed_sql [--out supabase/seed.sql] [--trust-flagged-247]
 
 Inputs: data/raw/scb_aed_list.json (addresses, raw fields), data/out/aed.json (parsed hours,
-floors) and data/raw/warsaw_boundary.geojson (service area). The seed expects an empty database.
+floors) and data/raw/warsaw_boundary.geojson (service area),
+data/out/aed_district.json (pipeline.districts) and data/out/aed_photos.json (pipeline.photos), both optional. The seed expects an empty database.
 
 Hours are trusted (`hours_verified = true`) only when the pipeline did not
 guess. LLM schedules, assumed weekdays and flagged 24/7-indoors records remain unverified, so the
@@ -138,7 +139,8 @@ def seed_rows(raw, parsed, trust_flagged_247):
     return rows
 
 
-def render(raw, parsed, boundary, trust_flagged_247=False):
+def render(raw, parsed, boundary, trust_flagged_247=False, districts=None, photos=()):
+    districts, photos = districts or {}, set(photos)
     values = []
     for r in seed_rows(raw, parsed, trust_flagged_247):
         hours = {
@@ -150,6 +152,7 @@ def render(raw, parsed, boundary, trust_flagged_247=False):
         values.append("(" + ", ".join(q(v) for v in [
             r[0], r[1], address, r[6], r[7], r[8], r[10], r[12], r[13],
             r[16], r[19], r[20] in ("validated", "validated_partial"), hours,
+            f"{r[0]}.webp" if str(r[0]) in photos else None, districts.get(str(r[0])),
         ]) + ")")
     holidays = [h for y in (2026, 2027) for h in polish_holidays(y)]
     holiday_values = ",\n".join(f"({q(d.isoformat())}, {q(n)})" for d, n in holidays)
@@ -170,7 +173,7 @@ INSERT INTO public_holiday (on_date, name) VALUES
 {holiday_values}
 ON CONFLICT (on_date) DO NOTHING;
 INSERT INTO aeds (source_id, object_name, full_address, lon, lat, in_building, floor,
-    access_instructions, public_access, hours_text, hours_status, hours_verified, hours) VALUES
+    access_instructions, public_access, hours_text, hours_status, hours_verified, hours, photo_path, district) VALUES
 {aed_values};
 INSERT INTO app_data (key, data) VALUES ('status',
     jsonb_build_object('aed_count', {len(values)}, 'source', 'Warsaw Open Data',
@@ -191,7 +194,11 @@ def main():
             return json.load(f)
 
     raw, parsed = load("raw", "scb_aed_list.json"), load("out", "aed.json")
-    sql = render(raw, parsed, load("raw", "warsaw_boundary.geojson"), a.trust_flagged_247)
+    def optional(default, *name):
+        return load(*name) if os.path.exists(os.path.join(ROOT, *name)) else default
+
+    sql = render(raw, parsed, load("raw", "warsaw_boundary.geojson"), a.trust_flagged_247,
+                 optional({}, "out", "aed_district.json"), optional([], "out", "aed_photos.json"))
     with open(a.out, "w", encoding="utf-8") as f:
         f.write(sql)
 
