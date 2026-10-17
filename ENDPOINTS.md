@@ -56,7 +56,9 @@ hours stay unknown. Opening hours do not prove that a device works.
 Automatic selection checks public access, device status, and opening hours at
 arrival with a two-minute access buffer. Unknown-hours AEDs remain separate
 alternatives. Rank by walking time among checked candidates. Mapbox tokens stay on
-the server; route geometry is a GeoJSON LineString.
+the server; route geometry is a GeoJSON LineString. Routes also carry `steps`:
+Polish turn-by-turn instructions (`instruction`, `maneuver_type`, `maneuver_modifier`,
+`street`, `location` as `[lon, lat]`, `distance_m`, `duration_seconds`), in walking order.
 
 Keep the existing routing response shape: `{ "data": ..., "meta": ... }`.
 Find returns `status`, `selected`, `alternatives`, `unknown_access_alternatives`,

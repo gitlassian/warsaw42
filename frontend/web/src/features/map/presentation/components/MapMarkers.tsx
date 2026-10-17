@@ -70,6 +70,15 @@ export function ClusterMarker({ count, available, onExpand }: { count: number; a
 }
 
 /** GPS: blue dot. A picked start point: a pin, never a GPS dot (DESIGN.md §7). */
+/** Navigation: the walker as an arrow pointing along the route, laid flat on the map. */
+export function HeadingMarker() {
+  return (
+    <svg className={styles.heading} viewBox="0 0 24 24" width="56" height="56" role="img" aria-label="Twoja lokalizacja i kierunek">
+      <path d="M12 2.5 20 21l-8-4.2L4 21z" />
+    </svg>
+  )
+}
+
 export function OriginMarker({ source }: { source: 'gps' | 'manual' }) {
   return source === 'gps' ? (
     <span className={styles.gps} role="img" aria-label="Twoja lokalizacja" />

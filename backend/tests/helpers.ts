@@ -44,6 +44,7 @@ export function fakeRoutes(options: {
           type: "LineString",
           coordinates: [[origin.longitude, origin.latitude], [destination.longitude, destination.latitude]],
         },
+        steps: [],
       });
     },
   };

@@ -33,6 +33,7 @@ test("selects the open AED with a route on a weekday morning", async () => {
   assert.equal(data.selected.aed.id, "fx-sample");
   assert.equal(data.selected.availability_at_arrival.covers_access_buffer, true);
   assert.equal(data.selected.route.geometry.type, "LineString");
+  assert.ok(Array.isArray(data.selected.route.steps));
   assert.deepEqual(data.warnings, []);
   // Inactive, broken, restricted and unknown-hours AEDs are never routed or selected.
   assert.deepEqual(routes.matrixCalls[0].length, 1);

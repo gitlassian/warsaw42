@@ -1,0 +1,80 @@
+/* Time left on the left, the end button on the right (the route has no corner close button). */
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-12);
+}
+
+.end {
+  flex: none;
+}
+
+/* Sized to its label, not the full panel width. */
+.end > button {
+  width: auto;
+  padding-inline: var(--space-16);
+}
+
+.eta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-16);
+  width: 100%;
+  min-height: 56px;
+  padding: var(--space-12) var(--space-8);
+  border: 0;
+  border-bottom: 1px solid var(--color-border);
+  border-radius: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+
+.step:hover {
+  background: var(--color-background);
+}
+
+.step[aria-current='step'] {
+  border-radius: var(--radius-control);
+  border-bottom-color: transparent;
+  background: var(--color-accent-soft);
+}
+
+.stepIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 32px;
+  height: 32px;
+  color: var(--color-accent);
+}
+
+.stepText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.stepMeta {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+  line-height: 20px;
+}

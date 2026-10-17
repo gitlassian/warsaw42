@@ -8,6 +8,7 @@ export type Origin = LngLat & { source: 'gps' | 'manual'; accuracyM?: number }
 export type LocationIssue =
   | 'denied' // permission refused
   | 'unavailable' // positioning failed
+  | 'insecure' // page not served over HTTPS (e.g. a phone opening the dev server by IP)
   | 'outside' // GPS position outside Warsaw
   | 'outside_pick' // picked point outside Warsaw
 
@@ -19,11 +20,25 @@ export type Eta =
 /** Map/list state of one ETA: pending request or a result. */
 export type EtaEntry = Eta | 'loading'
 
+/** One turn-by-turn instruction (Mapbox, Polish). Distance and duration cover the walk to the next maneuver. */
+export type RouteStep = {
+  instruction: string
+  /** Mapbox maneuver type ("depart", "turn", "arrive", …) and modifier ("left", "slight right", …). */
+  maneuverType: string
+  maneuverModifier: string | null
+  street: string | null
+  location: LngLat
+  distanceM: number
+  durationSeconds: number
+}
+
 export type WalkingRoute = {
   aedId: string
   durationSeconds: number
   distanceM: number
   geometry: LineString
+  /** Walking order, from "depart" to "arrive"; empty when the provider sent none. */
+  steps: RouteStep[]
 }
 
 export type FindCandidate = {

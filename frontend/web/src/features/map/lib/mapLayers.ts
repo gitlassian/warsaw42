@@ -16,6 +16,9 @@ export const SOURCE = {
 } as const
 
 export const COVERAGE_LAYER = 'coverage-fill'
+export const ACCURACY_LAYER = 'origin-accuracy'
+/** Accuracy area opacity right after a GPS fix; it then fades to 0. */
+export const ACCURACY_OPACITY = 0.12
 export const AEDS_LAYER = 'aeds-hit'
 
 /** Map colors come from the design tokens (DESIGN.md §2). */
@@ -64,11 +67,17 @@ export function addAppLayers(map: MapboxMap) {
 
   map.addSource(SOURCE.accuracy, { type: 'geojson', data: EMPTY_COLLECTION })
   map.addLayer({
-    id: 'origin-accuracy',
+    id: ACCURACY_LAYER,
     type: 'fill',
     source: SOURCE.accuracy,
     slot: 'top',
-    paint: { 'fill-color': location, 'fill-opacity': 0.12, 'fill-outline-color': location },
+    // Starts hidden; MapView shows it briefly after each fix and lets it fade.
+    paint: {
+      'fill-color': location,
+      'fill-opacity': 0,
+      'fill-opacity-transition': { duration: 1200, delay: 0 },
+      'fill-outline-color': location,
+    },
   })
 
   // DESIGN.md §7: 5-wide green line over a white casing 9 wide.

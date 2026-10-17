@@ -102,11 +102,68 @@ test("route returns full GeoJSON geometry in [longitude, latitude] order", async
 
   const route = await provider.walkingRoute(A, B);
 
-  assert.deepEqual(route, { duration_seconds: 312, distance_m: 401, geometry });
+  assert.deepEqual(route, { duration_seconds: 312, distance_m: 401, geometry, steps: [] });
   const url = urls[0];
   assert.match(url.pathname, /\/directions\/v5\/mapbox\/walking\/21,52.2;21.01,52.21$/);
   assert.equal(url.searchParams.get("geometries"), "geojson");
   assert.equal(url.searchParams.get("overview"), "full");
+  assert.equal(url.searchParams.get("steps"), "true");
+  assert.equal(url.searchParams.get("language"), "pl");
+});
+
+test("route maps turn-by-turn steps and skips malformed ones", async () => {
+  const geometry = { type: "LineString", coordinates: [[21.0, 52.2], [21.01, 52.21]] };
+  const provider = createMapboxRoutesProvider({
+    accessToken: "k",
+    fetch: fakeFetch(200, {
+      code: "Ok",
+      routes: [{
+        duration: 300,
+        distance: 400,
+        geometry,
+        legs: [{
+          steps: [
+            {
+              distance: 120.4,
+              duration: 90.2,
+              name: "Marszałkowska",
+              maneuver: { type: "depart", instruction: "Idź na północ ulicą Marszałkowską", location: [21.0, 52.2] },
+            },
+            { distance: 10, duration: 5, name: "", maneuver: { type: "turn" } },
+            {
+              distance: 279.6,
+              duration: 209.8,
+              name: "",
+              maneuver: { type: "turn", modifier: "left", instruction: "Skręć w lewo", location: [21.005, 52.205] },
+            },
+          ],
+        }],
+      }],
+    }),
+  });
+
+  const route = await provider.walkingRoute(A, B);
+
+  assert.deepEqual(route?.steps, [
+    {
+      instruction: "Idź na północ ulicą Marszałkowską",
+      maneuver_type: "depart",
+      maneuver_modifier: null,
+      street: "Marszałkowska",
+      location: [21.0, 52.2],
+      distance_m: 120,
+      duration_seconds: 90,
+    },
+    {
+      instruction: "Skręć w lewo",
+      maneuver_type: "turn",
+      maneuver_modifier: "left",
+      street: null,
+      location: [21.005, 52.205],
+      distance_m: 280,
+      duration_seconds: 210,
+    },
+  ]);
 });
 
 test("route returns null when Mapbox finds no route", async () => {

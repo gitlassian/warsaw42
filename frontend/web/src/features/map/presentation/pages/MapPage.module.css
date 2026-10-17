@@ -59,6 +59,11 @@
   transition: bottom var(--duration-panel) ease-out;
 }
 
+/* Navigation: notices sit below the taller direction banner. */
+.layout[data-navigating] .overlay {
+  top: calc(env(safe-area-inset-top) + 160px);
+}
+
 /* Pinned find bar on every screen: a white bar on the bottom edge. Below the sheet (z 3): an open sheet covers it. */
 .dock {
   position: absolute;
@@ -152,6 +157,11 @@
 
   .layout[data-floating] .overlay {
     top: 80px;
+  }
+
+  /* The banner is the overlay's first card here. */
+  .layout[data-navigating] .overlay {
+    top: var(--space-16);
   }
 
   /* Wide: the find button floats bottom-right over the map on every screen. */

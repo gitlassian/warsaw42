@@ -47,6 +47,7 @@ export function createWalkingHandler(deps: Deps): (req: Request) => Promise<Resp
         geometry: route.geometry,
         distance_m: route.distance_m,
         duration_seconds: route.duration_seconds,
+        steps: route.steps,
         estimated_arrival_at: window.arrival.toISOString(),
         availability_at_arrival: availabilityView(availability),
         eligible_for_automatic_selection: isEligibleAtArrival(aed, availability),

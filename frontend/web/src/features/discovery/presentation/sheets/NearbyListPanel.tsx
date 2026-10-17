@@ -63,7 +63,7 @@ export function NearbyListPanel() {
           Ustal punkt startowy, aby zobaczyć czas dojścia.
         </Notice>
       )}
-      {issue && <OriginIssueNotice issue={issue} onPick={() => startPicking()} />}
+      {issue && <OriginIssueNotice issue={issue} onPick={() => startPicking()} onRetry={locate} />}
       {aedsStatus !== 'ready' && aedsStatus !== 'error' && <LoadingText>Wczytujemy dane…</LoadingText>}
 
       <AedList title="Dostępne teraz" aeds={available} now={now} etas={etas} origin={origin} />

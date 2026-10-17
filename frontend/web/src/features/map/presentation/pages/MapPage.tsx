@@ -11,6 +11,7 @@ import { FindButton } from '@/features/discovery/presentation/components/FindBut
 import { OriginIssueNotice } from '@/features/discovery/presentation/components/OriginIssueNotice'
 import { PickOriginBanner } from '@/features/discovery/presentation/components/PickOriginBanner'
 import { clearRoute, discoveryStore, locate, startPicking, stopPicking } from '@/features/discovery/store'
+import { NavigationBanner } from '@/features/navigation/presentation/components/NavigationBanner'
 import { useMediaQuery } from '@/shared/hooks/useMediaQuery'
 import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
 import { useStore } from '@/shared/lib/store'
@@ -51,6 +52,7 @@ export function MapPage() {
   const unknown = useStore(mapFiltersStore, (s) => s.unknown)
   const coverageShown = location.pathname === RoutePaths.coverage
   const floating = !!handle?.floating
+  const navigating = !!handle?.navigation
   const wide = useMediaQuery(WIDE_LAYOUT_QUERY)
   const dockRef = useRef<HTMLDivElement>(null)
   const mapCover = Math.max(cover.sheet, cover.dock)
@@ -87,10 +89,16 @@ export function MapPage() {
     <div
       className={styles.layout}
       data-floating={floating || undefined}
+      data-navigating={navigating || undefined}
       style={{ '--sheet-cover': `${mapCover}px` } as CSSProperties}
     >
       <div className={styles.header}>
-        <AppHeader floating={floating} withMenu={!wide} onClose={wide && handle?.closable ? onClose : undefined} />
+        {/* Narrow: the direction banner takes the header's place at the top of the screen. */}
+        {navigating && !wide ? (
+          <NavigationBanner />
+        ) : (
+          <AppHeader floating={floating} withMenu={!wide} onClose={wide && handle?.closable ? onClose : undefined} />
+        )}
       </div>
 
       {!floating && (
@@ -99,6 +107,8 @@ export function MapPage() {
             key={location.pathname}
             label="Panel"
             initialSnap={handle?.sheet}
+            // The expanded sheet stops below the taller direction banner.
+            topOffset={navigating ? 160 : undefined}
             onCoverChange={onCoverChange}
             onClose={!wide && handle?.closable ? onClose : undefined}
           >
@@ -114,17 +124,20 @@ export function MapPage() {
             <Outlet />
           </aside>
         )}
-        <div className={styles.find}>
-          <FindButton />
-        </div>
+        {!navigating && (
+          <div className={styles.find}>
+            <FindButton />
+          </div>
+        )}
       </div>
 
       <div className={styles.mapArea}>
         <MapView onLoadError={onMapError} />
         <div className={styles.overlay}>
+          {navigating && wide && <NavigationBanner />}
           {picking && <PickOriginBanner outside={issue === 'outside_pick'} onCancel={stopPicking} />}
           {issue && !picking && !handle?.showsLocationIssue && (
-            <OriginIssueNotice issue={issue} onPick={() => startPicking()} />
+            <OriginIssueNotice issue={issue} onPick={() => startPicking()} onRetry={onLocate} />
           )}
           {mapFailed && (
             <Notice
