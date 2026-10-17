@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "test_data": true,
+    "description": "ТЕСТОВЫЕ ДАННЫЕ. Точки старта для поиска и маршрутов. Координаты приблизительные (±50 м); expected — относительно административной границы Варшавы.",
+    "format": "origin = {latitude, longitude} как в ENDPOINTS.md §2"
+  },
+  "origins": [
+    {
+      "id": "palac-kultury",
+      "origin": {"latitude": 52.2318, "longitude": 21.0067},
+      "expected": "inside",
+      "why": "Центр, Pałac Kultury i Nauki."
+    },
+    {
+      "id": "near-fixture-sample",
+      "origin": {"latitude": 52.208, "longitude": 21.014},
+      "expected": "inside",
+      "why": "Около 100 м от fx-sample (Rakowiecka 25/27) — для запросов к фикстурам."
+    },
+    {
+      "id": "kabaty",
+      "origin": {"latitude": 52.131, "longitude": 21.0657},
+      "expected": "inside",
+      "why": "Юг города, Kabaty. Дальше 5 км от всех фикстур: find вернёт no_eligible_aed."
+    },
+    {
+      "id": "lotnisko-chopina",
+      "origin": {"latitude": 52.1657, "longitude": 20.9671},
+      "expected": "inside",
+      "why": "Аэропорт Шопена, внутри границы (Włochy)."
+    },
+    {
+      "id": "wisla-river",
+      "origin": {"latitude": 52.2435, "longitude": 21.0265},
+      "expected": "inside",
+      "why": "Приблизительно русло Вислы у моста Śląsko-Dąbrowski. Проверить на карте: точка на воде."
+    },
+    {
+      "id": "pruszkow",
+      "origin": {"latitude": 52.1703, "longitude": 20.812},
+      "expected": "outside",
+      "why": "Pruszków: вне города и вне грубого bbox в фикстурах, сейчас уже 422."
+    },
+    {
+      "id": "piaseczno",
+      "origin": {"latitude": 52.0819, "longitude": 21.0238},
+      "expected": "outside",
+      "why": "Piaseczno: южнее границы и bbox фикстур."
+    },
+    {
+      "id": "zabki",
+      "origin": {"latitude": 52.2927, "longitude": 21.1053},
+      "expected": "outside",
+      "why": "Ząbki: вне Варшавы, но ВНУТРИ bbox из fixtures.ts. С фикстурами сейчас 200, с реальной границей должно быть 422 outside_service_area."
+    },
+    {
+      "id": "lomianki",
+      "origin": {"latitude": 52.3337, "longitude": 20.8866},
+      "expected": "outside",
+      "why": "Łomianki: то же — вне города, но внутри bbox фикстур."
+    },
+    {
+      "id": "swapped-lat-lon",
+      "origin": {"latitude": 21.0067, "longitude": 52.2318},
+      "expected": "outside",
+      "why": "Перепутаны широта и долгота PKiN. Сервер не должен молча их менять местами: 422 outside_service_area."
+    }
+  ]
+}

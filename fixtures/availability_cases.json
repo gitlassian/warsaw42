@@ -1,0 +1,332 @@
+{
+  "meta": {
+    "test_data": true,
+    "description": "ТЕСТОВЫЕ ДАННЫЕ. Проверка доступности AED в момент времени или в окне [at, until] (прибытие + буфер доступа). Расписание AED берётся из fixtures/hours_cases.json по schedule_ref (поле expected).",
+    "evaluator": "aed_availability() в backend/supabase/migrations/20261017120000_initial_schema.sql; GET /api/v1/aeds/{id}/availability; AvailabilityEvaluator в _shared/ports.ts",
+    "compare": ["expected.status", "expected.covers_interval", "expected.error"],
+    "informational": ["reason_hint", "why"],
+    "notes": "until = null означает один момент времени. Даты 2026-10-19..2026-12-24. Переход на зимнее время: 2026-10-25 03:00 CEST → 02:00 CET.",
+    "case_count": 29
+  },
+  "cases": [
+    {
+      "case_id": "mon-open",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T10:00:00+02:00",
+      "until": null,
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Обычный понедельник, 08:00–18:00."
+    },
+    {
+      "case_id": "mon-opening-inclusive",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T08:00:00+02:00",
+      "until": null,
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Время открытия входит в интервал."
+    },
+    {
+      "case_id": "mon-before-open",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T07:59:00+02:00",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "outside_hours",
+      "requires": [],
+      "why": "За минуту до открытия."
+    },
+    {
+      "case_id": "mon-closing-exclusive",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T18:00:00+02:00",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "outside_hours",
+      "requires": [],
+      "why": "Время закрытия в интервал не входит."
+    },
+    {
+      "case_id": "mon-arrival-buffer-fits",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T17:50:00+02:00",
+      "until": "2026-10-19T17:52:00+02:00",
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Прибытие 17:50 + 2 минуты буфера, закрытие в 18:00: подходит."
+    },
+    {
+      "case_id": "mon-closes-within-buffer",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T17:59:00+02:00",
+      "until": "2026-10-19T18:01:00+02:00",
+      "expected": {"status": "open", "covers_interval": false},
+      "reason_hint": "closes_within_window",
+      "requires": [],
+      "why": "Сейчас открыт, но закроется во время буфера. /aeds/find обязан такой AED пропустить."
+    },
+    {
+      "case_id": "mon-buffer-ends-at-close",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T17:58:00+02:00",
+      "until": "2026-10-19T18:00:00+02:00",
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Граница: окно заканчивается ровно в момент закрытия. В SQL (aed_availability) это считается покрытым."
+    },
+    {
+      "case_id": "tue-after-close",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-20T17:00:00+02:00",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "outside_hours",
+      "requires": [],
+      "why": "Во вторник закрытие в 16:00, а не в 18:00, как в понедельник."
+    },
+    {
+      "case_id": "sat-unknown",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-24T10:00:00+02:00",
+      "until": null,
+      "expected": {"status": "unknown", "covers_interval": false},
+      "reason_hint": "day_unknown",
+      "requires": [],
+      "why": "Суббота не указана в источнике: unknown, а не closed."
+    },
+    {
+      "case_id": "holiday-unknown-policy",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-11-11T10:00:00+01:00",
+      "until": null,
+      "expected": {"status": "unknown", "covers_interval": false},
+      "reason_hint": "holiday_hours_unknown",
+      "requires": ["public_holiday содержит 2026-11-11 (Narodowe Święto Niepodległości)"],
+      "why": "11 ноября — среда и праздник. Политика на праздники неизвестна: показываем unknown, а не обычные часы."
+    },
+    {
+      "case_id": "holiday-closed-policy",
+      "schedule_ref": "scb-3484",
+      "state": {},
+      "at": "2026-11-11T10:00:00+01:00",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "holiday_closed",
+      "requires": ["public_holiday содержит 2026-11-11 (Narodowe Święto Niepodległości)"],
+      "why": "В источнике явно «święta – niedostępny»."
+    },
+    {
+      "case_id": "sat-explicit-closed",
+      "schedule_ref": "scb-3484",
+      "state": {},
+      "at": "2026-10-24T10:00:00+02:00",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Суббота явно закрыта. В SQL reason = weekly_hours, в TS-фикстурах day_closed (коды расходятся)."
+    },
+    {
+      "case_id": "dst-before-switch",
+      "schedule_ref": "syn-every-day",
+      "state": {},
+      "at": "2026-10-24T20:30:00Z",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "outside_hours",
+      "requires": [],
+      "why": "20:30 UTC = 22:30 по летнему времени (CEST): уже закрыт."
+    },
+    {
+      "case_id": "dst-after-switch",
+      "schedule_ref": "syn-every-day",
+      "state": {},
+      "at": "2026-10-25T20:30:00Z",
+      "until": null,
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "То же 20:30 UTC на следующий день = 21:30 по зимнему времени (CET): открыт. Ошибка с часовым поясом даст здесь closed."
+    },
+    {
+      "case_id": "overnight-crosses-midnight",
+      "schedule_ref": "scb-1122",
+      "state": {},
+      "at": "2026-10-19T23:50:00+02:00",
+      "until": "2026-10-20T00:10:00+02:00",
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Пн 18:00 → вт 08:00. Окно переходит через полночь и покрыто. Упрощённый оценщик в _shared/fixtures.ts здесь отдаст covers_interval=false."
+    },
+    {
+      "case_id": "overnight-closes-within-buffer",
+      "schedule_ref": "scb-1122",
+      "state": {},
+      "at": "2026-10-20T07:59:00+02:00",
+      "until": "2026-10-20T08:01:00+02:00",
+      "expected": {"status": "open", "covers_interval": false},
+      "reason_hint": "closes_within_window",
+      "requires": [],
+      "why": "Ночной интервал заканчивается в 08:00."
+    },
+    {
+      "case_id": "overnight-daytime-closed",
+      "schedule_ref": "scb-1122",
+      "state": {},
+      "at": "2026-10-20T12:00:00+02:00",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "outside_hours",
+      "requires": [],
+      "why": "Днём в будни закрыт."
+    },
+    {
+      "case_id": "overnight-saturday-all-day",
+      "schedule_ref": "scb-1122",
+      "state": {},
+      "at": "2026-10-24T12:00:00+02:00",
+      "until": null,
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "В субботу открыт весь день."
+    },
+    {
+      "case_id": "always-open-holiday-night",
+      "schedule_ref": "scb-701",
+      "state": {},
+      "at": "2026-11-11T03:00:00+01:00",
+      "until": null,
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "always_open",
+      "requires": ["public_holiday содержит 2026-11-11 (Narodowe Święto Niepodległości)"],
+      "why": "24/7 важнее праздника."
+    },
+    {
+      "case_id": "always-open-crosses-midnight",
+      "schedule_ref": "scb-701",
+      "state": {},
+      "at": "2026-10-19T23:59:00+02:00",
+      "until": "2026-10-20T00:01:00+02:00",
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "always_open",
+      "requires": [],
+      "why": "24/7: окно через полночь покрыто."
+    },
+    {
+      "case_id": "weekend-night-into-saturday",
+      "schedule_ref": "syn-overnight-weekend",
+      "state": {},
+      "at": "2026-10-23T23:59:00+02:00",
+      "until": "2026-10-24T00:01:00+02:00",
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Пт 22:00 → сб 04:00, окно через полночь."
+    },
+    {
+      "case_id": "weekend-night-closes-sunday",
+      "schedule_ref": "syn-overnight-weekend",
+      "state": {},
+      "at": "2026-10-25T03:59:00+01:00",
+      "until": "2026-10-25T04:01:00+01:00",
+      "expected": {"status": "open", "covers_interval": false},
+      "reason_hint": "closes_within_window",
+      "requires": [],
+      "why": "Вс 00:00–04:00 (уже по CET), закрывается во время буфера."
+    },
+    {
+      "case_id": "hours-unknown",
+      "schedule_ref": "scb-744",
+      "state": {},
+      "at": "2026-10-19T10:00:00+02:00",
+      "until": null,
+      "expected": {"status": "unknown", "covers_interval": false},
+      "reason_hint": "hours_not_validated",
+      "requires": [],
+      "why": "«W godzinach pracy pływalni»: часы неизвестны в любой момент. SQL раньше проверяет review_status=needs_review, поэтому причина hours_not_validated."
+    },
+    {
+      "case_id": "date-exception-closed",
+      "schedule_ref": "syn-date-exception",
+      "state": {},
+      "at": "2026-12-24T10:00:00+01:00",
+      "until": null,
+      "expected": {"status": "closed", "covers_interval": false},
+      "reason_hint": "date_exception",
+      "requires": [],
+      "why": "Четверг, по неделе открыт, но 24.12.2026 явно закрыт."
+    },
+    {
+      "case_id": "date-exception-day-before",
+      "schedule_ref": "syn-date-exception",
+      "state": {},
+      "at": "2026-12-23T10:00:00+01:00",
+      "until": null,
+      "expected": {"status": "open", "covers_interval": true},
+      "reason_hint": "weekly_hours",
+      "requires": [],
+      "why": "Накануне исключения работает обычное расписание."
+    },
+    {
+      "case_id": "not-validated-ignored",
+      "schedule_ref": "scb-3485",
+      "state": {},
+      "at": "2026-10-24T10:00:00+02:00",
+      "until": null,
+      "expected": {"status": "unknown", "covers_interval": false},
+      "reason_hint": "hours_not_validated",
+      "requires": [],
+      "why": "Расписание в статусе needs_review не используется, даже если суббота явно закрыта."
+    },
+    {
+      "case_id": "source-text-changed",
+      "schedule_ref": "scb-622",
+      "state": {"source_text_changed_after_parse": true},
+      "at": "2026-10-19T10:00:00+02:00",
+      "until": null,
+      "expected": {"status": "unknown", "covers_interval": false},
+      "reason_hint": "hours_outdated",
+      "requires": [],
+      "why": "Город изменил текст часов, новый ещё не разобран. Старое расписание нельзя считать текущим."
+    },
+    {
+      "case_id": "window-too-long",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T10:00:00+02:00",
+      "until": "2026-10-22T10:00:00+02:00",
+      "expected": {"error": "invalid_input"},
+      "reason_hint": null,
+      "requires": [],
+      "why": "Окно больше 2 дней: SQL отклоняет (22023), API должен вернуть 422."
+    },
+    {
+      "case_id": "window-reversed",
+      "schedule_ref": "scb-622",
+      "state": {},
+      "at": "2026-10-19T10:00:00+02:00",
+      "until": "2026-10-19T09:00:00+02:00",
+      "expected": {"error": "invalid_input"},
+      "reason_hint": null,
+      "requires": [],
+      "why": "until раньше at: SQL отклоняет (22023), API должен вернуть 422."
+    }
+  ]
+}
