@@ -17,8 +17,7 @@ export function MapMarker({ map, lngLat: { lng, lat }, anchor = 'bottom', raised
   const [element] = useState(() => document.createElement('div'))
 
   useEffect(() => {
-    // Indoor AEDs sit inside 3D buildings; keep them fully visible.
-    const marker = new mapboxgl.Marker({ element, anchor, occludedOpacity: 1 }).setLngLat([lng, lat]).addTo(map)
+    const marker = new mapboxgl.Marker({ element, anchor }).setLngLat([lng, lat]).addTo(map)
     marker.getElement().style.zIndex = raised ? '2' : ''
     return () => {
       marker.remove()

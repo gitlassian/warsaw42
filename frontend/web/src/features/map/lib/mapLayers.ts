@@ -91,12 +91,14 @@ export function addAppLayers(map: MapboxMap) {
     paint: { 'line-color': accent, 'line-width': 5 },
   })
 
+  // Single AEDs from zoom 15; a cluster sums `available` (open now) so MapView can tint it.
   map.addSource(SOURCE.aeds, {
     type: 'geojson',
     data: EMPTY_COLLECTION,
     cluster: true,
-    clusterRadius: 56,
+    clusterRadius: 48,
     clusterMaxZoom: 14,
+    clusterProperties: { available: ['+', ['get', 'available']] },
   })
   // Invisible layer that MapView queries to place the HTML markers.
   map.addLayer({

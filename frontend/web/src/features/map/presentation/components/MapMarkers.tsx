@@ -26,7 +26,7 @@ function etaText(eta: EtaEntry | undefined): { pill: string | null; spoken: stri
   return { pill: '—', spoken: 'nie udało się obliczyć czasu' }
 }
 
-/** AED pin: outline color + status icon + text for access, optional walking-time pill. */
+/** Compact AED pin: outline color + status icon for access (the name is in the accessible label), optional walking-time pill. */
 export function AedMarker({ aed, status, to, eta, selected }: AedMarkerProps) {
   const { pill, spoken } = etaText(eta)
   return (
@@ -38,7 +38,6 @@ export function AedMarker({ aed, status, to, eta, selected }: AedMarkerProps) {
     >
       <span className={styles.pin}>
         <AppIcon name="aed" size={20} />
-        <span className={styles.label}>AED</span>
         <span className={styles.status}>
           <AppIcon name={status.icon} size={16} />
         </span>
@@ -52,13 +51,18 @@ export function AedMarker({ aed, status, to, eta, selected }: AedMarkerProps) {
   )
 }
 
-export function ClusterMarker({ count, onExpand }: { count: number; onExpand: () => void }) {
+const PLURAL = new Intl.PluralRules('pl')
+
+/** Several AEDs close together: the count, green when at least one is available now. A tap zooms in. */
+export function ClusterMarker({ count, available, onExpand }: { count: number; available: number; onExpand: () => void }) {
+  const noun = PLURAL.select(count) === 'few' ? 'defibrylatory' : 'defibrylatorów'
   return (
     <button
       type="button"
       className={styles.cluster}
+      data-available={available > 0 || undefined}
       onClick={onExpand}
-      aria-label={`${count} defibrylatorów w tym miejscu. Przybliż mapę.`}
+      aria-label={`${count} ${noun} w tym miejscu${available > 0 ? `, w tym dostępne teraz: ${available}` : ''}. Przybliż mapę.`}
     >
       {count}
     </button>

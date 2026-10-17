@@ -9,14 +9,12 @@ import { Stack } from '@/design-system/components/Stack'
 import { Text } from '@/design-system/components/Text'
 import { TextField } from '@/design-system/components/TextField'
 import { aedsStore } from '@/features/aeds/store'
-import { useSafeBack } from '@/shared/hooks/useSafeBack'
 import { useStore } from '@/shared/lib/store'
 import { DESCRIPTION_MAX, REPORT_CATEGORIES, validateDraft, type DraftErrors } from '../../models/report'
 import { getFlow, openFlow, reportStore, resetFlow, submit, updateDraft } from '../../store'
 
 const ERROR_MESSAGES: Record<string, string> = {
   rate_limited: 'Wysłano zbyt wiele zgłoszeń. Spróbuj ponownie później.',
-  aed_not_found: 'Tego AED nie można już zgłosić. Mógł zostać usunięty z bazy.',
   network: 'Nie udało się połączyć. Zgłoszenie jest zachowane, spróbuj ponownie.',
 }
 const errorMessage = (code: string) => ERROR_MESSAGES[code] ?? ERROR_MESSAGES.network
@@ -24,7 +22,6 @@ const errorMessage = (code: string) => ERROR_MESSAGES[code] ?? ERROR_MESSAGES.ne
 /** "Zgłoś problem" (DESIGN.md §9): form, confirmation. No login or profile. */
 export function ReportPanel() {
   const { id = '' } = useParams()
-  const back = useSafeBack(buildPath.aed(id))
   const aed = useStore(aedsStore, (s) => s.byId.get(id))
   const flow = useStore(reportStore, (s) => s.flows[id]) ?? getFlow(id)
   const [fieldErrors, setFieldErrors] = useState<DraftErrors>({})
@@ -49,7 +46,7 @@ export function ReportPanel() {
   return (
     <Stack gap={24}>
       <Stack gap={4}>
-        <PanelHeader title="Zgłoś problem" onBack={back} />
+        <PanelHeader title="Zgłoś problem" />
         {aed && (
           <Text tone="secondary">
             {aed.venueName}, {aed.address}
