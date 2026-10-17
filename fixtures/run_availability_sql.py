@@ -1,15 +1,17 @@
 """Runs availability_cases.json against the real aed_availability() SQL function.
 
-Needs Postgres + PostGIS with the initial migration applied. Neither psql nor a Python driver is
+Needs Postgres + PostGIS with all migrations applied. Neither psql nor a Python driver is
 required on the host: SQL is piped into psql inside a throwaway Docker container.
 
     docker run -d --name defiwawa-pg --platform linux/amd64 -e POSTGRES_PASSWORD=postgres postgis/postgis:16-3.5
-    python3 fixtures/run_availability_sql.py --setup   # (re)creates database defiwawa_test: Supabase stubs + migration
+    python3 fixtures/run_availability_sql.py --setup   # (re)creates database defiwawa_test: stubs, migrations, smoke test, seed
     python3 fixtures/run_availability_sql.py           # PASS/FAIL per case; exit code 1 if any case fails
 
 --setup drops and recreates the database defiwawa_test only. It is created from template0 because the
-postgis image pre-installs PostGIS into `public` of its default database, while the migration expects it
-in `extensions`. The migration file is applied unchanged; the stubs stand in for what Supabase provides.
+postgis image pre-installs PostGIS into `public` of its default database, while the migrations expect it
+in `extensions`. Every file in backend/supabase/migrations is applied unchanged, in filename order; the
+stubs stand in for what Supabase provides. backend/supabase/tests/schema_smoke.sql then checks the stubs,
+and backend/supabase/seed.sql loads the city data (710 AEDs, holidays, the Warsaw boundary).
 
 Every fixture row is inserted in one transaction that ends with ROLLBACK, like
 backend/supabase/tests/schema_smoke.sql. Only the standard library is used.
@@ -27,10 +29,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 FIXTURES = ROOT / "fixtures"
-MIGRATION = ROOT / "backend/supabase/migrations/20261017120000_initial_schema.sql"
+SUPABASE = ROOT / "backend/supabase"
 DATABASE = os.environ.get("PG_DATABASE", "defiwawa_test")
 
-# What Supabase creates before migrations run: API roles, auth.users and the extensions schema.
+# What Supabase creates before migrations run: API roles, auth.users with auth.uid(), the extensions schema.
+# auth.uid() reads the same setting as in Supabase, so schema_smoke.sql can switch users with set_config.
 SUPABASE_STUBS = """
 DO $$
 DECLARE r text;
@@ -43,12 +46,18 @@ BEGIN
 END $$;
 ALTER ROLE service_role BYPASSRLS;
 CREATE SCHEMA auth;
-CREATE TABLE auth.users (id uuid PRIMARY KEY);
+CREATE TABLE auth.users (id uuid PRIMARY KEY, phone_confirmed_at timestamptz);
+CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$
+    SELECT nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
+$$;
+GRANT USAGE ON SCHEMA auth TO anon, authenticated, service_role;
+GRANT EXECUTE ON FUNCTION auth.uid() TO anon, authenticated, service_role;
 CREATE SCHEMA extensions;
 GRANT USAGE ON SCHEMA public, extensions TO anon, authenticated, service_role;
 """
 
-# Polish public holidays inside the fixture window (2026-10-19 .. 2026-12-24).
+# Polish public holidays inside the fixture window (2026-10-19 .. 2026-12-24). seed.sql has the same
+# dates; inserting them here as well keeps the run independent of the seed.
 HOLIDAYS = [
     ("2026-11-01", "Wszystkich Świętych"),
     ("2026-11-11", "Narodowe Święto Niepodległości"),
@@ -57,7 +66,11 @@ HOLIDAYS = [
     ("2026-12-26", "Boże Narodzenie (drugi dzień)"),
 ]
 
+# hours_cases.json `kind` -> aeds.hours_status.
 HOURS_STATUS = {"always_open": "24/7", "weekly": "scheduled", "unknown": "unknown"}
+# review_status values that become aeds.hours_verified = true (the same rule as in the
+# simplify_app_schema migration and pipeline/seed_sql.py).
+VERIFIED = {"validated", "validated_partial"}
 
 # Returns "status<TAB>covers<TAB>reasons", or "error<TAB>SQLSTATE<TAB>message", so one
 # transaction survives the cases that are expected to fail.
@@ -106,49 +119,55 @@ def minutes(hhmm: str) -> int:
 
 
 def setup() -> None:
+    quiet = "SET client_min_messages = warning;\n"
     psql("postgres", f"DROP DATABASE IF EXISTS {DATABASE};\nCREATE DATABASE {DATABASE} TEMPLATE template0;\n")
-    psql(DATABASE, "SET client_min_messages = warning;\n" + SUPABASE_STUBS)
-    psql(DATABASE, "SET client_min_messages = warning;\n" + MIGRATION.read_text(encoding="utf-8"))
-    extensions = psql(DATABASE, "SELECT extname || ' in ' || extnamespace::regnamespace FROM pg_extension "
-                                "WHERE extname IN ('postgis', 'btree_gist') ORDER BY 1;")
-    print(f"setup: database {DATABASE} ready; " + "; ".join(extensions.split("\n")).strip("; "))
+    psql(DATABASE, quiet + SUPABASE_STUBS)
+    migrations = sorted((SUPABASE / "migrations").glob("*.sql"))
+    for migration in migrations:
+        psql(DATABASE, quiet + migration.read_text(encoding="utf-8"))
+    smoke = psql(DATABASE, quiet + (SUPABASE / "tests/schema_smoke.sql").read_text(encoding="utf-8"))
+    if "schema_smoke: all checks passed" not in smoke:
+        sys.exit(f"setup: schema_smoke.sql did not pass:\n{smoke.strip()}")
+    psql(DATABASE, quiet + (SUPABASE / "seed.sql").read_text(encoding="utf-8"))
+    counts = psql(DATABASE, "SELECT (SELECT count(*) FROM aeds) || ' AEDs, ' || (SELECT count(*) FROM public_holiday) "
+                            "|| ' holidays, ' || (SELECT count(*) FROM service_area) || ' service area';").strip()
+    print(f"setup: database {DATABASE} ready; {len(migrations)} migrations, schema_smoke passed, seed: {counts}")
 
 
-def schedule_sql(n: int, ref: str, hours: dict, text_changed: bool) -> list[str]:
+def day_json(state: str, intervals: list) -> dict:
+    return {"state": state, "intervals": [[minutes(start), minutes(end)] for start, end in intervals]}
+
+
+def hours_json(expected: dict) -> dict:
+    """hours_cases.json `expected` in the aeds.hours format from ENDPOINTS.md."""
+    return {
+        "weekly": {dow: day_json(day["state"], day["intervals"]) for dow, day in expected.get("weekly", {}).items()},
+        "exceptions": {e["date"]: day_json(e["state"], e["intervals"]) for e in expected.get("date_exceptions", [])},
+        "holiday_policy": expected["holiday_policy"],
+    }
+
+
+def schedule_sql(n: int, ref: str, hours: dict, text_changed: bool) -> str:
     """Inserts AED n with the parsed schedule `hours` (hours_cases.json `expected`)."""
     case = hours[ref]
     source = case["input"]
     expected = case["expected"]
-    aed_id = f"00000000-0000-0000-0000-{n:012d}"
     text = source.get("device_access_description")
-    sql = [
-        "INSERT INTO aed (id, source_id, object_name, address_id, lon, lat, in_building, public_access,"
-        " public_access_raw, availability_raw, access_text) VALUES ("
-        f"{lit(aed_id)}, {lit(f'fixture:{n}')}, {lit(ref)}, 1, {21 + n / 1000}, 52.2, "
-        f"{'true' if source.get('device_location') == 'Wewnątrz budynku' else 'false'}, "
-        f"{lit('public' if source.get('device_public_access') == 'Publiczny' else 'unknown')}, "
-        f"{lit(source.get('device_public_access'))}, {lit(source.get('device_availability'))}, {lit(text)});",
-        "INSERT INTO aed_hours (id, aed_id, status, source_text, source_text_hash, holiday_policy,"
-        " parse_source, parser_version, review_status) VALUES ("
-        f"{n}, {lit(aed_id)}, {lit(HOURS_STATUS[expected['kind']])}, {lit(text)}, md5(coalesce({lit(text)}, '')), "
-        f"{lit(expected['holiday_policy'])}, 'fixture', 'fixtures@1', {lit(expected['review_status'])});",
-    ]
-    for dow, day in sorted(expected.get("weekly", {}).items()):
-        sql.append(f"INSERT INTO aed_day_state (hours_id, dow, state) VALUES ({n}, {dow}, {lit(day['state'])});")
-        for start, end in day["intervals"]:
-            sql.append(f"INSERT INTO aed_schedule (hours_id, dow, start_min, end_min) "
-                       f"VALUES ({n}, {dow}, {minutes(start)}, {minutes(end)});")
-    for exception in expected.get("date_exceptions", []):
-        sql.append(f"INSERT INTO aed_hours_exception (hours_id, on_date, state) "
-                   f"VALUES ({n}, {lit(exception['date'])}, {lit(exception['state'])});")
-        for start, end in exception["intervals"]:
-            sql.append(f"INSERT INTO aed_exception_interval (hours_id, on_date, start_min, end_min) "
-                       f"VALUES ({n}, {lit(exception['date'])}, {minutes(start)}, {minutes(end)});")
+    verified = expected["review_status"] in VERIFIED
     if text_changed:
-        # The city changed the hours text after this schedule was parsed.
-        sql.append(f"UPDATE aed SET access_text = coalesce(access_text, '') || ' (tekst zmieniony przez miasto)' "
-                   f"WHERE id = {lit(aed_id)};")
-    return sql
+        # The schema keeps no hash of the parsed text. By the import contract (backend/supabase/README.md)
+        # changed text is stored unverified until it is re-parsed, so that is the state to test.
+        text = (text or "") + " (tekst zmieniony przez miasto)"
+        verified = False
+    return (
+        "INSERT INTO aeds (id, source_id, object_name, full_address, lon, lat, in_building, public_access,"
+        " hours_text, hours_status, hours_verified, hours) VALUES ("
+        f"{lit(f'00000000-0000-0000-0000-{n:012d}')}, {lit(f'fixture:{n}')}, {lit(ref)}, 'Testowa 1, 00-001 Warszawa', "
+        f"{21 + n / 1000}, 52.2, {'true' if source.get('device_location') == 'Wewnątrz budynku' else 'false'}, "
+        f"{lit('public' if source.get('device_public_access') == 'Publiczny' else 'unknown')}, {lit(text)}, "
+        f"{lit(HOURS_STATUS[expected['kind']])}, {'true' if verified else 'false'}, "
+        f"{lit(json.dumps(hours_json(expected)))});"
+    )
 
 
 def build_sql(cases: list, hours: dict) -> tuple[str, dict]:
@@ -158,12 +177,8 @@ def build_sql(cases: list, hours: dict) -> tuple[str, dict]:
         "BEGIN;",
         "SET LOCAL search_path = public, extensions;",
         "SET LOCAL TimeZone = 'UTC';  -- results must not depend on the session time zone",
-        # Fixtures use small explicit ids; sequences survive ROLLBACK, so keep generated ids above them.
-        "SELECT count(setval(s, greatest(nextval(s), 10000))) "
-        "FROM unnest(ARRAY['aed_hours_id_seq', 'address_id_seq']) AS s;",
-        "INSERT INTO address (id, street_raw, building_no, postcode) VALUES (1, 'Testowa', '1', '00-001');",
         "INSERT INTO public_holiday (on_date, name) VALUES "
-        + ", ".join(f"({lit(d)}, {lit(name)})" for d, name in HOLIDAYS) + ";",
+        + ", ".join(f"({lit(d)}, {lit(name)})" for d, name in HOLIDAYS) + " ON CONFLICT (on_date) DO NOTHING;",
         RUNNER,
     ]
     aeds = {}
@@ -171,13 +186,35 @@ def build_sql(cases: list, hours: dict) -> tuple[str, dict]:
         key = (c["schedule_ref"], bool(c["state"].get("source_text_changed_after_parse")))
         if key not in aeds:
             aeds[key] = len(aeds) + 1
-            sql += schedule_sql(aeds[key], key[0], hours, key[1])
+            sql.append(schedule_sql(aeds[key], key[0], hours, key[1]))
     for c in cases:
         key = (c["schedule_ref"], bool(c["state"].get("source_text_changed_after_parse")))
         aed_id = f"00000000-0000-0000-0000-{aeds[key]:012d}"
         sql.append(f"SELECT 'case', {lit(c['case_id'])}, pg_temp.run({lit(aed_id)}, {lit(c['at'])}, {lit(c['until'])});")
     sql.append("ROLLBACK;")
     return "\n".join(sql) + "\n", aeds
+
+
+def check_origins() -> int:
+    """origins.json against is_inside_warsaw() and the service_area boundary from seed.sql."""
+    origins = json.loads((FIXTURES / "origins.json").read_text(encoding="utf-8"))["origins"]
+    if psql(DATABASE, "SELECT count(*) FROM service_area;").strip() == "0":
+        print("\norigins: skipped, service_area is empty (run --setup to load seed.sql)")
+        return 0
+    sql = "\n".join(
+        f"SELECT {lit(o['id'])}, is_inside_warsaw({o['origin']['latitude']}, {o['origin']['longitude']});"
+        for o in origins)
+    inside = dict(line.split("\t") for line in psql(DATABASE, sql).splitlines())
+    failed = 0
+    print()
+    for o in origins:
+        got = "inside" if inside.get(o["id"]) == "t" else "outside"
+        ok = got == o["expected"]
+        failed += not ok
+        print(f"{'PASS' if ok else 'FAIL'}  origin {o['id']:<20}  is_inside_warsaw: {got}"
+              + ("" if ok else f" (expected {o['expected']})"))
+    print(f"{len(origins)} origins: {len(origins) - failed} PASS, {failed} FAIL")
+    return failed
 
 
 def main() -> int:
@@ -219,6 +256,7 @@ def main() -> int:
 
     print(f"\n{len(cases)} cases on {len(aeds)} AEDs: {len(cases) - failed} PASS, {failed} FAIL; "
           f"reason differs from reason_hint in {reason_notes} (informational)")
+    failed += check_origins()
     return 1 if failed else 0
 
 

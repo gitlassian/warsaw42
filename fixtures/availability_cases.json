@@ -2,7 +2,7 @@
   "meta": {
     "test_data": true,
     "description": "ТЕСТОВЫЕ ДАННЫЕ. Проверка доступности AED в момент времени или в окне [at, until] (прибытие + буфер доступа). Расписание AED берётся из fixtures/hours_cases.json по schedule_ref (поле expected).",
-    "evaluator": "aed_availability() в backend/supabase/migrations/20261017120000_initial_schema.sql; GET /api/v1/aeds/{id}/availability; AvailabilityEvaluator в _shared/ports.ts",
+    "evaluator": "aed_availability() в backend/supabase/migrations/20261017150000_simplify_app_schema.sql (часы в JSON aeds.hours); через createSupabaseEvaluator в _shared/supabase_repository.ts для POST /aeds/find и POST /routes/walking; упрощённый createFixtureEvaluator в _shared/fixtures.ts. Отдельного эндпоинта доступности в ENDPOINTS.md нет",
     "compare": ["expected.status", "expected.covers_interval", "expected.error"],
     "informational": ["reason_hint", "why"],
     "notes": "until = null означает один момент времени. Даты 2026-10-19..2026-12-24. Переход на зимнее время: 2026-10-25 03:00 CEST → 02:00 CET.",
@@ -16,7 +16,7 @@
       "at": "2026-10-19T10:00:00+02:00",
       "until": null,
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Обычный понедельник, 08:00–18:00."
     },
@@ -27,7 +27,7 @@
       "at": "2026-10-19T08:00:00+02:00",
       "until": null,
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Время открытия входит в интервал."
     },
@@ -60,7 +60,7 @@
       "at": "2026-10-19T17:50:00+02:00",
       "until": "2026-10-19T17:52:00+02:00",
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Прибытие 17:50 + 2 минуты буфера, закрытие в 18:00: подходит."
     },
@@ -82,7 +82,7 @@
       "at": "2026-10-19T17:58:00+02:00",
       "until": "2026-10-19T18:00:00+02:00",
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Граница: окно заканчивается ровно в момент закрытия. В SQL (aed_availability) это считается покрытым."
     },
@@ -104,7 +104,7 @@
       "at": "2026-10-24T10:00:00+02:00",
       "until": null,
       "expected": {"status": "unknown", "covers_interval": false},
-      "reason_hint": "day_unknown",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Суббота не указана в источнике: unknown, а не closed."
     },
@@ -115,7 +115,7 @@
       "at": "2026-11-11T10:00:00+01:00",
       "until": null,
       "expected": {"status": "unknown", "covers_interval": false},
-      "reason_hint": "holiday_hours_unknown",
+      "reason_hint": "holiday_hours",
       "requires": ["public_holiday содержит 2026-11-11 (Narodowe Święto Niepodległości)"],
       "why": "11 ноября — среда и праздник. Политика на праздники неизвестна: показываем unknown, а не обычные часы."
     },
@@ -126,7 +126,7 @@
       "at": "2026-11-11T10:00:00+01:00",
       "until": null,
       "expected": {"status": "closed", "covers_interval": false},
-      "reason_hint": "holiday_closed",
+      "reason_hint": "holiday_hours",
       "requires": ["public_holiday содержит 2026-11-11 (Narodowe Święto Niepodległości)"],
       "why": "В источнике явно «święta – niedostępny»."
     },
@@ -137,9 +137,9 @@
       "at": "2026-10-24T10:00:00+02:00",
       "until": null,
       "expected": {"status": "closed", "covers_interval": false},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
-      "why": "Суббота явно закрыта. В SQL reason = weekly_hours, в TS-фикстурах day_closed (коды расходятся)."
+      "why": "Суббота явно закрыта. В SQL reason = listed_hours, в TS-фикстурах day_closed (коды расходятся)."
     },
     {
       "case_id": "dst-before-switch",
@@ -159,7 +159,7 @@
       "at": "2026-10-25T20:30:00Z",
       "until": null,
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "То же 20:30 UTC на следующий день = 21:30 по зимнему времени (CET): открыт. Ошибка с часовым поясом даст здесь closed."
     },
@@ -170,7 +170,7 @@
       "at": "2026-10-19T23:50:00+02:00",
       "until": "2026-10-20T00:10:00+02:00",
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Пн 18:00 → вт 08:00. Окно переходит через полночь и покрыто. Упрощённый оценщик в _shared/fixtures.ts здесь отдаст covers_interval=false."
     },
@@ -203,7 +203,7 @@
       "at": "2026-10-24T12:00:00+02:00",
       "until": null,
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "В субботу открыт весь день."
     },
@@ -236,7 +236,7 @@
       "at": "2026-10-23T23:59:00+02:00",
       "until": "2026-10-24T00:01:00+02:00",
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Пт 22:00 → сб 04:00, окно через полночь."
     },
@@ -258,9 +258,9 @@
       "at": "2026-10-19T10:00:00+02:00",
       "until": null,
       "expected": {"status": "unknown", "covers_interval": false},
-      "reason_hint": "hours_not_validated",
+      "reason_hint": "hours_unknown",
       "requires": [],
-      "why": "«W godzinach pracy pływalni»: часы неизвестны в любой момент. SQL раньше проверяет review_status=needs_review, поэтому причина hours_not_validated."
+      "why": "«W godzinach pracy pływalni»: часы неизвестны в любой момент (hours_status = unknown, hours_verified = false)."
     },
     {
       "case_id": "date-exception-closed",
@@ -269,9 +269,9 @@
       "at": "2026-12-24T10:00:00+01:00",
       "until": null,
       "expected": {"status": "closed", "covers_interval": false},
-      "reason_hint": "date_exception",
-      "requires": [],
-      "why": "Четверг, по неделе открыт, но 24.12.2026 явно закрыт."
+      "reason_hint": "listed_hours",
+      "requires": ["public_holiday содержит 2026-12-24 (Wigilia)"],
+      "why": "Четверг 24.12.2026 — праздник (Wigilia), по неделе открыт, но день явно закрыт исключением по дате. Исключение важнее и недели, и праздника: без него было бы unknown (holiday_policy = unknown), а не open."
     },
     {
       "case_id": "date-exception-day-before",
@@ -280,7 +280,7 @@
       "at": "2026-12-23T10:00:00+01:00",
       "until": null,
       "expected": {"status": "open", "covers_interval": true},
-      "reason_hint": "weekly_hours",
+      "reason_hint": "listed_hours",
       "requires": [],
       "why": "Накануне исключения работает обычное расписание."
     },
@@ -291,9 +291,9 @@
       "at": "2026-10-24T10:00:00+02:00",
       "until": null,
       "expected": {"status": "unknown", "covers_interval": false},
-      "reason_hint": "hours_not_validated",
+      "reason_hint": "hours_unknown",
       "requires": [],
-      "why": "Расписание в статусе needs_review не используется, даже если суббота явно закрыта."
+      "why": "Непроверенное расписание (review_status = needs_review → hours_verified = false) не используется, даже если суббота явно закрыта."
     },
     {
       "case_id": "source-text-changed",
@@ -302,9 +302,9 @@
       "at": "2026-10-19T10:00:00+02:00",
       "until": null,
       "expected": {"status": "unknown", "covers_interval": false},
-      "reason_hint": "hours_outdated",
+      "reason_hint": "hours_unknown",
       "requires": [],
-      "why": "Город изменил текст часов, новый ещё не разобран. Старое расписание нельзя считать текущим."
+      "why": "Город изменил текст часов, новый ещё не разобран. Старое расписание нельзя считать текущим. Хеша текста в новой схеме нет: по контракту импорта (backend/supabase/README.md) изменённый текст хранится с hours_verified = false до нового разбора, это состояние и проверяется."
     },
     {
       "case_id": "window-too-long",
@@ -315,7 +315,7 @@
       "expected": {"error": "invalid_input"},
       "reason_hint": null,
       "requires": [],
-      "why": "Окно больше 2 дней: SQL отклоняет (22023), API должен вернуть 422."
+      "why": "Окно больше 2 дней: SQL отклоняет (22023). Отдельного эндпоинта доступности нет, /aeds/find и /routes/walking такое окно не строят."
     },
     {
       "case_id": "window-reversed",
@@ -326,7 +326,7 @@
       "expected": {"error": "invalid_input"},
       "reason_hint": null,
       "requires": [],
-      "why": "until раньше at: SQL отклоняет (22023), API должен вернуть 422."
+      "why": "until раньше at: SQL отклоняет (22023). Отдельного эндпоинта доступности нет, /aeds/find и /routes/walking такое окно не строят."
     }
   ]
 }
