@@ -10,6 +10,7 @@ import { Text } from '@/design-system/components/Text'
 import { aedStatus, placementLabel } from '@/features/aeds/lib/aedStatus'
 import type { Aed } from '@/features/aeds/models/aed'
 import { AedHours } from '@/features/aeds/presentation/components/AedHours'
+import { AedPhoto } from '@/features/aeds/presentation/components/AedPhoto'
 import { AedUsageGuide } from '@/features/aeds/presentation/components/AedUsageGuide'
 import { AedStatusView } from '@/features/aeds/presentation/components/AedStatusView'
 import { aedsStore } from '@/features/aeds/store'
@@ -34,7 +35,7 @@ function googleMapsUrl(destination: LngLat, origin: LngLat | null) {
   return `https://www.google.com/maps/dir/?${params}`
 }
 
-/** Selected AED card (DESIGN.md §7): time, place, access, entrance, route, details, report, then the other compared AEDs. */
+/** Selected AED card (DESIGN.md §7): time, place, access, entrance with photo, route, details, report, then the other compared AEDs. */
 export function AedDetailsPanel() {
   const { id = '' } = useParams()
   const aed = useStore(aedsStore, (s) => s.byId.get(id))
@@ -94,6 +95,7 @@ export function AedDetailsPanel() {
         </Text>
         <Text>{aed.entrance ?? 'Brak informacji o wejściu.'}</Text>
         <Text tone="secondary">{placementLabel(aed)}</Text>
+        <AedPhoto aed={aed} />
       </Stack>
 
       <Stack gap={8}>

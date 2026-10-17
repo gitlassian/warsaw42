@@ -2,6 +2,7 @@ import { AppIcon, type IconName } from '@/design-system/components/AppIcon'
 import { Text } from '@/design-system/components/Text'
 import { placementLabel } from '../../lib/aedStatus'
 import type { Aed } from '../../models/aed'
+import { AedPhoto } from './AedPhoto'
 import styles from './AedGuide.module.css'
 
 /** On-site directions to the cabinet: place, entrance, floor, access and photo. */
@@ -20,9 +21,7 @@ export function AedFindingGuide({ aed }: { aed: Aed }) {
       <Text variant="heading" as="h3">
         Jak znaleźć urządzenie
       </Text>
-      {aed.photoUrl && (
-        <img className={styles.photo} src={aed.photoUrl} alt={`Miejsce defibrylatora: ${aed.venueName}`} loading="lazy" />
-      )}
+      <AedPhoto aed={aed} />
       <ul className={styles.facts}>
         {rows.map((row) => (
           <li key={row.icon} className={styles.fact}>
