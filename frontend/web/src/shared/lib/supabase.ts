@@ -17,6 +17,25 @@ export async function restGet<T>(path: string): Promise<T> {
   return response.json() as Promise<T>
 }
 
+/**
+ * POST /rest/v1/<table> with `return=minimal`, for tables anon may insert into but not read.
+ * Rate limits raised in the database (PT429) arrive as 429 and become `rate_limited`.
+ */
+export async function restInsert(table: string, row: unknown): Promise<void> {
+  let response: Response
+  try {
+    response = await fetch(`${url}/rest/v1/${table}`, {
+      method: 'POST',
+      headers: { ...headers(), 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+      body: JSON.stringify(row),
+    })
+  } catch {
+    throw new ApiError('network')
+  }
+  if (response.status === 429) throw new ApiError('rate_limited')
+  if (!response.ok) throw new ApiError(`http_${response.status}`)
+}
+
 export const storagePublicUrl = (bucket: string, file: string) => `${url}/storage/v1/object/public/${bucket}/${file}`
 
 /** POST /functions/v1/<name>. Routing functions answer `{ data, meta }`, failures `{ error: { code } }`. */

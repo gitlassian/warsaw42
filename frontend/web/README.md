@@ -21,6 +21,7 @@ npm test         # node --test for pure domain logic (*.test.ts)
 | --- | --- |
 | `features/aeds/services/aedApi.ts` | table `aeds` (active rows, mapped by `lib/fromRow.ts`, photos from Storage) and `app_data` key `status` via PostgREST |
 | `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Google walking routes) |
+| `features/report/services/reportApi.ts` | insert into `reports` via PostgREST (simulated without Supabase settings) |
 
 The Edge Functions answer CORS only for origins listed in their `ALLOWED_ORIGINS` secret
 (`supabase secrets set ALLOWED_ORIGINS=... --project-ref <ref>`); add every dev and deployed web origin.
@@ -30,7 +31,6 @@ Still mocks, marked `shortcut:` in code (callers and stores stay the same when t
 | Service | Mocks | Why |
 | --- | --- | --- |
 | `features/coverage/services/coverageApi.ts` | `GET /coverage` | `app_data` has no `coverage` document yet; 250 m grid over the real AEDs, computed in the browser |
-| `features/report/services/reportApi.ts` | Phone OTP, `POST /reports` | Supabase Phone Auth is not enabled yet; SMS code is always `123456` |
 
 ## Structure
 
@@ -53,7 +53,7 @@ src/
     discovery/                  # origin (GPS / picked point), find, ETAs, routes; Start/Details/List panels
     map/                        # MapPage shell, Mapbox view, HTML markers, header/menu, camera controller
     coverage/                   # "Zasięg AED" layer: scenarios, threshold, legend, area details
-    report/                     # "Zgłoś problem": draft → Kod SMS → confirmation
+    report/                     # "Zgłoś problem": draft → confirmation
     offline/                    # web explainer for the mobile offline maps
     dataInfo/                   # data source, freshness, status legend
 ```

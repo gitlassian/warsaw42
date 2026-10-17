@@ -1,4 +1,4 @@
--- Run after both migrations, with or without seed data. Rolls back test fixtures.
+-- Run after all migrations, with or without seed data. Rolls back test fixtures.
 -- psql "$DATABASE_URL" -v ON_ERROR_STOP=1 -f supabase/tests/schema_smoke.sql
 BEGIN;
 SET LOCAL search_path = public, extensions;
@@ -49,24 +49,62 @@ DO $$ BEGIN
     PERFORM pg_temp.denied('UPDATE aeds SET active = false');
 END $$;
 RESET ROLE;
-INSERT INTO auth.users (id, phone_confirmed_at) VALUES
-    ('00000000-0000-0000-0000-000000000201', now()),
-    ('00000000-0000-0000-0000-000000000202', NULL);
-SET LOCAL ROLE authenticated;
-SELECT set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000201', true);
-INSERT INTO reports (aed_id, reporter_id, category, description) VALUES
-    ('00000000-0000-0000-0000-000000000101', '00000000-0000-0000-0000-000000000201', 'other', 'Test report description');
+-- Anyone can report an active AED without a phone session; reports stay unreadable.
+SET LOCAL ROLE anon;
+INSERT INTO reports (aed_id, category, description) VALUES
+    ('00000000-0000-0000-0000-000000000101', 'other', 'Anonymous report description');
 DO $$ BEGIN
     PERFORM pg_temp.denied($q$INSERT INTO reports (aed_id, reporter_id, category, description) VALUES
         ('00000000-0000-0000-0000-000000000101', '00000000-0000-0000-0000-000000000202', 'other', 'Spoofed report description')$q$);
     PERFORM pg_temp.denied('SELECT * FROM reports');
     PERFORM pg_temp.denied('UPDATE reports SET status = ''accepted''');
 END $$;
-SELECT set_config('request.jwt.claim.sub', '00000000-0000-0000-0000-000000000202', true);
+-- Inactive AEDs cannot be reported.
 DO $$ BEGIN
-    PERFORM pg_temp.denied($q$INSERT INTO reports (aed_id, reporter_id, category, description) VALUES
-        ('00000000-0000-0000-0000-000000000101', '00000000-0000-0000-0000-000000000202', 'other', 'Unverified report description')$q$);
+    INSERT INTO reports (aed_id, category, description) VALUES
+        ('00000000-0000-0000-0000-000000000102', 'other', 'Inactive AED report text');
+    RAISE EXCEPTION 'Expected RLS failure for inactive AED';
+EXCEPTION WHEN insufficient_privilege THEN NULL;
 END $$;
+-- Five reports per client per hour, identified by the edge-set client IP.
+SELECT set_config('request.headers', '{"cf-connecting-ip": "203.0.113.7"}', true);
+INSERT INTO reports (aed_id, category, description, form_ms)
+SELECT '00000000-0000-0000-0000-000000000101', 'other', 'Rate limit report ' || n, 5000 FROM generate_series(1, 5) n;
+DO $$ BEGIN
+    INSERT INTO reports (aed_id, category, description, form_ms) VALUES
+        ('00000000-0000-0000-0000-000000000101', 'other', 'One report too many', 5000);
+    RAISE EXCEPTION 'Expected client rate limit';
+EXCEPTION WHEN SQLSTATE 'PT429' THEN NULL;
+END $$;
+-- A client-supplied x-forwarded-for is not trusted as an identity.
+SELECT set_config('request.headers', '{"x-forwarded-for": "198.51.100.1"}', true);
+INSERT INTO reports (aed_id, category, description) VALUES
+    ('00000000-0000-0000-0000-000000000101', 'other', 'Spoofed forwarded IP report');
+-- Fast submissions and links are flagged, not rejected; clients cannot set flags themselves.
+SELECT set_config('request.headers', '{"cf-connecting-ip": "203.0.113.8"}', true);
+INSERT INTO reports (aed_id, category, description, form_ms) VALUES
+    ('00000000-0000-0000-0000-000000000101', 'other', 'Cheap pills at https://spam.example', 500),
+    ('00000000-0000-0000-0000-000000000101', 'other', 'Szafka jest zamknięta na klucz', 5000);
+DO $$ BEGIN
+    PERFORM pg_temp.denied($q$INSERT INTO reports (aed_id, category, description, flags) VALUES
+        ('00000000-0000-0000-0000-000000000101', 'other', 'Self-cleared report text', '{}')$q$);
+    PERFORM pg_temp.denied('SELECT * FROM report_queue');
+    PERFORM pg_temp.denied($q$SELECT moderate_report_group('00000000-0000-0000-0000-000000000101', 'other', 'rejected', now())$q$);
+END $$;
+SELECT set_config('request.headers', '', true);
 RESET ROLE;
+DO $$ DECLARE q report_queue; BEGIN
+    ASSERT (SELECT count(*) FROM reports WHERE client_hash = encode(sha256('203.0.113.7'::bytea), 'hex')) = 5;
+    ASSERT NOT EXISTS (SELECT 1 FROM reports WHERE description = 'Anonymous report description' AND (client_hash IS NOT NULL OR flags <> '{}'));
+    ASSERT (SELECT client_hash IS NULL AND flags = '{fast}' FROM reports WHERE description = 'Spoofed forwarded IP report');
+    ASSERT (SELECT flags = '{fast,link}' FROM reports WHERE description LIKE 'Cheap pills%');
+    ASSERT (SELECT flags = '{}' FROM reports WHERE description LIKE 'Szafka%');
+    -- One queue row for the AED and category; only unflagged clients count, flagged text sorts last.
+    SELECT * INTO STRICT q FROM report_queue WHERE aed_id = '00000000-0000-0000-0000-000000000101';
+    ASSERT (q.reports, q.flagged, q.clients) = (9::bigint, 2::bigint, 2::bigint), format('queue counts %s', q);
+    ASSERT 'Cheap pills at https://spam.example' <> ALL (q.sample_descriptions);
+    ASSERT moderate_report_group(q.aed_id, q.category, 'rejected', q.last_at) = 9;
+    ASSERT NOT EXISTS (SELECT 1 FROM report_queue WHERE aed_id = '00000000-0000-0000-0000-000000000101');
+END $$;
 ROLLBACK;
 \echo 'schema_smoke: all checks passed'
