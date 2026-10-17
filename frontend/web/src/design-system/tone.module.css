@@ -1,0 +1,19 @@
+.accent {
+  --tone-fg: var(--color-accent);
+  --tone-bg: var(--color-accent-soft);
+}
+
+.neutral {
+  --tone-fg: var(--color-unknown);
+  --tone-bg: var(--color-unknown-soft);
+}
+
+.warning {
+  --tone-fg: var(--color-warning);
+  --tone-bg: var(--color-warning-soft);
+}
+
+.danger {
+  --tone-fg: var(--color-danger);
+  --tone-bg: var(--color-danger-soft);
+}

@@ -1,0 +1,84 @@
+/* Narrow (<840): full-screen map, floating header, bottom sheet (fixed, see Sheet). */
+.layout {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.header {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + var(--space-12));
+  left: var(--space-16);
+  right: var(--space-16);
+  z-index: 4;
+}
+
+.mapArea {
+  position: absolute;
+  inset: 0;
+}
+
+.overlay {
+  position: absolute;
+  top: calc(env(safe-area-inset-top) + 76px);
+  left: var(--space-16);
+  right: var(--space-16);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  pointer-events: none;
+}
+
+.overlay > * {
+  pointer-events: auto;
+  box-shadow: var(--shadow-floating);
+}
+
+.controls {
+  position: absolute;
+  right: var(--space-16);
+  /* Clears the Mapbox attribution button in the corner. */
+  bottom: calc(var(--sheet-cover) + var(--space-48));
+  z-index: 1;
+  transition: bottom var(--duration-panel) ease-out;
+}
+
+/* Wide (≥840): side panel on the left, map on the right (DESIGN.md §6). */
+@media (min-width: 840px) {
+  .layout {
+    display: grid;
+    grid-template-columns: var(--panel-width) 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .header {
+    position: static;
+    grid-area: 1 / 1;
+    padding: var(--space-16) var(--space-24) var(--space-8);
+    border-right: 1px solid var(--color-border);
+    background: var(--color-surface);
+  }
+
+  .panel {
+    grid-area: 2 / 1;
+    min-height: 0;
+    border-right: 1px solid var(--color-border);
+  }
+
+  .mapArea {
+    position: relative;
+    grid-area: 1 / 2 / 3 / 3;
+  }
+
+  .overlay {
+    top: var(--space-16);
+    right: auto;
+    width: min(420px, calc(100% - 96px));
+  }
+
+  .controls {
+    top: var(--space-16);
+    bottom: auto;
+  }
+}

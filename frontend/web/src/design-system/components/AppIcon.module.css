@@ -1,0 +1,9 @@
+/* Icons inherit the text color through the mask. */
+.icon {
+  display: inline-block;
+  flex: none;
+  width: var(--size);
+  height: var(--size);
+  background-color: currentColor;
+  mask: var(--icon) center / contain no-repeat;
+}

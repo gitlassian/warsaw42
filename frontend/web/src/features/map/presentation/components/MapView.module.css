@@ -1,0 +1,10 @@
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Keep Mapbox logo and attribution above the bottom sheet. */
+.map :global(.mapboxgl-ctrl-bottom-left),
+.map :global(.mapboxgl-ctrl-bottom-right) {
+  bottom: var(--sheet-cover, 0px);
+}

@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.label {
+  font-weight: 600;
+}
+
+.hint {
+  color: var(--color-text-secondary);
+}
+
+.field {
+  width: 100%;
+  min-height: 48px;
+  padding: var(--space-12);
+  border: 1px solid var(--color-border-control);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  font-weight: 400;
+  resize: vertical;
+}
+
+.field[aria-invalid='true'] {
+  border: 2px solid var(--color-danger);
+}
+
+.error {
+  color: var(--color-danger);
+}

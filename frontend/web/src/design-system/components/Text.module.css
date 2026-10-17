@@ -1,0 +1,59 @@
+.time {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+}
+
+.name {
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 600;
+}
+
+.heading {
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+
+.body {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.label {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+
+.meta {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+
+.default {
+  color: var(--color-text);
+}
+
+.secondary {
+  color: var(--color-text-secondary);
+}
+
+.muted {
+  color: var(--color-text-muted);
+}
+
+.accent {
+  color: var(--color-accent);
+}

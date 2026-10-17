@@ -36,6 +36,10 @@
   --shadow-panel: 0 4px 24px rgb(23 35 29 / 12%);
   --shadow-floating: 0 2px 8px rgb(23 35 29 / 10%);
 
-  /* shortcut: Noto Sans is not bundled yet, falls back to system fonts; add local font files with the first real UI. */
+  --duration-feedback: 140ms;
+  --duration-panel: 220ms;
+
+  --panel-width: 400px;
+
   --font-family: 'Noto Sans', system-ui, sans-serif;
 }

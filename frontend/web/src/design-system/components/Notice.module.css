@@ -1,0 +1,36 @@
+.notice {
+  display: flex;
+  gap: var(--space-12);
+  padding: var(--space-16);
+  border-radius: var(--radius-control);
+  background: var(--tone-bg);
+}
+
+.icon {
+  display: flex;
+  color: var(--tone-fg);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  min-width: 0;
+  flex: 1;
+}
+
+.title {
+  color: var(--tone-fg);
+  font-weight: 600;
+}
+
+.text {
+  color: var(--color-text);
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+  margin-top: var(--space-4);
+}
