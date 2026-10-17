@@ -177,7 +177,7 @@ export function MapPage() {
         </div>
         {mapCover < viewportHeight * 0.7 && (
           <div className={styles.controls}>
-            {wide && <InfoButton />}
+            {wide && <InfoButton text="Info" />}
             <MapControls
               locating={locating}
               coverageShown={coverageShown}

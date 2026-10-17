@@ -35,6 +35,7 @@ export function MapControls({
         variant="floating"
         icon="my_location"
         label="Pokaż moją lokalizację"
+        text="Pozycja"
         onClick={onLocate}
         disabled={locating}
       />
@@ -42,6 +43,7 @@ export function MapControls({
         variant="floating"
         icon="layers"
         label="Warstwa: Odległość do najbliższego AED"
+        text="Zasięg"
         pressed={coverageShown}
         onClick={onToggleCoverage}
       />
@@ -49,6 +51,7 @@ export function MapControls({
         variant="floating"
         icon="schedule"
         label={timeOpen ? 'Ukryj wybór godziny' : 'Sprawdź dostępność o innej porze'}
+        text="Pora"
         pressed={timeOpen}
         onClick={onToggleTime}
       />

@@ -1,9 +1,11 @@
 import { warsawClock } from '@/features/aeds/lib/availability'
 import { WEEKDAY_NAMES } from '@/shared/lib/format'
+import { RangeSlider } from '@/design-system/components/RangeSlider'
 import styles from './TimeBar.module.css'
 
 const DAY_SHORT = ['Pn', 'Wt', 'Śr', 'Cz', 'Pt', 'So', 'Nd']
 const STEP_MIN = 15
+const LAST_STEP = 24 * 60 - STEP_MIN
 
 const clock = (minutes: number) => `${String(Math.floor(minutes / 60)).padStart(2, '0')}:${String(minutes % 60).padStart(2, '0')}`
 
@@ -44,16 +46,16 @@ export function TimeBar({ at, live, onChange, onNow }: TimeBarProps) {
           </button>
         ))}
       </div>
-      <input
-        className={styles.slider}
-        type="range"
+      <RangeSlider
         min={0}
-        max={24 * 60 - STEP_MIN}
+        max={LAST_STEP}
         step={STEP_MIN}
         value={sliderValue}
         aria-label="Godzina"
         aria-valuetext={clock(sliderValue)}
-        onChange={(e) => onChange(day, Number(e.target.value))}
+        onChange={(value) => onChange(day, value)}
+        minLabel={clock(0)}
+        maxLabel={clock(LAST_STEP)}
       />
       {!live && <p className={styles.hint}>Podgląd godzin dostępu. Trasy liczymy dla chwili obecnej.</p>}
     </div>

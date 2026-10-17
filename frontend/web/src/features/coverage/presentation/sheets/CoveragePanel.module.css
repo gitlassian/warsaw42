@@ -45,20 +45,6 @@
   font-size: 1rem;
 }
 
-.slider {
-  width: 100%;
-  min-height: 32px;
-  margin: 0;
-  accent-color: var(--color-accent);
-  cursor: pointer;
-}
-
-.radiusScale {
-  display: flex;
-  justify-content: space-between;
-  color: var(--color-text-secondary);
-  font-size: 0.8125rem;
-}
 
 /* The one map time, changed with the same picker as the clock button. */
 .time {

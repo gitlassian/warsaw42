@@ -1,0 +1,24 @@
+.range {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 32 px tall for touch; the track sits in the middle of it. */
+.slider {
+  width: 100%;
+  min-height: 32px;
+  margin: 0;
+  accent-color: var(--color-accent);
+  cursor: pointer;
+}
+
+/* Pulled up into the hit area so the labels sit right under the track ends. */
+.scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: calc(-1 * var(--space-4));
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}

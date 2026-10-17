@@ -49,3 +49,19 @@
 .floating[aria-pressed='true']:hover {
   background: var(--color-accent-hover);
 }
+
+/* Map control with a short caption under the icon: the words explain what the glyph alone may not. */
+.tile {
+  composes: floating;
+  gap: 2px;
+  align-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-control);
+}
+
+.text {
+  font-size: 11px;
+  line-height: 14px;
+  font-weight: 600;
+}

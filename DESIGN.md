@@ -128,35 +128,36 @@ Keep `API`, `PostGIS`, `timestamp`, "AI", and internal status names out of user-
 
 ## 4. Icons
 
-**One family: Material Symbols Rounded.** Use a consistent outline style: `FILL=0`, `wght=500`, `GRAD=0`. Match the optical size to the rendered icon size.
+**One family: Phosphor Icons, bold weight** (`@phosphor-icons/core` on web, `phosphor_flutter` on mobile). Toggle controls show their switched-on state with the filled glyph. The Flutter app still uses Material Symbols until it is migrated.
 
 - Default size: 24 × 24. Supporting inline icons: 20 × 20. AED icon inside a large marker: 32 × 32.
 - Every icon button has a hit area of at least 48 × 48.
-- Indicate selection through background and outline; retain the icon's outline style.
+- Indicate selection through background and outline; a switched-on map control also swaps to the filled glyph.
 - Icons inherit the color of their text or semantic state. Do not use multicolored decorative icons.
-- Primary and unfamiliar actions have visible text labels. Close and recenter controls may be icon-only, with accessible names and web tooltips.
+- Primary and unfamiliar actions have visible text labels. Round map controls are 56 × 56 tiles with a short caption under the icon (`Info`, `Pozycja`, `Zasięg`, `Pora`, `Filtry`). Close controls and the mobile header info button may be icon-only, with accessible names and web tooltips.
 - Hide decorative icons next to labels from screen readers to avoid repeating the text.
 - Do not substitute emoji or Unicode symbols for icons.
 
-| Meaning | Icon name |
+| Meaning | Phosphor icon |
 | --- | --- |
-| AED | `heart_bolt`, with an adjacent `AED` label |
-| User location | `my_location` |
-| Address or selected point | `location_on` |
-| Walking | `directions_walk` |
-| Route | `route` |
-| Access hours | `schedule` |
-| Known access | `check_circle` |
-| Closed | `lock` |
-| Unknown | `help` |
+| AED | `heartbeat` (echoes the logo's pulse) |
+| User location | `gps-fix` |
+| Address or selected point | `map-pin` |
+| Walking | `person-simple-walk` |
+| Route | `path` |
+| Access hours, map time | `clock` |
+| Known access | `check-circle` |
+| Closed or unavailable | `lock-simple` |
+| Unknown | `question` |
 | Warning | `warning` |
-| Unavailability or error | `error` |
-| Download | `download` |
-| Offline | `wifi_off` |
+| Device unavailable or error | `warning-circle` |
+| Coverage layer | `circles-three` |
+| Filters | `funnel-simple` |
+| Information | `info` |
 | Report an issue | `flag` |
-| Layers | `layers` |
-| AED list | `list` |
-| Close, expand | `close`, `expand_more` |
+| AED list | `list-bullets` |
+| Close, expand | `x`, `caret-down` |
+| Navigation maneuvers | `arrow-up`, `arrow-bend-up-left/right`, `arrow-up-left/right`, `arrow-u-down-left/right`, `arrow-clockwise`/`arrow-counter-clockwise`, `flag-checkered` |
 
 One shared `AppIcon` component uses local assets from the chosen family on web and mobile. Bundle icons with the app so they work offline. Do not mix them with built-in Material Icons, SF Symbols, or another library. Preserve map provider attribution in its required form.
 
@@ -228,7 +229,7 @@ Inputs have a visible label above the field, a white background, and a `color.bo
 
 ### AED Markers and Travel Times
 
-- Default marker: white surface, recognizable location marker shape, `heart_bolt` icon, and readable `AED` label. Start with a 48 × 48 hit area; grow with the text if the label is inside the marker.
+- Default marker: white surface, recognizable location marker shape, `heartbeat` icon, and readable `AED` label. Start with a 48 × 48 hit area; grow with the text if the label is inside the marker.
 - Outline color and a small status icon communicate access: green check, gray lock, gray question mark, or red warning. Explain the exact meaning in the label and list.
 - Give the selected marker an additional 3-wide outer `color.accent` outline with a white separator. Preserve its underlying status, including a red warning.
 - Each individually displayed nearby AED has a small white travel time label, such as `4 min`, using 14/20 text at weight 600. Let the label grow with text scaling.
@@ -325,11 +326,11 @@ Keep the existing package usable during updates and after update failures. Show 
 
 Open `Odległość do najbliższego AED` as a separate layer mode; its sheet opens at the same medium height as AED details. Retain the map and the shared control styling.
 
-Provide `Wszystkie publiczne`, `Dostępne o tej porze`, and `Całodobowe` scenarios. The second one uses the map time, shown as `Pora: teraz` (or the previewed time) with `Zmień` opening the same time picker as the clock control. Label the threshold setting `Odległość od AED`, initially 500 m as specified in PLAN.md.
+Provide `Wszystkie publiczne`, `Dostępne o tej porze`, and `Całodobowe` scenarios. The second one uses the map time, shown as `Pora: teraz` (or the previewed time) with `Zmień` opening the same time picker as the clock control. Label the threshold setting `Promień`, initially 500 m as specified in PLAN.md.
 
-Show gaps with a translucent amber fill and hatching; AEDs without information do not cover any area. Include text in the legend. Routes and AEDs remain distinguishable over the layer.
+Show gaps with a translucent red fill and hatching; AEDs without information do not cover any area. The legend sits right under the title (`Do 500 m od AED`, `Dalej niż 500 m`) and replaces any separate description. Routes and AEDs remain distinguishable over the layer.
 
-Selecting an area shows the distance to the nearest eligible AED, scenario time, data date, and a short `Odległość w linii prostej` explanation. Supporting text: `Luki w dostępnych danych. Próg: 500 m.` Substitute the current threshold value. Do not label these areas as definitively dangerous or as proof that no devices exist.
+Selecting an area shows the distance to the nearest eligible AED and a link to it. One footnote covers the limits: `Odległość w linii prostej. Dane mogą być niepełne.` Do not repeat the scenario, time or data date already shown, and do not label these areas as definitively dangerous or as proof that no devices exist.
 
 While calculating, show `Obliczamy zasięg…`. If a saved layer remains visible until a new one is ready, explicitly label it with its own time and scenario.
 
@@ -347,7 +348,7 @@ While calculating, show `Obliczamy zasięg…`. If a saved layer remains visible
 
 ## 13. Design and Implementation Readiness
 
-- [ ] Use one palette, Noto Sans, and Material Symbols Rounded; no emoji.
+- [ ] Use one palette, Noto Sans, and Phosphor Icons (bold); no emoji.
 - [ ] Make the primary action visible without introductory screens; offer manual origin selection when location is unknown.
 - [ ] Make travel time, access, and entrance instructions readable without opening additional sections when the data is known.
 - [ ] Support text scaling without losing actions or truncating critical information.
@@ -369,5 +370,5 @@ This is DefiWawa's own design system. References inform the principles; the colo
 - [Citymapper: independent DESIGN.md](https://github.com/Meliwat/awesome-ios-design-md/blob/main/design-md/travel/citymapper/DESIGN.md).
 - [Uber: independent DESIGN.md](https://github.com/Meliwat/awesome-ios-design-md/blob/main/design-md/travel/uber/DESIGN.md).
 - [Noto Sans](https://fonts.google.com/noto/specimen/Noto+Sans).
-- [Material Symbols: official guide](https://developers.google.com/fonts/docs/material_symbols).
+- [Phosphor Icons](https://phosphoricons.com).
 - [W3C: text contrast](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) and [non-text contrast](https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html).

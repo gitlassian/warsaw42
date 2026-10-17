@@ -62,13 +62,6 @@
   color: var(--color-surface);
 }
 
-.slider {
-  width: 100%;
-  min-height: 32px;
-  margin: 0;
-  accent-color: var(--color-accent);
-  cursor: pointer;
-}
 
 .hint {
   margin: 0;

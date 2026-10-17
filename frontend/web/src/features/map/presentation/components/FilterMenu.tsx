@@ -47,6 +47,7 @@ export function FilterMenu({ filters, onToggle, open, onOpenChange }: FilterMenu
         variant="floating"
         icon="filter_list"
         label="Filtry AED"
+        text="Filtry"
         pressed={open}
         aria-expanded={open}
         aria-controls={menuId}

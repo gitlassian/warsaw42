@@ -4,18 +4,17 @@ import { Button, ButtonLink } from '@/design-system/components/Button'
 import { ChoiceGroup } from '@/design-system/components/ChoiceGroup'
 import { Notice } from '@/design-system/components/Notice'
 import { PanelHeader } from '@/design-system/components/PanelHeader'
+import { RangeSlider } from '@/design-system/components/RangeSlider'
 import { LoadingText } from '@/design-system/components/Spinner'
 import { Stack } from '@/design-system/components/Stack'
 import { Text } from '@/design-system/components/Text'
 import { formatWarsawTime } from '@/features/aeds/lib/availability'
 import { aedsStore, setTimePickerOpen } from '@/features/aeds/store'
-import { formatDateTime, formatDistance } from '@/shared/lib/format'
+import { formatDistance } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
-import { COVERAGE_RADIUS, COVERAGE_SCENARIOS, type CoverageScenario } from '../../models/coverage'
+import { COVERAGE_RADIUS, COVERAGE_SCENARIOS } from '../../models/coverage'
 import { coverageStore, loadCoverage, setCoverageQuery } from '../../store'
 import styles from './CoveragePanel.module.css'
-
-const scenarioLabel = (scenario: CoverageScenario) => COVERAGE_SCENARIOS.find((s) => s.value === scenario)!.label
 
 /** "Odległość do najbliższego AED" coverage layer mode (DESIGN.md §11). */
 export function CoveragePanel() {
@@ -24,7 +23,6 @@ export function CoveragePanel() {
   const status = useStore(coverageStore, (s) => s.status)
   const layer = useStore(coverageStore, (s) => s.layer)
   const selected = useStore(coverageStore, (s) => s.selected)
-  const dataStatus = useStore(aedsStore, (s) => s.dataStatus)
   // The slider moves freely; the layer is recalculated once it rests.
   const [radius, setRadius] = useState(thresholdM)
   useEffect(() => {
@@ -44,11 +42,19 @@ export function CoveragePanel() {
 
   return (
     <Stack gap={24}>
-      <Stack gap={8}>
+      <Stack gap={12}>
         <PanelHeader title="Odległość do najbliższego AED" />
-        <Text tone="secondary">
-          Białe koła: zasięg dostępnych AED ({formatDistance(thresholdM)}). Czerwone obszary: tam nie ma dostępnego AED w pobliżu.
-        </Text>
+        {/* The legend explains the map right under the title. */}
+        <ul className={styles.legend}>
+          <li>
+            <span className={`${styles.swatch} ${styles.covered}`} />
+            Do {formatDistance(thresholdM)} od AED
+          </li>
+          <li>
+            <span className={`${styles.swatch} ${styles.gap}`} />
+            Dalej niż {formatDistance(thresholdM)}
+          </li>
+        </ul>
       </Stack>
 
       <ChoiceGroup
@@ -67,23 +73,19 @@ export function CoveragePanel() {
       )}
       <div className={styles.radius}>
         <label htmlFor="coverage-radius" className={styles.radiusLabel}>
-          Odległość od AED: <strong>{formatDistance(radius)}</strong>
+          Promień: <strong>{formatDistance(radius)}</strong>
         </label>
-        <input
+        <RangeSlider
           id="coverage-radius"
-          type="range"
-          className={styles.slider}
           min={COVERAGE_RADIUS.min}
           max={COVERAGE_RADIUS.max}
           step={COVERAGE_RADIUS.step}
           value={radius}
           aria-valuetext={formatDistance(radius)}
-          onChange={(e) => setRadius(Number(e.target.value))}
+          onChange={setRadius}
+          minLabel={formatDistance(COVERAGE_RADIUS.min)}
+          maxLabel={formatDistance(COVERAGE_RADIUS.max)}
         />
-        <div className={styles.radiusScale} aria-hidden="true">
-          <span>{formatDistance(COVERAGE_RADIUS.min)}</span>
-          <span>{formatDistance(COVERAGE_RADIUS.max)}</span>
-        </div>
       </div>
 
       {status === 'loading' && <LoadingText>Obliczamy zasięg…</LoadingText>}
@@ -95,29 +97,6 @@ export function CoveragePanel() {
         />
       )}
 
-      {layer && (
-        <section>
-          <Stack gap={8}>
-            <Text variant="heading" as="h3">
-              Legenda
-            </Text>
-            <ul className={styles.legend}>
-              <li>
-                <span className={`${styles.swatch} ${styles.covered}`} />
-                W zasięgu {formatDistance(layer.thresholdM)} od dostępnego AED
-              </li>
-              <li>
-                <span className={`${styles.swatch} ${styles.gap}`} />
-                Dalej niż {formatDistance(layer.thresholdM)} od dostępnego AED
-              </li>
-            </ul>
-            <Text variant="meta" tone="muted">
-              Widoczna warstwa: {scenarioLabel(layer.scenario)}, {formatDateTime(layer.evaluatedAt)}
-            </Text>
-          </Stack>
-        </section>
-      )}
-
       {selected ? (
         <Notice title="Wybrany obszar">
           <Stack gap={4}>
@@ -126,16 +105,6 @@ export function CoveragePanel() {
                 ? 'Brak AED spełniającego warunki scenariusza.'
                 : `Najbliższy AED: ${formatDistance(selected.nearestDistanceM)} w linii prostej.`}
             </Text>
-            {layer && (
-              <Text variant="meta" tone="secondary">
-                {scenarioLabel(layer.scenario)}, {formatDateTime(layer.evaluatedAt)}
-              </Text>
-            )}
-            {dataStatus && (
-              <Text variant="meta" tone="secondary">
-                Dane pobrano: {formatDateTime(dataStatus.fetchedAt)}
-              </Text>
-            )}
             {nearestAed && (
               <ButtonLink variant="link" to={buildPath.aed(nearestAed.id)}>
                 {nearestAed.venueName}
@@ -144,12 +113,11 @@ export function CoveragePanel() {
           </Stack>
         </Notice>
       ) : (
-        layer && <Text tone="secondary">Wybierz zaznaczony obszar na mapie, aby zobaczyć szczegóły.</Text>
+        layer && <Text tone="secondary">Wybierz obszar na mapie, aby zobaczyć odległość.</Text>
       )}
 
       <Text variant="meta" tone="muted">
-        Koła mają promień progu w linii prostej, bez uwzględnienia przejść i barier.
-        Obszary nie dowodzą braku urządzeń: dane mogą być niepełne.
+        Odległość w linii prostej. Dane mogą być niepełne.
       </Text>
     </Stack>
   )
