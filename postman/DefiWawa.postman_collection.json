@@ -1,0 +1,2854 @@
+{
+  "info": {
+    "_postman_id": "06a2f1a9-d6b2-5b54-a434-bcd2c8906712",
+    "name": "DefiWawa API",
+    "description": "ТЕСТОВАЯ коллекция по ENDPOINTS.md. Папки LIVE работают уже сейчас на фикстурах, SPEC — только спецификация, пока вернут 404. KNOWN GAPS — проверки, которые должны падать, пока задача не сделана. Подробности в postman/README.md.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{anon_key}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Общие проверки формата ответа для каждого запроса (ENDPOINTS.md §11).",
+          "const contentType = pm.response.headers.get('Content-Type') || '';",
+          "if (pm.response.code !== 204 && contentType.includes('application/json')) {",
+          "  const body = pm.response.json();",
+          "  if (pm.response.code < 400) {",
+          "    pm.test('[общее] ответ в формате {data, meta} с request_id и generated_at', () => {",
+          "      pm.expect(body).to.have.property('data');",
+          "      pm.expect(body.meta).to.be.an('object');",
+          "      pm.expect(body.meta).to.include.keys('request_id', 'generated_at');",
+          "    });",
+          "  } else {",
+          "    pm.test('[общее] ошибка в формате {error: {code, message, details}, request_id}', () => {",
+          "      pm.expect(body.error).to.be.an('object');",
+          "      pm.expect(body.error).to.include.keys('code', 'message', 'details');",
+          "      pm.expect(body).to.have.property('request_id');",
+          "    });",
+          "    pm.test('[общее] в ошибке нет stack trace и ключей', () => {",
+          "      const text = JSON.stringify(body);",
+          "      pm.expect(text).to.not.match(/\\.ts:\\d+|\\bat [\\w.]+ \\(/);",
+          "      pm.expect(text).to.not.match(/AIza[0-9A-Za-z_-]{20,}/);",
+          "    });",
+          "  }",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "LIVE · Маршруты и ETA (Вітя, фикстуры)",
+      "description": "Работают локально: supabase functions serve с DEFIWAWA_USE_FIXTURES=1.",
+      "item": [
+        {
+          "name": "POST /routes/etas",
+          "description": "",
+          "item": [
+            {
+              "name": "ETA: 3 маркера рядом с fx-sample",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "Основной сценарий: видимые маркеры на карте получают время пешком.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_ids\": [\n    \"fx-sample\",\n    \"fx-centrum-247\",\n    \"fx-unknown-hours\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "pm.test('Cache-Control: no-store', () => pm.expect(pm.response.headers.get('Cache-Control') || '').to.include('no-store'));",
+                      "",
+                      "const { data, meta } = pm.response.json();",
+                      "pm.test('по одному результату на каждый id, в том же порядке', () => {",
+                      "  pm.expect(data.map((r) => r.aed_id)).to.eql(['fx-sample', 'fx-centrum-247', 'fx-unknown-hours']);",
+                      "});",
+                      "pm.test('ok: есть время, расстояние, прибытие и доступность при прибытии', () => {",
+                      "  data.filter((r) => r.status === 'ok').forEach((r) => {",
+                      "    pm.expect(r.duration_seconds).to.be.a('number').above(0);",
+                      "    pm.expect(r.distance_m).to.be.a('number').above(0);",
+                      "    pm.expect(r.estimated_arrival_at).to.be.a('string');",
+                      "    pm.expect(['open', 'closed', 'unknown']).to.include(r.availability_at_arrival.status);",
+                      "  });",
+                      "});",
+                      "pm.test('ошибочные элементы имеют null вместо значений', () => {",
+                      "  data.filter((r) => r.status !== 'ok').forEach((r) => {",
+                      "    pm.expect([r.duration_seconds, r.distance_m, r.estimated_arrival_at]).to.eql([null, null, null]);",
+                      "  });",
+                      "});",
+                      "pm.test('meta: dataset_version, буфер 120 с, атрибуция Google', () => {",
+                      "  pm.expect(meta.dataset_version).to.be.a('string');",
+                      "  pm.expect(meta.access_buffer_seconds).to.eql(120);",
+                      "  pm.expect(meta.attribution).to.include('Google');",
+                      "});",
+                      "pm.test('fx-unknown-hours не открыт при прибытии', () => {",
+                      "  const r = data.find((x) => x.aed_id === 'fx-unknown-hours');",
+                      "  if (r.status === 'ok') pm.expect(r.availability_at_arrival.status).to.eql('unknown');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: неизвестный id → not_found внутри 200",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "Частичная ошибка не ломает остальные результаты (ENDPOINTS.md §3).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_ids\": [\n    \"fx-sample\",\n    \"fixture-does-not-exist\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "",
+                      "const missing = pm.response.json().data.find((r) => r.aed_id === 'fixture-does-not-exist');",
+                      "pm.test('неизвестный AED: status=not_found, значения null', () => {",
+                      "  pm.expect(missing.status).to.eql('not_found');",
+                      "  pm.expect(missing.duration_seconds).to.eql(null);",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: повторяющиеся id → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_ids\": [\n    \"fx-sample\",\n    \"fx-sample\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: 21 id → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "Лимит — 20 id за запрос.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_ids\": [\n    \"fx-0\",\n    \"fx-1\",\n    \"fx-2\",\n    \"fx-3\",\n    \"fx-4\",\n    \"fx-5\",\n    \"fx-6\",\n    \"fx-7\",\n    \"fx-8\",\n    \"fx-9\",\n    \"fx-10\",\n    \"fx-11\",\n    \"fx-12\",\n    \"fx-13\",\n    \"fx-14\",\n    \"fx-15\",\n    \"fx-16\",\n    \"fx-17\",\n    \"fx-18\",\n    \"fx-19\",\n    \"fx-20\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: пустой список → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_ids\": []\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: старт вне Варшавы (Pruszków) → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.1703,\n    \"longitude\": 20.812\n  },\n  \"aed_ids\": [\n    \"fx-sample\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 outside_service_area', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('outside_service_area');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: перепутаны широта и долгота → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "Сервер не должен молча менять координаты местами (ENDPOINTS.md §11).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 21.0067,\n    \"longitude\": 52.2318\n  },\n  \"aed_ids\": [\n    \"fx-sample\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 outside_service_area', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('outside_service_area');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: широта 95 → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 95,\n    \"longitude\": 21.0\n  },\n  \"aed_ids\": [\n    \"fx-sample\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: координаты строкой → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": \"52.2\",\n    \"longitude\": \"21.0\"\n  },\n  \"aed_ids\": [\n    \"fx-sample\"\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: битый JSON → 400",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-etas",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\"origin\": {\"latitude\": 52.2,",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 400 malformed_json', () => {",
+                      "  pm.response.to.have.status(400);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('malformed_json');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "ETA: метод GET → 405",
+              "request": {
+                "method": "GET",
+                "header": [],
+                "url": "{{functions_url}}/routes-etas",
+                "description": ""
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 405 method_not_allowed', () => {",
+                      "  pm.response.to.have.status(405);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('method_not_allowed');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "POST /routes/walking",
+          "description": "",
+          "item": [
+            {
+              "name": "Маршрут к fx-centrum-247 (24/7)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_id\": \"fx-centrum-247\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "pm.test('Cache-Control: no-store', () => pm.expect(pm.response.headers.get('Cache-Control') || '').to.include('no-store'));",
+                      "",
+                      "const { data } = pm.response.json();",
+                      "pm.test('geometry — GeoJSON LineString в порядке [долгота, широта]', () => {",
+                      "  pm.expect(data.geometry.type).to.eql('LineString');",
+                      "  const [lon, lat] = data.geometry.coordinates[0];",
+                      "  pm.expect(lon).to.be.within(20.7, 21.4);",
+                      "  pm.expect(lat).to.be.within(52.0, 52.5);",
+                      "});",
+                      "pm.test('публичный 24/7 AED подходит для автоматического выбора', () => {",
+                      "  pm.expect(data.eligible_for_automatic_selection).to.eql(true);",
+                      "  pm.expect(data.warnings).to.eql([]);",
+                      "});",
+                      "pm.test('в ответе нет текстовых шагов маршрута Google', () => {",
+                      "  pm.expect(data).to.not.have.any.keys('steps', 'legs', 'instructions');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Маршрут к fx-restricted → построен, но не для авто-выбора",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "Ручной выбор AED с ограниченным доступом разрешён, но помечается (ENDPOINTS.md §3).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_id\": \"fx-restricted\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "",
+                      "const { data } = pm.response.json();",
+                      "pm.test('eligible=false и предупреждение access_restricted', () => {",
+                      "  pm.expect(data.eligible_for_automatic_selection).to.eql(false);",
+                      "  pm.expect(data.warnings).to.include('access_restricted');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Маршрут к fx-broken → confirmed_unavailable",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_id\": \"fx-broken\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "",
+                      "pm.test('предупреждение confirmed_unavailable', () => pm.expect(pm.response.json().data.warnings).to.include('confirmed_unavailable'));",
+                      "pm.test('eligible=false', () => pm.expect(pm.response.json().data.eligible_for_automatic_selection).to.eql(false));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Маршрут к fx-inactive → inactive",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "Вопрос к Віте: нужно ли вообще строить маршрут к снятому с учёта AED, или лучше 404?",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_id\": \"fx-inactive\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "",
+                      "pm.test('предупреждение inactive', () => pm.expect(pm.response.json().data.warnings).to.include('inactive'));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Маршрут к fx-unknown-hours → hours_unknown_at_arrival",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_id\": \"fx-unknown-hours\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "",
+                      "const { data } = pm.response.json();",
+                      "pm.test('часы неизвестны: предупреждение и eligible=false', () => {",
+                      "  pm.expect(data.warnings).to.include('hours_unknown_at_arrival');",
+                      "  pm.expect(data.eligible_for_automatic_selection).to.eql(false);",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Маршрут к несуществующему AED → 404",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_id\": \"fixture-does-not-exist\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 404 aed_not_found', () => {",
+                      "  pm.response.to.have.status(404);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('aed_not_found');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Маршрут: старт вне Варшавы → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.1703,\n    \"longitude\": 20.812\n  },\n  \"aed_id\": \"fx-centrum-247\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 outside_service_area', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('outside_service_area');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Маршрут: aed_id с недопустимыми символами → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/routes-walking",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"aed_id\": \"fx sample; drop table\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "POST /aeds/find",
+          "description": "",
+          "item": [
+            {
+              "name": "Znajdź defibrylator рядом с fx-sample",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "В будни 08:00–16:00 ожидаем fx-sample, в остальное время — fx-centrum-247 (24/7, второй круг поиска до 5 км).",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "pm.test('Cache-Control: no-store', () => pm.expect(pm.response.headers.get('Cache-Control') || '').to.include('no-store'));",
+                      "",
+                      "const { data, meta } = pm.response.json();",
+                      "const excluded = [\"fx-restricted\", \"fx-inactive\", \"fx-broken\", \"fx-unknown-hours\"];",
+                      "pm.test('status из списка', () => pm.expect(['found', 'no_eligible_aed', 'routing_unavailable']).to.include(data.status));",
+                      "pm.test('выбранный AED не закрыт, не ограничен, не сломан и не снят', () => {",
+                      "  if (data.selected) pm.expect(excluded).to.not.include(data.selected.aed.id);",
+                      "  data.alternatives.forEach((a) => pm.expect(excluded).to.not.include(a.aed.id));",
+                      "});",
+                      "pm.test('found → у выбранного есть время пешком и доступность покрывает буфер', () => {",
+                      "  if (data.status !== 'found') return;",
+                      "  pm.expect(data.selected.walking.duration_seconds).to.be.above(0);",
+                      "  pm.expect(data.selected.availability_at_arrival.status).to.eql('open');",
+                      "  pm.expect(data.selected.availability_at_arrival.covers_access_buffer).to.eql(true);",
+                      "});",
+                      "pm.test('альтернатив не больше max_results − 1 (по умолчанию 2)', () => pm.expect(data.alternatives.length).to.be.at.most(2));",
+                      "pm.test('сломанный и снятый AED не попадают даже в «неизвестные» альтернативы', () => {",
+                      "  const ids = data.unknown_access_alternatives.map((u) => u.aed.id);",
+                      "  pm.expect(ids).to.not.include('fx-broken');",
+                      "  pm.expect(ids).to.not.include('fx-inactive');",
+                      "});",
+                      "pm.test('meta.search: ранжирование только среди проверенных кандидатов', () => {",
+                      "  pm.expect(meta.search.ranking_scope).to.eql('evaluated_nearby_candidates');",
+                      "  pm.expect(meta.search.evaluated_count).to.be.a('number');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Znajdź: Kabaty, рядом нет фикстур → no_eligible_aed",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "ENDPOINTS.md §2: завершённый поиск без подходящего AED — это 200.",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.131,\n    \"longitude\": 21.0657\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "",
+                      "const { data } = pm.response.json();",
+                      "pm.test('поиск завершён без результата, но это 200, а не ошибка', () => {",
+                      "  pm.expect(data.status).to.eql('no_eligible_aed');",
+                      "  pm.expect(data.selected).to.eql(null);",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Znajdź: max_results = 5 (максимум)",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"max_results\": 5\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                      "",
+                      "pm.test('альтернатив не больше 4', () => pm.expect(pm.response.json().data.alternatives.length).to.be.at.most(4));"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Znajdź: max_results = 6 → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"max_results\": 6\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Znajdź: max_results = 0 → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"max_results\": 0\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Znajdź: max_results строкой → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"max_results\": \"3\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Znajdź: без origin → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 invalid_input', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Znajdź: старт вне Варшавы → 422",
+              "request": {
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "url": "{{functions_url}}/aeds-find",
+                "description": "",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"origin\": {\n    \"latitude\": 52.1703,\n    \"longitude\": 20.812\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "event": [
+                {
+                  "listen": "test",
+                  "script": {
+                    "type": "text/javascript",
+                    "exec": [
+                      "pm.test('HTTP 422 outside_service_area', () => {",
+                      "  pm.response.to.have.status(422);",
+                      "  pm.expect(pm.response.json().error.code).to.eql('outside_service_area');",
+                      "});"
+                    ]
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "KNOWN GAPS · Должны падать сейчас",
+      "description": "Красные, пока задача не сделана. Не баг коллекции.",
+      "item": [
+        {
+          "name": "Ząbki: вне Варшавы, но внутри bbox фикстур → должно быть 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{functions_url}}/aeds-find",
+            "description": "Сейчас ПАДАЕТ: фикстуры проверяют грубый прямоугольник, а не границу города. Станет зелёным, когда Вітя подключит is_inside_warsaw() из базы Ярика.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"origin\": {\n    \"latitude\": 52.2927,\n    \"longitude\": 21.1053\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 outside_service_area', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('outside_service_area');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SPEC · AED и поиск (Ярік)",
+      "description": "ENDPOINTS.md §1–2.",
+      "item": [
+        {
+          "name": "AED в окне карты",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/aeds?bbox=20.98,52.20,21.04,52.24&limit=100",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "",
+                  "const body = pm.response.json();",
+                  "pm.test('список: data[], meta.dataset_version, next_cursor', () => {",
+                  "  pm.expect(body.data).to.be.an('array');",
+                  "  pm.expect(body.meta).to.have.property('dataset_version');",
+                  "  pm.expect(body).to.have.property('next_cursor');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "AED: перевёрнутый bbox → 422",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/aeds?bbox=21.04,52.24,20.98,52.20",
+            "description": "west > east и south > north (ENDPOINTS.md §11)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 invalid_input', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "AED: limit 501 → 422",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/aeds?bbox=20.98,52.20,21.04,52.24&limit=501",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 invalid_input', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Карточка AED",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/aeds/{{aed_id}}",
+            "description": "aed_id — uuid из базы (не номер города). Номер города лежит в source_id."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "",
+                  "const { data } = pm.response.json();",
+                  "pm.test('часы и состояние устройства раздельно', () => {",
+                  "  pm.expect(data).to.have.property('operational_status');",
+                  "  pm.expect(['unknown', 'confirmed_unavailable', 'confirmed_operational']).to.include(data.operational_status);",
+                  "});",
+                  "pm.test('есть source_id города и даты свежести', () => {",
+                  "  pm.expect(data).to.have.property('source_id');",
+                  "  pm.expect(data).to.have.property('last_fetched_at');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Карточка AED: неизвестный id → 404",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/aeds/00000000-0000-0000-0000-000000000000",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 404', () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Доступность AED в момент времени",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/aeds/{{aed_id}}/availability?at=2026-10-19T10:00:00%2B02:00",
+            "description": "Ожидаемые ответы для разных моментов — в fixtures/availability_cases.json."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "",
+                  "pm.test('status open|closed|unknown', () => pm.expect(['open', 'closed', 'unknown']).to.include(pm.response.json().data.status));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Доступность: окно больше 2 дней → 422",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/aeds/{{aed_id}}/availability?at=2026-10-19T10:00:00%2B02:00&until=2026-10-22T10:00:00%2B02:00",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 invalid_input', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "AED рядом (по прямой)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/aeds/nearby",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"radius_m\": 2000,\n  \"limit\": 20\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Cache-Control: no-store', () => pm.expect(pm.response.headers.get('Cache-Control') || '').to.include('no-store'));",
+                  "",
+                  "const { data } = pm.response.json();",
+                  "pm.test('distance_type = straight_line и сортировка по расстоянию', () => {",
+                  "  const d = data.map((x) => x.distance_m);",
+                  "  pm.expect(d).to.eql([...d].sort((a, b) => a - b));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "AED рядом: radius_m 20001 → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/aeds/nearby",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"origin\": {\n    \"latitude\": 52.208,\n    \"longitude\": 21.014\n  },\n  \"radius_m\": 20001\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 invalid_input', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SPEC · SMS-код и отчёты",
+      "description": "ENDPOINTS.md §4. Порядок важен: запусти папку целиком.",
+      "item": [
+        {
+          "name": "OTP: запросить код",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/reports/otp/request",
+            "description": "Только тестовый номер из Supabase Auth → Phone → Test OTP. Не используй личный номер.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"{{test_phone}}\",\n  \"aed_id\": \"{{aed_id}}\",\n  \"category\": \"incorrect_hours\",\n  \"description\": \"TEST: godziny na tabliczce różnią się od godzin w aplikacji.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Cache-Control: no-store', () => pm.expect(pm.response.headers.get('Cache-Control') || '').to.include('no-store'));",
+                  "",
+                  "const { data } = pm.response.json();",
+                  "pm.test('challenge_id, срок, маскированный номер', () => {",
+                  "  pm.expect(data).to.include.keys('challenge_id', 'expires_at');",
+                  "  pm.environment.set('challenge_id', data.challenge_id);",
+                  "});",
+                  "pm.test('полный номер телефона не возвращается', () => {",
+                  "  pm.expect(pm.response.text()).to.not.include(pm.environment.get('test_phone'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP: описание короче 10 символов → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/reports/otp/request",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"{{test_phone}}\",\n  \"aed_id\": \"{{aed_id}}\",\n  \"category\": \"incorrect_hours\",\n  \"description\": \"zepsuty\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 invalid_input', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP: номер не в формате E.164 → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/reports/otp/request",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"600 100 200\",\n  \"aed_id\": \"{{aed_id}}\",\n  \"category\": \"incorrect_hours\",\n  \"description\": \"TEST: godziny na tabliczce różnią się od godzin w aplikacji.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 invalid_input', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP: неизвестная категория → 422",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/reports/otp/request",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"{{test_phone}}\",\n  \"aed_id\": \"{{aed_id}}\",\n  \"category\": \"spam\",\n  \"description\": \"TEST: godziny na tabliczce różnią się od godzin w aplikacji.\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422 invalid_input', () => {",
+                  "  pm.response.to.have.status(422);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('invalid_input');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP: повторная отправка сразу → 429 + Retry-After",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/reports/otp/resend",
+            "description": "Запускать сразу после «запросить код».",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"challenge_id\": \"{{challenge_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('до конца паузы 60 с повтор запрещён', () => {",
+                  "  pm.response.to.have.status(429);",
+                  "  pm.expect(pm.response.headers.get('Retry-After')).to.be.ok;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP: неверный код → ошибка, не токен",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/reports/otp/verify",
+            "description": "Код ошибки в ENDPOINTS.md не зафиксирован — уточнить у владельца OTP.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"challenge_id\": \"{{challenge_id}}\",\n  \"code\": \"000000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('4xx и нет report_token', () => {",
+                  "  pm.expect(pm.response.code).to.be.within(400, 499);",
+                  "  pm.expect(pm.response.text()).to.not.include('report_token');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OTP: верный код → report_token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/reports/otp/verify",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"challenge_id\": \"{{challenge_id}}\",\n  \"code\": \"{{test_otp_code}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Cache-Control: no-store', () => pm.expect(pm.response.headers.get('Cache-Control') || '').to.include('no-store'));",
+                  "",
+                  "const { data } = pm.response.json();",
+                  "pm.test('выдан report_token', () => {",
+                  "  pm.expect(data.report_token).to.be.a('string');",
+                  "  pm.environment.set('report_token', data.report_token);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Отчёт: отправить",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{idempotency_key}}"
+              }
+            ],
+            "url": "{{api_url}}/reports",
+            "description": "Черновик уже привязан к challenge; тело пустое.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{report_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.set('idempotency_key', pm.variables.replaceIn('{{$guid}}'));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "",
+                  "const { data } = pm.response.json();",
+                  "pm.test('status=pending', () => pm.expect(data.status).to.eql('pending'));",
+                  "pm.environment.set('report_id', data.id || data.report_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Отчёт: повтор с тем же ключом → та же квитанция",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{idempotency_key}}"
+              }
+            ],
+            "url": "{{api_url}}/reports",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{report_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('новый отчёт не создан', () => {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "  const d = pm.response.json().data;",
+                  "  pm.expect(d.id || d.report_id).to.eql(pm.environment.get('report_id'));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Отчёт: тот же токен, новый ключ → 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{api_url}}/reports",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{report_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409 authorization_used', () => {",
+                  "  pm.response.to.have.status(409);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('authorization_used');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Отчёт: без токена → 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{api_url}}/reports",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Отчёт: публичный ключ вместо report_token → 401",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{api_url}}/reports",
+            "description": "Сохранённая сессия или публичный ключ не заменяют свежую проверку SMS.",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anon_key}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 401', () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SPEC · Покрытие (Ярік)",
+      "description": "ENDPOINTS.md §5.",
+      "item": [
+        {
+          "name": "Покрытие: все публичные, 500 м",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/coverage?bbox=20.98,52.20,21.04,52.24&scenario=all_public&threshold_m=500",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 с FeatureCollection или 202 с Retry-After', () => {",
+                  "  pm.expect([200, 202]).to.include(pm.response.code);",
+                  "  if (pm.response.code === 202) pm.expect(pm.response.headers.get('Retry-After')).to.be.ok;",
+                  "  else {",
+                  "    const { data, meta } = pm.response.json();",
+                  "    pm.expect(data.type).to.eql('FeatureCollection');",
+                  "    pm.expect(meta.distance_type).to.eql('straight_line');",
+                  "    pm.environment.set('layer_id', meta.layer_id);",
+                  "  }",
+                  "});",
+                  "pm.test('нет бесконечности в JSON', () => pm.expect(pm.response.text()).to.not.match(/Infinity|1e\\+?308/));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Покрытие: в выбранное время",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/coverage?bbox=20.98,52.20,21.04,52.24&scenario=available_at&at=2026-10-19T22:00:00%2B02:00",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('200 или 202', () => pm.expect([200, 202]).to.include(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Покрытие: threshold_m 50 → 422",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/coverage?bbox=20.98,52.20,21.04,52.24&scenario=all_public&threshold_m=50",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422', () => pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Покрытие: объяснение области",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/coverage/{{layer_id}}/regions/{{region_id}}",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SPEC · Offline-пакеты (Вітя)",
+      "description": "ENDPOINTS.md §6.",
+      "item": [
+        {
+          "name": "Offline: список регионов",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/offline/regions",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Offline: манифест Варшавы",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/offline/regions/warszawa/manifest",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "",
+                  "const { data } = pm.response.json();",
+                  "pm.test('у каждого файла есть размер и SHA-256', () => {",
+                  "  (data.assets || []).forEach((a) => {",
+                  "    pm.expect(a.sha256).to.match(/^[0-9a-f]{64}$/);",
+                  "    pm.expect(a.size_bytes || a.bytes).to.be.above(0);",
+                  "  });",
+                  "});",
+                  "pm.test('в пакете нет маршрутов Google', () => pm.expect(pm.response.text()).to.not.match(/route|eta/i));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Offline: несовместимая версия схемы → 409",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/offline/regions/warszawa/manifest?schema_version=999",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409 schema_unsupported', () => {",
+                  "  pm.response.to.have.status(409);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('schema_unsupported');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SPEC · Статус данных (Ярік)",
+      "description": "ENDPOINTS.md §7.",
+      "item": [
+        {
+          "name": "Статус данных",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/data/status",
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "",
+                  "const { data } = pm.response.json();",
+                  "pm.test('fresh | stale | unavailable', () => pm.expect(['fresh', 'stale', 'unavailable']).to.include(data.status || data.sync_status));",
+                  "pm.test('нет ключей и внутренних ошибок', () => pm.expect(pm.response.text()).to.not.match(/api[_-]?key|service_role|stack/i));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SPEC · Модерация (Вітя)",
+      "description": "ENDPOINTS.md §8. Нужен admin_jwt модератора.",
+      "item": [
+        {
+          "name": "Модерация: очередь отчётов",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/admin/reports?status=pending",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "",
+                  "pm.test('нет номеров телефонов', () => pm.expect(pm.response.text()).to.not.match(/\\+48\\d{9}/));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Модерация: публичный ключ → 401/403",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/admin/reports?status=pending",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anon_key}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('доступ запрещён', () => pm.expect([401, 403]).to.include(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Модерация: report_token не даёт прав модератора → 401/403",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/admin/reports",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{report_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('доступ запрещён', () => pm.expect([401, 403]).to.include(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Модерация: отчёт",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/admin/reports/{{report_id}}",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Модерация: решение без reason → 422",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/admin/reports/{{report_id}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\",\n  \"expected_version\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 422', () => pm.response.to.have.status(422));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Модерация: принять отчёт",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/admin/reports/{{report_id}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"accepted\",\n  \"reason\": \"TEST: potwierdzone na miejscu\",\n  \"expected_version\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Модерация: устаревшая версия → 409",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/admin/reports/{{report_id}}",
+            "description": "Запускать после «принять отчёт»: версия уже 2.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"rejected\",\n  \"reason\": \"TEST\",\n  \"expected_version\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409', () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Правка: AED недоступен",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/admin/aeds/{{aed_id}}/overrides",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"operational_status\",\n  \"value\": {\n    \"operational_status\": \"confirmed_unavailable\"\n  },\n  \"reason\": \"TEST: urządzenie zdjęte do serwisu\",\n  \"valid_from\": \"2026-10-19T10:00:00+02:00\",\n  \"valid_until\": \"2026-10-26T10:00:00+01:00\",\n  \"report_id\": \"{{report_id}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 201', () => pm.response.to.have.status(201));",
+                  "pm.environment.set('override_id', pm.response.json().data.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Правка: пересечение с активной → 409",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/admin/aeds/{{aed_id}}/overrides",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"operational_status\",\n  \"value\": {\n    \"operational_status\": \"confirmed_operational\"\n  },\n  \"reason\": \"TEST\",\n  \"valid_from\": \"2026-10-20T10:00:00+02:00\",\n  \"valid_until\": \"2026-10-21T10:00:00+02:00\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 409 override_conflict', () => {",
+                  "  pm.response.to.have.status(409);",
+                  "  pm.expect(pm.response.json().error.code).to.eql('override_conflict');",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Правка: отозвать",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/admin/aeds/{{aed_id}}/overrides/{{override_id}}",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"revoke\": true,\n  \"reason\": \"TEST: koniec testu\",\n  \"expected_version\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{admin_jwt}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "SPEC · Внутренние задачи",
+      "description": "ENDPOINTS.md §9–10. Только серверные ключи.",
+      "item": [
+        {
+          "name": "Импорт: публичным ключом нельзя → 401/403",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/internal/sources/warsaw/sync",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{anon_key}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('внутренний endpoint закрыт для публичного ключа', () => pm.expect([401, 403]).to.include(pm.response.code));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Импорт: поставить в очередь",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{api_url}}/internal/sources/warsaw/sync",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{internal_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 202', () => pm.response.to.have.status(202));",
+                  "",
+                  "pm.environment.set('job_id', pm.response.json().data.job_id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Импорт: статус",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/internal/sources/warsaw/status",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{internal_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Часы: перепарсить AED",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Idempotency-Key",
+                "value": "{{$guid}}"
+              }
+            ],
+            "url": "{{api_url}}/internal/aeds/{{aed_id}}/parse-hours",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"reason\": \"TEST\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{internal_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 202', () => pm.response.to.have.status(202));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Задача: статус",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{api_url}}/internal/jobs/{{job_id}}",
+            "description": "",
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{internal_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 200', () => pm.response.to.have.status(200));",
+                  "",
+                  "pm.test('queued|running|succeeded|failed', () => pm.expect(['queued', 'running', 'succeeded', 'failed']).to.include(pm.response.json().data.state || pm.response.json().data.status));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Покрытие: пересчитать",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/internal/coverage/rebuild",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"scenario\": \"all_public\",\n  \"threshold_m\": 500\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{internal_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 202', () => pm.response.to.have.status(202));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Offline: собрать пакет",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": "{{api_url}}/internal/offline/regions/warszawa/build",
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{internal_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('HTTP 202', () => pm.response.to.have.status(202));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
