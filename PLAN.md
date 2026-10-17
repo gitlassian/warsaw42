@@ -21,7 +21,7 @@ Core features in both apps:
 - A map of AEDs, with a subtle walking-time pill next to each individually displayed nearby marker.
 - A prominent **“Znajdź defibrylator”** action that selects an accessible nearby AED and builds a walking route using Google Maps Platform.
 - AED details, opening hours, access instructions, and data freshness.
-- Reports submitted only after phone-number verification using an SMS OTP.
+- Reports submitted without login or phone verification, protected by rate limits.
 - A coverage layer showing areas with no nearby accessible AED.
 - No registration or login required to browse, search, or route.
 
@@ -44,7 +44,7 @@ The mobile release also includes offline map downloads. Offline turn-by-turn rou
 | Offline mobile map | Separate renderer using a licensed downloadable OSM-derived map package |
 | Offline AED storage | Local SQLite database and versioned download manifests |
 | Hours interpretation | Backend AI extraction with strict schema validation and a review queue |
-| Report verification | Supabase Phone Auth with Twilio as the SMS provider; verification appears only inside reporting |
+| Report abuse protection | No verification; database rate limits per client IP and per AED |
 
 Flutter supports web deployment, making a shared implementation a practical way to keep both apps consistent. Validate map overlays, browser load time, and accessibility in an early prototype. [Flutter web documentation](https://docs.flutter.dev/platform-integration/web)
 
@@ -63,7 +63,7 @@ flowchart TD
     P --> MOB
     S --> C[Coverage calculation]
     C --> B
-    WEB --> R[Phone OTP and report submission]
+    WEB --> R[Report submission]
     MOB --> R
     R --> Q[Private moderation queue]
     Q --> S
@@ -109,11 +109,10 @@ If location permission is denied or positioning fails, allow placing an origin p
 
 1. Open an AED and choose “Zgłoś problem.”
 2. Select a category: missing AED, apparent malfunction, inaccessible entrance, incorrect hours, incorrect location, or other.
-3. Enter a short explanation and phone number.
-4. Receive and enter an SMS code.
-5. Submit the report and receive a confirmation that it awaits review.
+3. Enter a short explanation.
+4. Submit the report and receive a confirmation that it awaits review.
 
-Preserve the draft through verification errors. Reporting must never block finding an AED.
+Preserve the draft through submission errors. Reporting must never block finding an AED.
 
 ### Download for offline use — mobile
 
@@ -251,18 +250,19 @@ In airplane mode, the app must cold-start, render the downloaded area, show AED 
 
 Initial offline discovery ranks by straight-line distance, clearly labeled, and shows distance pills rather than claiming Google walking times. No new Google route can be calculated offline. Full offline walking routes require an additional pedestrian graph and routing engine and are deferred.
 
-Reports may be drafted offline, but require connectivity and OTP verification before submission. Outside the downloaded map bounds, explain the missing coverage and retain access to saved AED details.
+Reports may be drafted offline, but require connectivity before submission. Outside the downloaded map bounds, explain the missing coverage and retain access to saved AED details.
 
 ## 8. Reporting, trust, and privacy
 
-Use **Supabase Phone Auth with Twilio SMS** only within the report flow. Supabase manages OTP verification and the auth identity/session; Twilio delivers the SMS codes as the configured Supabase SMS provider. The product has no account onboarding, profile, or login gate. Configure Twilio credentials server-side and explicit OTP lifetime/resend limits in Supabase. [Supabase phone OTP documentation](https://supabase.com/docs/guides/auth/phone-login)
+Reporting needs no phone verification, account onboarding, profile, or login gate. Anyone can submit a report for an active AED.
 
-- Each submission requires recent phone verification. Issue a short-lived, single-use report authorization tied to the draft after verification; consume it atomically with the report. A previously saved session alone must not bypass this requirement.
-- Validate verification state and report permissions on the server; never trust a client-supplied `phone_verified` flag.
-- Limit OTP sends and attempts by phone/IP, enforce cooldowns, and apply abuse challenges when appropriate.
-- Keep phone numbers in private auth storage, never in public AED data, map packages, analytics, or logs. Reports reference a private reporter ID.
-- Define retention and deletion for report identities before launch. Avoid persistent location history; send coordinates only when needed for route requests.
-- Keep reports pending until reviewed. A verified phone proves control of that number, not accuracy of a report.
+- Limit abuse in the database: 5 reports per client IP per hour and 20 per AED per hour. Trust only the edge-set client IP header, never `x-forwarded-for`.
+- Make spam cheap to ignore rather than blocking it: flag implausibly fast or link-bearing reports, silently drop honeypot submissions in the app, and moderate pending reports grouped per AED and category.
+- Before public launch, consider Supabase anonymous sign-in with invisible Cloudflare Turnstile to rate-limit per device instead of per IP.
+- Use a client-generated report ID as the idempotency key so retries cannot create duplicates.
+- Store only a hash of the client IP, for rate limiting; never in public AED data, map packages, analytics, or logs.
+- Define retention and deletion for report IP hashes before launch. Avoid persistent location history; send coordinates only when needed for route requests.
+- Keep reports pending until reviewed; an unverified report is a hint, not a fact.
 - Moderators can accept/reject reports and create time-bounded audited overrides. Confirmed missing/broken/inaccessible AEDs are excluded from automatic selection until resolved.
 - The initial moderation interface can be a restricted Supabase dashboard/workflow; it is separate from the public no-login apps.
 
@@ -296,16 +296,15 @@ Cell-center sampling is approximate and can miss variation within a cell. Label 
 | `aed_overrides` | Reviewed corrections/condition, reason, reviewer, validity period, audit history |
 | `source_snapshots` / `ingestion_runs` | Raw source versions, completeness checks, job status, counts, errors |
 | `schedule_parse_jobs` | Pending/retry/review state and validated extraction output |
-| `reports` | AED reference, category, text, private reporter ID, moderation state, timestamps |
-| `report_authorizations` | Expiring single-use authorization bound to a verified reporter and draft |
+| `reports` | AED reference, category, text, private client IP hash, moderation state, timestamps |
 | `coverage_layers` | Geometry or artifact reference, scenario, threshold, calculation time, source version |
 | `offline_packages` | Bounds, asset references, checksum, size, schema/data versions, attribution |
 
 Index geography for nearby lookups, enforce unique source IDs, and keep raw payloads private. Public views expose only sanitized AED, schedule, coverage, and package data.
 
-Public contracts should support viewport AED reads, AED details, nearby discovery, bounded ETA requests, selected routes, coverage layers, and offline manifests. Every response includes relevant freshness/version information. Reporting endpoints handle OTP-related authorization and report submission; ingestion and moderation endpoints require privileged credentials.
+Public contracts should support viewport AED reads, AED details, nearby discovery, bounded ETA requests, selected routes, coverage layers, and offline manifests. Every response includes relevant freshness/version information. Report submission is public and rate-limited; ingestion and moderation endpoints require privileged credentials.
 
-Use RLS and narrow database grants: anonymous users can read public data, verified reporters can submit only through the authorized flow, and clients cannot edit AED records or inspect other reports. Service-role credentials, AI credentials, city API keys, and SMS secrets stay server-side.
+Use RLS and narrow database grants: anonymous users can read public data and submit rate-limited reports, and clients cannot edit AED records or inspect other reports. Service-role credentials, AI credentials, and city API keys stay server-side.
 
 ## 11. Delivery milestones
 
@@ -317,7 +316,7 @@ Use RLS and narrow database grants: anonymous users can read public data, verifi
 - [ ] Prototype online map markers with ETA pills on web and mobile.
 - [ ] Apply Warsaw camera/zoom limits and boundary checks to both apps and backend discovery; handle locations outside the city explicitly.
 - [ ] Prove a downloadable offline basemap renders after an airplane-mode cold start.
-- [ ] Set up Supabase, Google Maps billing/keys, AI extraction credentials, and Twilio SMS delivery through Supabase Phone Auth.
+- [ ] Set up Supabase, Google Maps billing/keys, and AI extraction credentials.
 
 Exit: real source data is understood and the shared UI/map approach works on target platforms.
 
@@ -341,11 +340,11 @@ Exit: a person can open the link, find an eligible AED, and inspect the walking 
 
 ### Milestone 4 — Reporting and coverage
 
-- [ ] Complete real Supabase + Twilio SMS OTP, report authorization, draft preservation, and moderation.
+- [ ] Complete real report submission, rate limiting, draft preservation, and moderation.
 - [ ] Generate the first coverage grid and all-public/24-hour/selected-time scenarios.
 - [ ] Add the coverage layer, legend, selection details, and threshold control.
 
-Exit: verified reports reach a private queue and coverage gaps are visible in both apps.
+Exit: reports reach a private queue and coverage gaps are visible in both apps.
 
 ### Milestone 5 — Offline mobile completion
 
@@ -360,7 +359,7 @@ Exit: the downloaded Warsaw map and AED discovery work without connectivity.
 
 - [ ] Run the acceptance checks below on web, Android, and iOS targets.
 - [ ] Verify key restrictions, public/private data separation, quotas, and error monitoring.
-- [ ] Rehearse a daytime search, a closed-nearest-AED case, a coverage gap, an OTP report, and an airplane-mode search.
+- [ ] Rehearse a daytime search, a closed-nearest-AED case, a coverage gap, a report, and an airplane-mode search.
 - [ ] Keep any simulated data/location visibly marked; use real Warsaw-derived data for the primary pitch.
 
 ## 12. Acceptance checks
@@ -376,7 +375,7 @@ Exit: the downloaded Warsaw map and AED discovery work without connectivity.
 | Pills | Visible individual nearby markers show computed times or explicit loading/unavailable states; clustering bounds API calls |
 | UI parity | Shared layouts and components match at equivalent viewport sizes; keyboard, screen-reader, and large-text flows remain usable |
 | Offline | Cold-start in airplane mode renders downloaded basemap/AEDs, evaluates hours, and shows freshness without online API requests |
-| Reporting | Twilio delivers SMS codes through Supabase Phone Auth; submission without recent OTP fails; authorization replay fails; private phone/report data cannot be read publicly |
+| Reporting | Submission works without login; rate limits reject floods; retries do not duplicate; report data cannot be read publicly |
 | Coverage | A synthetic sparse area is marked underserved; closing a scheduled AED changes time-specific coverage; distances use meters correctly |
 | Updates | Interrupted imports/downloads retain a usable previous version; reviewed overrides survive source refreshes |
 
@@ -387,8 +386,8 @@ Proposed performance budgets: show cached AEDs within one second after the map i
 - Exact Warsaw source endpoint, authentication, dataset license, and meaning of omitted opening days.
 - Supported launch mobile platforms and browser/device test matrix.
 - Final offline map supplier, renderer, distribution rights, storage budget, and zoom range.
-- Twilio sender configuration, AI model/provider, expected usage, and monthly API spending limits. Supabase Phone Auth with Twilio is the selected OTP stack.
-- Reviewer ownership and report/phone-identity retention policy.
+- AI model/provider, expected usage, and monthly API spending limits.
+- Reviewer ownership and report retention policy.
 - Whether later releases need full offline pedestrian routing, population-weighted placement suggestions, or a dedicated moderation app.
 
-These decisions do not change the core scope: Warsaw Open Data, shared web/mobile UI, availability-aware Google walking routes, periodic Supabase synchronization, OTP-protected reports, mobile offline maps, and coverage gaps.
+These decisions do not change the core scope: Warsaw Open Data, shared web/mobile UI, availability-aware Google walking routes, periodic Supabase synchronization, rate-limited reports, mobile offline maps, and coverage gaps.

@@ -13,7 +13,7 @@ GeoJSON uses `[longitude, latitude]`. Distances are meters, durations are second
 | `POST /aeds/find` | `origin`, optional `max_results` (1–5) | Selected AED, walking route and alternatives | Вітя |
 | `POST /routes/etas` | `origin`, `aed_ids` (1–20) | Walking time and distance for each AED | Вітя |
 | `POST /routes/walking` | `origin`, `aed_id` | Walking route, distance, time and availability | Вітя |
-| `POST /reports` | `aed_id`, `category`, `description`; phone-auth bearer token | Report ID and `pending` status | Вітя |
+| `POST /reports` | Client-generated `id`, `aed_id`, `category`, `description`, `form_ms`; no auth | Report ID and `pending` status | Вітя |
 | `GET /coverage` | None | Latest coverage GeoJSON with calculation date | Ярік |
 | `GET /offline` | None | Warsaw basemap and AED download URLs, sizes, checksums and update date | Вітя |
 
@@ -64,21 +64,32 @@ ETA results can fail individually; never label straight-line distance as walking
 
 ## Reports
 
-Use Supabase Phone Auth directly for sending/resending and verifying SMS codes
-(Максім owns the frontend and Twilio setup). Submit with the resulting session JWT;
-there are no custom OTP endpoints or single-use report tokens. A verified phone
-session can submit subsequent reports.
+Reports need no login or phone verification: insert into `reports` with the anon
+key. The client generates the report `id` as its idempotency key, so a retried
+submission fails with a unique violation instead of creating a duplicate. Abuse is
+limited in the database: 5 reports per client IP per hour and 20 per AED per hour;
+over the limit the insert fails with HTTP 429 and message `rate_limited`. The client
+IP comes only from the edge-set `cf-connecting-ip` header; `x-forwarded-for` is ignored
+because clients can set it.
+
+Send `form_ms`, the milliseconds the form was open. Reports are never rejected as spam;
+the database flags them for moderators instead: `fast` (missing or under 3 s `form_ms`)
+and `link` (URL in the description). The web form also has a hidden honeypot field;
+when it is filled the app shows success without sending the report.
 
 Categories: `missing`, `malfunction`, `inaccessible`, `incorrect_hours`,
 `incorrect_location`, `other`. Descriptions are 10–2,000 trimmed characters.
 Reports are private and do not automatically change AED data. Review reports and
 edit AEDs in the Supabase dashboard; no admin API is needed for this project.
+The private `report_queue` view groups pending reports by AED and category, ranked by
+distinct unflagged clients, so repeated or flagged spam collapses into one low row.
+`moderate_report_group(aed_id, category, status, last_at)` accepts or rejects a whole row.
 Set `manually_edited=true` when correcting an AED so imports can skip it.
 
 ## Backend and storage
 
 - `aeds`: one row per device, including address and JSON hours.
-- `reports`: one row per report; phone numbers stay in Supabase Auth.
+- `reports`: one row per report; only a hash of the client IP is kept, for rate limiting.
 - `app_data`: public JSON documents keyed by `status`, `coverage`, or `offline`.
 - `service_area` and `public_holiday`: small lookup tables for Warsaw and hours.
 

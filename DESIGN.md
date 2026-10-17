@@ -124,7 +124,7 @@ Use short, concrete wording. Each message answers one question. Show an explanat
 | Offline map | `Mapa offline` |
 | Coverage | `Zasięg AED` |
 
-Keep `OTP`, `API`, `PostGIS`, `timestamp`, "AI", and internal status names out of user-facing labels. Call the verification code `Kod SMS`.
+Keep `API`, `PostGIS`, `timestamp`, "AI", and internal status names out of user-facing labels.
 
 ## 4. Icons
 
@@ -305,13 +305,11 @@ Localize dates and numbers for Polish and display time in Europe/Warsaw. Example
 
 Open the form from the AED card and retain its connection to the selected device. Title: `Zgłoś problem`.
 
-The first screen contains category, description, and phone number. Visible phone explanation: `Potwierdzimy zgłoszenie kodem SMS.` Use short Polish category names: `Brak AED`, `Problem z urządzeniem`, `Brak dostępu`, `Błędne godziny`, `Błędna lokalizacja`, `Inny problem`.
+The form has one screen with category and description; no phone number or SMS code. Use short Polish category names: `Brak AED`, `Problem z urządzeniem`, `Brak dostępu`, `Błędne godziny`, `Błędna lokalizacja`, `Inny problem`.
 
-After `Wyślij kod SMS`, show verification: a `Kod SMS` label, one field supporting paste and system autofill, a masked phone number, and an option to correct it. Code length and resend timing come from verification settings. Preserve the draft on errors and back navigation.
+`Wyślij zgłoszenie` submits the report. Preserve the draft on errors and back navigation. When the rate limit is reached: `Wysłano zbyt wiele zgłoszeń. Spróbuj ponownie później.`
 
-`Potwierdź i wyślij` verifies the code and submits the report. Incorrect code: `Nieprawidłowy kod. Spróbuj ponownie.` Expired code: `Kod wygasł. Wyślij nowy.` Show the remaining wait before resending is available.
-
-Success: `Dziękujemy. Zgłoszenie czeka na sprawdzenie.` Allow an immediate return to the selected AED. Offline, a report can be saved as a draft; submission requires a connection and phone verification. Do not introduce app login or a profile for this flow.
+Success: `Dziękujemy. Zgłoszenie czeka na sprawdzenie.` Allow an immediate return to the selected AED. Offline, a report can be saved as a draft; submission requires a connection. Do not introduce app login or a profile for this flow.
 
 ## 10. Mobile Downloads
 
@@ -356,7 +354,7 @@ While calculating, show `Obliczamy zasięg…`. If a saved layer remains visible
 - [ ] Separate scheduled access from device condition and inspection status.
 - [ ] Clearly distinguish offline straight-line distances from online walking times.
 - [ ] Cover closed AEDs, unknown hours, location denial, offline use, and routing failures.
-- [ ] Require SMS verification only for report submission; preserve drafts on errors.
+- [ ] Let anyone submit a report without login or verification; preserve drafts on errors.
 - [ ] Show coverage scenario, threshold, and data limitations; provide downloads on mobile.
 - [ ] Use the same components on web and mobile at equivalent available widths.
 - [ ] Check contrast, keyboard access, screen readers, large text, safe areas, and map attribution.

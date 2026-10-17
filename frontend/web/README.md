@@ -3,7 +3,7 @@
 React 19 + TypeScript + Vite SPA. Product rules: `/PLAN.md`, `/DESIGN.md`; API contract: `/ENDPOINTS.md`; architecture rules mirror `frontend/AGENTS.md`.
 
 ```sh
-cp .env.example .env.local   # set VITE_MAPBOX_TOKEN (public pk.* token)
+cp .env.example .env.local   # set VITE_MAPBOX_TOKEN (public pk.* token) and VITE_SUPABASE_*
 npm install
 npm run dev      # local dev server
 npm run build    # type-check + production build
@@ -13,14 +13,15 @@ npm test         # node --test for pure domain logic (*.test.ts)
 
 ## Mock data
 
-All services are mocks with the shapes from `ENDPOINTS.md`, marked `shortcut:` in code:
+Services are mocks with the shapes from `ENDPOINTS.md`, marked `shortcut:` in code, except report
+submission, which writes to Supabase when it is configured:
 
 | Service | Mocks | Data |
 | --- | --- | --- |
 | `features/aeds/services/aedApi.ts` | `GET /aeds`, `/data/status` | `public/mock/aeds.json` — 710 AEDs from the 17.10.2026 Warsaw snapshot (`backend/data/out/aed.json`) |
 | `features/discovery/services/routingApi.ts` | `POST /aeds/find`, `/routes/etas`, `/routes/walking` | straight line × 1.3 at 1.3 m/s, L-shaped route geometry |
 | `features/coverage/services/coverageApi.ts` | `GET /coverage` | 250 m grid inside the city boundary, computed in the browser |
-| `features/report/services/reportApi.ts` | OTP request/resend/verify, `POST /reports` | SMS code is always `123456` |
+| `features/report/services/reportApi.ts` | `POST /reports` | Real Supabase insert when `VITE_SUPABASE_*` are set; otherwise always succeeds |
 
 Swapping a mock for the real API means replacing the function bodies; callers and stores stay the same.
 
@@ -45,7 +46,7 @@ src/
     discovery/                  # origin (GPS / picked point), find, ETAs, routes; Start/Details/List panels
     map/                        # MapPage shell, Mapbox view, HTML markers, header/menu, camera controller
     coverage/                   # "Zasięg AED" layer: scenarios, threshold, legend, area details
-    report/                     # "Zgłoś problem": draft → Kod SMS → confirmation
+    report/                     # "Zgłoś problem": draft → confirmation
     offline/                    # web explainer for the mobile offline maps
     dataInfo/                   # data source, freshness, status legend
 ```

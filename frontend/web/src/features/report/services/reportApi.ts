@@ -1,55 +1,59 @@
 import { ApiError } from '@/shared/lib/apiError'
 import { mockLatency } from '@/shared/lib/mockLatency'
-import type { OtpChallenge, ReportDraft, ReportReceipt } from '../models/report'
+import type { ReportDraft, ReportReceipt } from '../models/report'
 
-// shortcut: mock of POST /reports/otp/request|resend|verify and POST /reports (ENDPOINTS.md §4).
-// Code 123456 always verifies; replace with the Supabase Phone Auth (Twilio) endpoints.
+// POST /reports (ENDPOINTS.md §4): a direct PostgREST insert with the publishable key.
+// The idempotency key is the report id, so a retry of a stored report fails with 409 and counts as sent.
 
-export const MOCK_OTP_CODE = '123456'
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string | undefined
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string | undefined
 
-const OTP_LIFETIME_MS = 5 * 60_000
-const RESEND_COOLDOWN_MS = 60_000
-
-const challenges = new Map<string, OtpChallenge>()
-
-function issueChallenge(challengeId: string, maskedPhone: string): OtpChallenge {
-  const now = Date.now()
-  const challenge = {
-    challengeId,
-    maskedPhone,
-    codeLength: MOCK_OTP_CODE.length,
-    expiresAt: now + OTP_LIFETIME_MS,
-    resendAt: now + RESEND_COOLDOWN_MS,
+async function request(path: string, init: RequestInit = {}, extraHeaders: Record<string, string> = {}): Promise<Response> {
+  const headers = { apikey: SUPABASE_KEY!, 'Content-Type': 'application/json', ...extraHeaders }
+  try {
+    return await fetch(`${SUPABASE_URL}/rest/v1/${path}`, { ...init, headers })
+  } catch {
+    throw new ApiError('network')
   }
-  challenges.set(challengeId, challenge)
-  return challenge
 }
 
-/** Binds a new challenge to the validated draft. `phone` is E.164. */
-export async function requestOtp(_aedId: string, _draft: ReportDraft, phone: string): Promise<OtpChallenge> {
-  await mockLatency(600)
-  return issueChallenge(crypto.randomUUID(), `${phone.slice(0, 3)} ••• ••• ${phone.slice(-3)}`)
+// shortcut: app AED ids are city source ids from the mock snapshot (aedApi.ts), while reports
+// reference the database uuid. Drop this lookup once the AED API returns database ids.
+const aedUuids = new Map<string, string>()
+
+async function aedUuid(sourceId: string): Promise<string> {
+  const cached = aedUuids.get(sourceId)
+  if (cached) return cached
+  const response = await request(`aeds?select=id&active=is.true&source_id=eq.${encodeURIComponent(sourceId)}`)
+  if (!response.ok) throw new ApiError(`http_${response.status}`)
+  const [row] = (await response.json()) as { id: string }[]
+  if (!row) throw new ApiError('aed_not_found')
+  aedUuids.set(sourceId, row.id)
+  return row.id
 }
 
-export async function resendOtp(challengeId: string): Promise<OtpChallenge> {
-  await mockLatency(400)
-  const challenge = challenges.get(challengeId)
-  if (!challenge) throw new ApiError('challenge_not_found')
-  if (Date.now() < challenge.resendAt) throw new ApiError('rate_limited', challenge.resendAt)
-  return issueChallenge(challengeId, challenge.maskedPhone)
-}
-
-/** Returns a single-use report token bound to the draft. */
-export async function verifyOtp(challengeId: string, code: string): Promise<string> {
-  await mockLatency(500)
-  const challenge = challenges.get(challengeId)
-  if (!challenge || Date.now() > challenge.expiresAt) throw new ApiError('otp_expired')
-  if (code !== MOCK_OTP_CODE) throw new ApiError('otp_invalid')
-  challenges.delete(challengeId)
-  return `mock-report-token-${challengeId}`
-}
-
-export async function submitReport(_reportToken: string, _idempotencyKey: string): Promise<ReportReceipt> {
-  await mockLatency(500)
-  return { id: crypto.randomUUID(), status: 'pending', submittedAt: new Date().toISOString() }
+export async function submitReport(
+  aedId: string,
+  draft: ReportDraft,
+  idempotencyKey: string,
+  formMs: number,
+): Promise<ReportReceipt> {
+  const receipt: ReportReceipt = { id: idempotencyKey, status: 'pending', submittedAt: new Date().toISOString() }
+  // shortcut: without Supabase settings (.env.local) the submission is only simulated.
+  if (!SUPABASE_URL || !SUPABASE_KEY) {
+    await mockLatency(500)
+    return receipt
+  }
+  const body = {
+    id: idempotencyKey,
+    aed_id: await aedUuid(aedId),
+    category: draft.category,
+    description: draft.description.trim(),
+    form_ms: Math.round(formMs),
+  }
+  // return=minimal: anon cannot read reports back, so asking for the row would fail RLS.
+  const response = await request('reports', { method: 'POST', body: JSON.stringify(body) }, { Prefer: 'return=minimal' })
+  if (response.ok || response.status === 409) return receipt
+  if (response.status === 429) throw new ApiError('rate_limited')
+  throw new ApiError(`http_${response.status}`)
 }
