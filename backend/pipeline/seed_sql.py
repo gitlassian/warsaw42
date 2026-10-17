@@ -4,12 +4,14 @@
 
 Inputs: data/raw/scb_aed_list.json (addresses, raw fields), data/out/aed.json (parsed hours,
 floors) and data/raw/warsaw_boundary.geojson (service area),
-data/out/aed_district.json (pipeline.districts) and data/out/aed_photos.json (pipeline.photos), both optional. The seed expects an empty database.
+data/out/aed_district.json (pipeline.districts), data/out/aed_photos.json (pipeline.photos),
+data/out/aed_osm_hours.json and data/out/osm_extra.json (pipeline.osm_match), all optional. The seed expects an empty database.
 
 Hours are trusted (`hours_verified = true`) only when the pipeline did not
 guess. LLM schedules, assumed weekdays and flagged 24/7-indoors records remain unverified, so the
 API reports their hours as unknown until someone checks them. A day with no intervals is stored
-as unknown, never closed: the source does not say which omitted days are closed.
+as unknown when the text names no days (assumed weekdays or metro hours) and as closed when it does:
+"poniedziałek-piątek 8-16" means the weekend is closed.
 """
 import argparse
 import json
@@ -112,8 +114,51 @@ def polish_holidays(year):
     ]
 
 
-def seed_rows(raw, parsed, trust_flagged_247):
+def combine(r, review_status, osm):
+    """Merge the city hours of one aed.json record with the OSM hours of the same device.
+
+    -> {"status", "schedule" (day -> intervals, or None), "closed" (days OSM says are closed), "verified", "source"}
+    City hours stay unless they are unusable (unknown, or a 24/7 flag that is not trusted) and OSM states hours.
+    When OSM repeats every day the city lists, the two sources confirm each other, so the hours count as verified
+    and the days the city leaves out are filled from OSM, where an unmentioned day is closed.
+    """
+    city_ok = review_status in ("validated", "validated_partial")
+    # A text that names its days ("poniedziałek-piątek 8-16") says when the device is reachable, so the days it
+    # leaves out are closed. Hours with an assumed weekday range or metro timetable name no days: those stay unknown.
+    explicit = city_ok and r["status"] == "scheduled" and not r["assumed"]
+    base = {"status": r["status"], "schedule": r["schedule"] if r["status"] == "scheduled" else None,
+            "closed": {d for d in DAYS if not r["schedule"][d]} if explicit else set(), "verified": city_ok, "source": "city"}
+    if not osm:
+        return base
+    sched = osm["schedule"]
+    if r["status"] == "scheduled" and osm["status"] == "scheduled" and all(sched[d] == r["schedule"][d] for d in DAYS if r["schedule"][d]):
+        return {"status": "scheduled", "schedule": {d: r["schedule"][d] or sched[d] for d in DAYS},
+                "closed": {d for d in DAYS if not r["schedule"][d] and not sched[d]}, "verified": True, "source": "city_osm"}
+    if r["status"] == "24/7" and osm["status"] == "24/7":
+        return {**base, "verified": True, "source": "city_osm"}
+    if not city_ok or r["status"] == "unknown":
+        if r["status"] in ("unknown", "24/7"):  # no usable city hours at all: OSM is the only source
+            return {"status": osm["status"], "schedule": sched if osm["status"] == "scheduled" else None,
+                    "closed": {d for d in DAYS if not sched[d]} if osm["status"] == "scheduled" else set(),
+                    "verified": True, "source": "osm"}
+    return base
+
+
+def hours_json(schedule, closed):
+    """Database shape of the hours: a weekday with intervals is open, one OSM calls closed is closed, the rest is omitted (unknown)."""
+    merged = weekly(schedule) if schedule else {}
+    days = {}
+    for key, dow in DAYS.items():
+        if merged.get(str(dow)):
+            days[str(dow)] = {"state": "open_intervals", "intervals": merged[str(dow)]}
+        elif key in closed:
+            days[str(dow)] = {"state": "closed", "intervals": []}
+    return {"weekly": days, "exceptions": {}, "holiday_policy": "unknown"}
+
+
+def seed_rows(raw, parsed, trust_flagged_247, osm=None):
     by_id = {r["id"]: r for r in parsed}
+    osm = osm or {}
     rows = []
     for item in raw:
         p = item["properties"]
@@ -134,25 +179,31 @@ def seed_rows(raw, parsed, trust_flagged_247):
             p.get("device_manufacturer"), p.get("device_specifications"),
             r["status"], status, r["parse_source"], r["osm_hours"], rules, r["note"],
             weekly(r["schedule"]) if r["status"] == "scheduled" else None,
-            flags,
+            flags, combine(r, status, osm.get(str(p["defibrillator_id"]))),
         ])
     return rows
 
 
-def render(raw, parsed, boundary, trust_flagged_247=False, districts=None, photos=()):
+def render(raw, parsed, boundary, trust_flagged_247=False, districts=None, photos=(), osm_hours=None, osm_extra=()):
     districts, photos = districts or {}, set(photos)
     values = []
-    for r in seed_rows(raw, parsed, trust_flagged_247):
-        hours = {
-            "weekly": {day: {"state": "open_intervals" if intervals else "unknown",
-                              "intervals": intervals} for day, intervals in (r[25] or {}).items()},
-            "exceptions": {}, "holiday_policy": "unknown",
-        }
+    for r in seed_rows(raw, parsed, trust_flagged_247, osm_hours):
+        c = r[-1]
         address = f"{r[2]} {r[3]}, {r[4]} {r[5]}"
         values.append("(" + ", ".join(q(v) for v in [
             r[0], r[1], address, r[6], r[7], r[8], r[10], r[12], r[13],
-            r[16], r[19], r[20] in ("validated", "validated_partial"), hours,
+            r[16], c["status"], c["verified"], hours_json(c["schedule"], c["closed"]),
             f"{r[0]}.webp" if str(r[0]) in photos else None, districts.get(str(r[0])),
+            "city", None if c["status"] == "unknown" else c["source"],
+        ]) + ")")
+    for x in osm_extra:  # public OSM devices the city list lacks, marked source = 'osm'
+        scheduled = x["status"] == "scheduled"
+        closed = {d for d in DAYS if not x["schedule"][d]} if scheduled else set()
+        values.append("(" + ", ".join(q(v) for v in [
+            f"osm:{x['osm_id']}", x["name"], x["address"], x["lon"], x["lat"], x["indoor"], x["floor"], x["location"],
+            "public", x["opening_hours"], x["status"], x["status"] != "unknown",
+            hours_json(x["schedule"] if scheduled else None, closed), None, x["district"],
+            "osm", "osm" if x["status"] != "unknown" else None,
         ]) + ")")
     holidays = [h for y in (2026, 2027) for h in polish_holidays(y)]
     holiday_values = ",\n".join(f"({q(d.isoformat())}, {q(n)})" for d, n in holidays)
@@ -173,10 +224,11 @@ INSERT INTO public_holiday (on_date, name) VALUES
 {holiday_values}
 ON CONFLICT (on_date) DO NOTHING;
 INSERT INTO aeds (source_id, object_name, full_address, lon, lat, in_building, floor,
-    access_instructions, public_access, hours_text, hours_status, hours_verified, hours, photo_path, district) VALUES
+    access_instructions, public_access, hours_text, hours_status, hours_verified, hours, photo_path, district,
+    source, hours_source) VALUES
 {aed_values};
 INSERT INTO app_data (key, data) VALUES ('status',
-    jsonb_build_object('aed_count', {len(values)}, 'source', 'Warsaw Open Data',
+    jsonb_build_object('aed_count', {len(values)}, 'osm_count', {len(osm_extra)}, 'source', 'Warsaw Open Data',
                        'attribution', 'Dane: m.st. Warszawa, SCB (CC BY)', 'updated_at', now()));
 COMMIT;
 """
@@ -198,7 +250,8 @@ def main():
         return load(*name) if os.path.exists(os.path.join(ROOT, *name)) else default
 
     sql = render(raw, parsed, load("raw", "warsaw_boundary.geojson"), a.trust_flagged_247,
-                 optional({}, "out", "aed_district.json"), optional([], "out", "aed_photos.json"))
+                 optional({}, "out", "aed_district.json"), optional([], "out", "aed_photos.json"),
+                 optional({}, "out", "aed_osm_hours.json"), optional([], "out", "osm_extra.json"))
     with open(a.out, "w", encoding="utf-8") as f:
         f.write(sql)
 

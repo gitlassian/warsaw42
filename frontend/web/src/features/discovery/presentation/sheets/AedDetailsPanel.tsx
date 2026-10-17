@@ -138,13 +138,16 @@ export function AedDetailsPanel() {
 
       <div>
         <Disclosure title="Godziny dostępu">
-          <AedHours schedule={aed.schedule} />
+          <AedHours schedule={aed.schedule} sourceHours={aed.sourceHours} unverified={aed.unverifiedSchedule} />
         </Disclosure>
         <Disclosure title="Informacje ze źródła">
           <Text>{aed.sourceHours ?? 'Źródło nie podaje godzin.'}</Text>
         </Disclosure>
         <Disclosure title="Urządzenie i dane">
           <Text>{DEVICE_CONDITION[aed.operationalStatus]}</Text>
+          {aed.source === 'osm' && <Text tone="secondary">Punkt spoza rejestru miasta: dane z OpenStreetMap, nieoficjalne.</Text>}
+          {aed.hoursSource === 'osm' && <Text tone="secondary">Godziny z OpenStreetMap.</Text>}
+          {aed.hoursSource === 'city_osm' && <Text tone="secondary">Godziny z rejestru miasta, potwierdzone w OpenStreetMap.</Text>}
           {dataStatus && (
             <>
               <Text variant="meta" tone="muted">

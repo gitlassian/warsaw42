@@ -37,8 +37,15 @@ export function aedStatus(aed: Aed, at: Date): AedStatus {
         available: false,
       }
     case 'unknown':
-      return { tone: 'neutral', icon: 'help', label: 'Godziny nieznane', detail: null, available: false }
+      return { tone: 'neutral', icon: 'help', label: 'Godziny nieznane', detail: sourceHoursDetail(aed.sourceHours), available: false }
   }
+}
+
+/** The source wording stays visible when it could not be turned into checked hours. */
+function sourceHoursDetail(text: string | null): string | null {
+  const t = text?.replace(/\s+/g, ' ').trim()
+  if (!t) return null
+  return `Wg źródła: ${t.length > 70 ? `${t.slice(0, 67)}…` : t}`
 }
 
 /** Indoor/outdoor placement with the floor when known. */

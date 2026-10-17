@@ -12,6 +12,12 @@ export type Schedule =
 export type PublicAccess = 'public' | 'restricted' | 'unknown'
 
 /** Device condition, independent of opening hours (ENDPOINTS.md §1). */
+/** `osm`: found only in OpenStreetMap, not in the city register. */
+export type AedSource = 'city' | 'osm'
+
+/** Dataset the hours were read from; `city_osm` means OpenStreetMap confirmed the city's days. */
+export type HoursSource = 'city' | 'osm' | 'city_osm'
+
 export type OperationalStatus = 'unknown' | 'confirmed_unavailable' | 'confirmed_operational'
 
 export type Aed = {
@@ -28,6 +34,13 @@ export type Aed = {
   schedule: Schedule
   /** Original access/hours wording from Warsaw Open Data. */
   sourceHours: string | null
+  sourceNote: string | null
+  /** Public photo of the cabinet (Supabase Storage); the mock snapshot has none. */
+  photoUrl?: string | null
+  /** Parsed from the source but not checked: shown with a warning, never used to say "open now". */
+  unverifiedSchedule?: Schedule | null
+  source?: AedSource
+  hoursSource?: HoursSource | null
 }
 
 /** `app_data` key `status`. */

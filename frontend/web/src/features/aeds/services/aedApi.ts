@@ -1,48 +1,29 @@
-import { restGet } from '@/shared/lib/supabase'
-import { toSchedule, type HoursFields } from '../lib/schedule'
-import type { Aed, DataStatus, OperationalStatus, PublicAccess } from '../models/aed'
+import { mockLatency } from '@/shared/lib/mockLatency'
+import { restGet, storagePublicUrl, supabaseEnabled } from '@/shared/lib/supabase'
+import { AED_COLUMNS, aedFromRow, type AedRow } from '../lib/fromRow'
+import type { Aed, DataStatus } from '../models/aed'
 
-// Supabase tables `aeds` (active rows) and `app_data` key `status`, read with the publishable key.
+// With VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY set, AEDs and the data status come from the
+// database (`aeds`, `app_data.status`); without them the mock snapshot below is used.
 
-type AedRow = HoursFields & {
-  id: string
-  object_name: string
-  full_address: string
-  lon: number
-  lat: number
-  in_building: boolean
-  floor: number | null
-  access_instructions: string | null
-  public_access: PublicAccess
-  operational_status: OperationalStatus
-  hours_text: string | null
-}
+// shortcut: mock of GET /api/v1/aeds and /data/status (ENDPOINTS.md §1, §7) over the
+// 17.10.2026 Warsaw snapshot in public/mock/aeds.json, for running without Supabase.
 
-type StatusDoc = { aed_count: number; updated_at: string; attribution: string }
-
-const AED_COLUMNS =
-  'id,object_name,full_address,lon,lat,in_building,floor,access_instructions,public_access,operational_status,hours_text,hours_status,hours_verified,hours'
-
-const toAed = (row: AedRow): Aed => ({
-  id: row.id,
-  location: { lng: row.lon, lat: row.lat },
-  venueName: row.object_name,
-  address: row.full_address,
-  entrance: row.access_instructions,
-  indoor: row.in_building,
-  floor: row.floor,
-  publicAccess: row.public_access,
-  operationalStatus: row.operational_status,
-  schedule: toSchedule(row),
-  sourceHours: row.hours_text,
-})
+const SNAPSHOT_FETCHED_AT = '2026-10-17T10:00:00+02:00'
+const SNAPSHOT_ATTRIBUTION = 'Dane: m.st. Warszawa, SCB (CC BY)'
+// Mock-only: exercises the confirmed-unavailable state; the snapshot has no device condition data.
+const DEMO_UNAVAILABLE_ID = '663'
 
 let aedsRequest: Promise<Aed[]> | null = null
 
+async function fetchAedsFromDatabase(): Promise<Aed[]> {
+  // shortcut: one request; PostgREST caps a response at 1000 rows by default (897 on 17.10.2026), paginate before that.
+  const rows = await restGet<AedRow[]>(`aeds?active=eq.true&select=${AED_COLUMNS}&order=source_id`)
+  return rows.map((row) => aedFromRow(row, (file) => storagePublicUrl('aed-photos', file)))
+}
+
 export function fetchAeds(): Promise<Aed[]> {
-  // shortcut: one request; PostgREST caps a response at 1000 rows by default, paginate if Warsaw ever has more AEDs.
-  aedsRequest ??= restGet<AedRow[]>(`aeds?select=${AED_COLUMNS}&active=eq.true`)
-    .then((rows) => rows.map(toAed))
+  aedsRequest ??= (supabaseEnabled ? fetchAedsFromDatabase() : fetchMockAeds())
     .catch((error: unknown) => {
       aedsRequest = null
       throw error
@@ -50,8 +31,26 @@ export function fetchAeds(): Promise<Aed[]> {
   return aedsRequest
 }
 
+function fetchMockAeds(): Promise<Aed[]> {
+  return fetch('/mock/aeds.json')
+    .then((response) => {
+      if (!response.ok) throw new Error(`aeds ${response.status}`)
+      return response.json() as Promise<Aed[]>
+    })
+    .then(async (aeds) => {
+      await mockLatency()
+      return aeds.map((a) => (a.id === DEMO_UNAVAILABLE_ID ? { ...a, operationalStatus: 'confirmed_unavailable' as const } : a))
+    })
+}
+
+type StatusDocument = { aed_count: number; updated_at: string; attribution: string }
+
 export async function fetchDataStatus(): Promise<DataStatus> {
-  const [row] = await restGet<{ data: StatusDoc }[]>('app_data?select=data&key=eq.status')
-  if (!row) throw new Error('status_missing')
+  if (!supabaseEnabled) {
+    const aeds = await fetchAeds()
+    return { fetchedAt: SNAPSHOT_FETCHED_AT, aedCount: aeds.length, attribution: SNAPSHOT_ATTRIBUTION }
+  }
+  const [row] = await restGet<{ data: StatusDocument }[]>('app_data?key=eq.status&select=data')
+  if (!row) throw new Error('app_data status missing')
   return { fetchedAt: row.data.updated_at, aedCount: row.data.aed_count, attribution: row.data.attribution }
 }

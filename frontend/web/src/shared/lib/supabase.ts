@@ -1,23 +1,32 @@
 import { ApiError } from './apiError'
 
-// Public project URL and publishable key; Row Level Security decides what they can read or write.
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL as string
-const PUBLISHABLE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY as string
+/** Supabase REST, Storage and Edge Functions access without an SDK. Unset env vars keep the mock AED data active. */
+const url = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.replace(/\/+$/, '')
+const key = (import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ?? import.meta.env.VITE_SUPABASE_ANON_KEY) as string | undefined
 
-async function request<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${SUPABASE_URL}${path}`, {
-    ...init,
-    headers: { apikey: PUBLISHABLE_KEY, 'Content-Type': 'application/json' },
-  })
-  const body = await response.json().catch(() => null)
-  // Edge Functions answer `{ error: { code } }`, PostgREST `{ code }`.
-  if (!response.ok) throw new ApiError(body?.error?.code ?? body?.code ?? `http_${response.status}`)
-  return body as T
+export const supabaseEnabled = Boolean(url && key)
+
+// Legacy anon keys are JWTs and go in both headers; publishable keys (sb_publishable_…) only in `apikey`.
+const headers = (): Record<string, string> =>
+  key!.startsWith('eyJ') ? { apikey: key!, Authorization: `Bearer ${key}` } : { apikey: key! }
+
+/** GET /rest/v1/<path> (PostgREST). Row-level security limits anon to active AEDs and `app_data`. */
+export async function restGet<T>(path: string): Promise<T> {
+  const response = await fetch(`${url}/rest/v1/${path}`, { headers: headers() })
+  if (!response.ok) throw new Error(`supabase ${path.split('?')[0]} ${response.status}`)
+  return response.json() as Promise<T>
 }
 
-/** PostgREST read, e.g. `aeds?select=id&active=eq.true`. */
-export const restGet = <T>(query: string) => request<T>(`/rest/v1/${query}`)
+export const storagePublicUrl = (bucket: string, file: string) => `${url}/storage/v1/object/public/${bucket}/${file}`
 
-/** Edge Function call (routing functions answer `{ data, meta }`). */
-export const callFunction = <T>(name: string, body: unknown) =>
-  request<T>(`/functions/v1/${name}`, { method: 'POST', body: JSON.stringify(body) })
+/** POST /functions/v1/<name>. Routing functions answer `{ data, meta }`, failures `{ error: { code } }`. */
+export async function callFunction<T>(name: string, body: unknown): Promise<T> {
+  const response = await fetch(`${url}/functions/v1/${name}`, {
+    method: 'POST',
+    headers: { ...headers(), 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+  const json = await response.json().catch(() => null)
+  if (!response.ok) throw new ApiError(json?.error?.code ?? `http_${response.status}`)
+  return json as T
+}

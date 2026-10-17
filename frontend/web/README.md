@@ -13,11 +13,13 @@ npm test         # node --test for pure domain logic (*.test.ts)
 
 ## Data
 
-`shared/lib/supabase.ts` calls the Supabase project with the publishable key (`fetch`, no SDK):
+`shared/lib/supabase.ts` calls the Supabase project with the publishable key (`fetch`, no SDK). Without
+`VITE_SUPABASE_URL`/`VITE_SUPABASE_PUBLISHABLE_KEY` the AED list falls back to the 17.10.2026 snapshot in
+`public/mock/aeds.json`; finding and routing always need the Edge Functions.
 
 | Service | Source |
 | --- | --- |
-| `features/aeds/services/aedApi.ts` | table `aeds` (active rows) and `app_data` key `status` via PostgREST |
+| `features/aeds/services/aedApi.ts` | table `aeds` (active rows, mapped by `lib/fromRow.ts`, photos from Storage) and `app_data` key `status` via PostgREST |
 | `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Google walking routes) |
 
 The Edge Functions answer CORS only for origins listed in their `ALLOWED_ORIGINS` secret
