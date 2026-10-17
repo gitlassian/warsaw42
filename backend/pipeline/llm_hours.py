@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 
 from .hours import DAY_KEYS, Parsed, validate_schedule, empty_schedule
 
-CACHE_PATH = os.path.join(os.path.dirname(__file__), "..", "..", "data", "cache", "hours_cache.json")
+CACHE_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "cache", "hours_cache.json")
 
 SYSTEM = """You convert Polish opening-hours descriptions of public defibrillators (AED) into a weekly schedule.
 Rules:

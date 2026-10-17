@@ -74,6 +74,11 @@ export class RoutesProviderError extends Error {
   override name = "RoutesProviderError";
 }
 
+// Thrown when the AED database is unreachable; the API answers 503.
+export class DataSourceError extends Error {
+  override name = "DataSourceError";
+}
+
 export type SearchRound = { radius_m: number; limit: number };
 
 export type Deps = {

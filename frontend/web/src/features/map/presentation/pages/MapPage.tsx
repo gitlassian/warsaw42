@@ -1,7 +1,95 @@
+import { useCallback, useEffect, useState, type CSSProperties } from 'react'
+import { Outlet, useLocation, useMatches, useNavigate } from 'react-router'
+import type { RouteHandle } from '@/app/router'
+import { RoutePaths } from '@/app/routePaths'
+import { Button, ButtonLink } from '@/design-system/components/Button'
+import { Notice } from '@/design-system/components/Notice'
+import { Sheet } from '@/design-system/components/Sheet'
+import { loadAeds } from '@/features/aeds/store'
+import { OriginIssueNotice } from '@/features/discovery/presentation/components/OriginIssueNotice'
+import { PickOriginBanner } from '@/features/discovery/presentation/components/PickOriginBanner'
+import { discoveryStore, locate, startPicking, stopPicking } from '@/features/discovery/store'
+import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
+import { useStore } from '@/shared/lib/store'
+import { mapCamera } from '../../lib/mapCamera'
+import { AppHeader } from '../components/AppHeader'
+import { MapControls } from '../components/MapControls'
+import { MapView } from '../components/MapView'
+import styles from './MapPage.module.css'
+
+/** App shell: the map stays mounted; the active route renders into the sheet / side panel. */
 export function MapPage() {
+  const location = useLocation()
+  const navigate = useNavigate()
+  const handle = useMatches().at(-1)?.handle as RouteHandle | undefined
+  const viewportHeight = useViewportHeight()
+  const [cover, setCover] = useState(0)
+  const [mapFailed, setMapFailed] = useState(false)
+  const onMapError = useCallback(() => setMapFailed(true), [])
+  // The sheet reports its height before the map reacts to the new route, so camera moves use the final inset.
+  const onCoverChange = useCallback((px: number) => {
+    mapCamera.setBottomInset(px)
+    setCover(px)
+  }, [])
+  const picking = useStore(discoveryStore, (s) => s.picking)
+  const issue = useStore(discoveryStore, (s) => s.issue)
+  const locating = useStore(discoveryStore, (s) => s.locating)
+  const coverageShown = location.pathname === RoutePaths.coverage
+
+  useEffect(() => {
+    loadAeds()
+  }, [])
+
+  const onLocate = async () => {
+    const origin = await locate()
+    if (origin) mapCamera.focus(origin)
+  }
+
   return (
-    <main>
-      <h1>DefiWawa</h1>
-    </main>
+    <div className={styles.layout} style={{ '--sheet-cover': `${cover}px` } as CSSProperties}>
+      <div className={styles.header}>
+        <AppHeader />
+      </div>
+
+      <div className={styles.panel}>
+        <Sheet key={location.pathname} label="Panel" initialSnap={handle?.sheet} onCoverChange={onCoverChange}>
+          <Outlet />
+        </Sheet>
+      </div>
+
+      <div className={styles.mapArea}>
+        <MapView onLoadError={onMapError} />
+        <div className={styles.overlay}>
+          {picking && <PickOriginBanner outside={issue === 'outside_pick'} onCancel={stopPicking} />}
+          {issue && !picking && !handle?.showsLocationIssue && (
+            <OriginIssueNotice issue={issue} onPick={() => startPicking()} />
+          )}
+          {mapFailed && (
+            <Notice
+              tone="danger"
+              title="Nie udało się wczytać mapy."
+              actions={
+                <>
+                  <Button onClick={() => window.location.reload()}>Spróbuj ponownie</Button>
+                  <ButtonLink to={RoutePaths.aeds} icon="list">
+                    Lista defibrylatorów
+                  </ButtonLink>
+                </>
+              }
+            />
+          )}
+        </div>
+        {cover < viewportHeight * 0.7 && (
+          <div className={styles.controls}>
+            <MapControls
+              locating={locating}
+              coverageShown={coverageShown}
+              onLocate={onLocate}
+              onToggleCoverage={() => navigate(coverageShown ? RoutePaths.map : RoutePaths.coverage)}
+            />
+          </div>
+        )}
+      </div>
+    </div>
   )
 }

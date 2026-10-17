@@ -1,0 +1,85 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  pointer-events: none;
+}
+
+.header > * {
+  pointer-events: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-8);
+  min-height: 48px;
+  padding: var(--space-8) var(--space-16) var(--space-8) var(--space-12);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.name {
+  display: flex;
+}
+
+/* [D]efiWawa lockup: the symbol is the D; cap height ≈ 21px at this size. */
+.logo {
+  display: block;
+  height: 24px;
+  width: auto;
+}
+
+.menuAnchor {
+  position: relative;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + var(--space-8));
+  right: 0;
+  z-index: 5;
+  min-width: 260px;
+  padding: var(--space-8);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-panel);
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+  min-height: 48px;
+  padding: var(--space-8) var(--space-12);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.item:hover {
+  background: var(--color-background);
+}
+
+.item[aria-current='page'] {
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+/* Wide layout: the header is the top of the side panel. */
+@media (min-width: 840px) {
+  .brand {
+    padding-inline: 0;
+    background: none;
+    box-shadow: none;
+  }
+
+  .menuAnchor > button {
+    box-shadow: none;
+  }
+}

@@ -1,0 +1,215 @@
+import mapboxgl, { type GeoJSONSource, type Map as MapboxMap, type MapMouseEvent } from 'mapbox-gl'
+import type { Point } from 'geojson'
+import { useEffect, useRef, useState } from 'react'
+import { useMatch } from 'react-router'
+import { RoutePaths, buildPath } from '@/app/routePaths'
+import { aedStatus } from '@/features/aeds/lib/aedStatus'
+import { aedsStore } from '@/features/aeds/store'
+import type { CoverageCell } from '@/features/coverage/models/coverage'
+import { coverageStore, selectCoverageCell } from '@/features/coverage/store'
+import { discoveryStore, pickOrigin, requestEtas } from '@/features/discovery/store'
+import { WARSAW_CENTER, WARSAW_MAX_BOUNDS, circlePolygon, type LngLat } from '@/shared/geo/geo'
+import { useStore } from '@/shared/lib/store'
+import { mapCamera } from '../../lib/mapCamera'
+import { AEDS_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
+import { MapMarker } from './MapMarker'
+import { AedMarker, ClusterMarker, OriginMarker } from './MapMarkers'
+import styles from './MapView.module.css'
+
+/** A rendered point of the clustered AED source: one AED or a cluster. */
+type VisibleFeature = { key: string; lngLat: LngLat } & ({ aedId: string } | { clusterId: number; count: number })
+
+const sameKeys = (a: VisibleFeature[], b: VisibleFeature[]) =>
+  a.length === b.length && a.every((f, i) => f.key === b[i].key)
+
+type MapViewProps = {
+  onLoadError: () => void
+}
+
+/** Mapbox Standard (light, 3D) locked to Warsaw, with AED markers, route, origin and coverage. */
+export function MapView({ onLoadError }: MapViewProps) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [map, setMap] = useState<MapboxMap | null>(null)
+  const [visible, setVisible] = useState<VisibleFeature[]>([])
+
+  const aeds = useStore(aedsStore, (s) => s.aeds)
+  const byId = useStore(aedsStore, (s) => s.byId)
+  const now = useStore(aedsStore, (s) => s.now)
+  const origin = useStore(discoveryStore, (s) => s.origin)
+  const etas = useStore(discoveryStore, (s) => s.etas)
+  const route = useStore(discoveryStore, (s) => s.route)
+  const picking = useStore(discoveryStore, (s) => s.picking)
+  const coverageLayer = useStore(coverageStore, (s) => s.layer)
+
+  const aedMatch = useMatch(RoutePaths.aed)
+  const reportMatch = useMatch(RoutePaths.report)
+  const showCoverage = useMatch(RoutePaths.coverage) !== null
+  const selectedId = aedMatch?.params.id ?? reportMatch?.params.id
+  const selectedAed = selectedId ? byId.get(selectedId) : undefined
+
+  // Create the map once.
+  useEffect(() => {
+    let loaded = false
+    let instance: MapboxMap
+    try {
+      instance = new mapboxgl.Map({
+        container: containerRef.current!,
+        accessToken: import.meta.env.VITE_MAPBOX_TOKEN,
+        style: 'mapbox://styles/mapbox/standard',
+        config: { basemap: { lightPreset: 'day', show3dObjects: true } },
+        center: [WARSAW_CENTER.lng, WARSAW_CENTER.lat],
+        zoom: 11,
+        pitch: 45,
+        minZoom: 10,
+        maxBounds: WARSAW_MAX_BOUNDS,
+        language: 'pl',
+      })
+    } catch {
+      onLoadError()
+      return
+    }
+    instance.on('error', () => {
+      if (!loaded) onLoadError()
+    })
+    instance.on('load', () => {
+      loaded = true
+      addAppLayers(instance)
+      mapCamera.attach(instance)
+      setMap(instance)
+    })
+    return () => {
+      mapCamera.attach(null)
+      instance.remove()
+    }
+  }, [onLoadError])
+
+  useEffect(() => {
+    if (!map) return
+    setSourceData(map, SOURCE.aeds, {
+      type: 'FeatureCollection',
+      features: aeds.map((a) => ({
+        type: 'Feature',
+        properties: { id: a.id },
+        geometry: { type: 'Point', coordinates: [a.location.lng, a.location.lat] },
+      })),
+    })
+  }, [map, aeds])
+
+  // Mirror the clustered source into HTML markers whenever the view or tiles change.
+  useEffect(() => {
+    if (!map) return
+    const update = () => {
+      const seen = new Map<string, VisibleFeature>()
+      // Rendered features only: no duplicates from parent/child tiles, nothing off screen.
+      for (const f of map.queryRenderedFeatures({ layers: [AEDS_LAYER] })) {
+        const p = f.properties ?? {}
+        const [lng, lat] = (f.geometry as Point).coordinates
+        const feature: VisibleFeature = p.cluster
+          ? { key: `c${p.cluster_id}`, lngLat: { lng, lat }, clusterId: p.cluster_id, count: p.point_count }
+          : { key: `a${p.id}`, lngLat: { lng, lat }, aedId: String(p.id) }
+        seen.set(feature.key, feature)
+      }
+      const next = [...seen.values()].sort((a, b) => a.key.localeCompare(b.key))
+      setVisible((prev) => (sameKeys(prev, next) ? prev : next))
+    }
+    map.on('moveend', update)
+    map.on('idle', update)
+    return () => {
+      map.off('moveend', update)
+      map.off('idle', update)
+    }
+  }, [map])
+
+  // Walking-time pills for individually visible markers, debounced and batched in the store.
+  const visibleAedKey = visible.flatMap((f) => ('aedId' in f ? [f.aedId] : [])).join()
+  useEffect(() => {
+    if (!origin || !visibleAedKey) return
+    const timer = setTimeout(() => requestEtas(visibleAedKey.split(',')), 300)
+    return () => clearTimeout(timer)
+  }, [origin, visibleAedKey])
+
+  useEffect(() => {
+    if (map) setSourceData(map, SOURCE.route, route ? route.geometry : EMPTY_COLLECTION)
+  }, [map, route])
+
+  useEffect(() => {
+    if (!map) return
+    const accuracy = origin?.source === 'gps' && origin.accuracyM ? circlePolygon(origin, origin.accuracyM) : null
+    setSourceData(map, SOURCE.accuracy, accuracy ?? EMPTY_COLLECTION)
+  }, [map, origin])
+
+  useEffect(() => {
+    if (map) setSourceData(map, SOURCE.coverage, showCoverage && coverageLayer ? coverageLayer.data : EMPTY_COLLECTION)
+  }, [map, showCoverage, coverageLayer])
+
+  useEffect(() => {
+    if (!map) return
+    map.getCanvas().style.cursor = picking ? 'crosshair' : ''
+    const onClick = (e: MapMouseEvent) => {
+      if (discoveryStore.get().picking) return pickOrigin(e.lngLat)
+      const [cell] = map.queryRenderedFeatures(e.point, { layers: [COVERAGE_LAYER] })
+      if (!cell) return selectCoverageCell(null)
+      // Vector tiles drop null properties, so restore them explicitly.
+      const p = cell.properties ?? {}
+      selectCoverageCell({
+        kind: p.kind,
+        nearestDistanceM: p.nearestDistanceM ?? null,
+        nearestAedId: p.nearestAedId ?? null,
+      } satisfies CoverageCell)
+    }
+    map.on('click', onClick)
+    return () => {
+      map.off('click', onClick)
+    }
+  }, [map, picking])
+
+  // Move the camera only after an explicit selection or a new route (DESIGN.md §12).
+  useEffect(() => {
+    if (!map || !selectedAed) return
+    if (route?.aedId === selectedAed.id) mapCamera.fitRoute(route)
+    else mapCamera.focus(selectedAed.location)
+  }, [map, selectedAed, route])
+
+  const expandCluster = (clusterId: number, center: LngLat) =>
+    map?.getSource<GeoJSONSource>(SOURCE.aeds)?.getClusterExpansionZoom(clusterId, (error, zoom) => {
+      if (!error && zoom != null) map.easeTo({ center, zoom })
+    })
+
+  const renderAed = (id: string, lngLat: LngLat, key?: string) => {
+    const aed = byId.get(id)
+    if (!aed || !map) return null
+    return (
+      <MapMarker key={key} map={map} lngLat={lngLat} raised={id === selectedId}>
+        <AedMarker
+          aed={aed}
+          status={aedStatus(aed, now)}
+          to={buildPath.aed(id)}
+          eta={origin ? etas[id] : undefined}
+          selected={id === selectedId}
+        />
+      </MapMarker>
+    )
+  }
+
+  return (
+    <div ref={containerRef} className={styles.map} role="region" aria-label="Mapa defibrylatorów w Warszawie">
+      {map &&
+        visible.map((f) =>
+          'clusterId' in f ? (
+            <MapMarker key={f.key} map={map} lngLat={f.lngLat} anchor="center">
+              <ClusterMarker count={f.count} onExpand={() => expandCluster(f.clusterId, f.lngLat)} />
+            </MapMarker>
+          ) : f.aedId === selectedId ? null : (
+            renderAed(f.aedId, f.lngLat, f.key)
+          ),
+        )}
+      {/* The selected AED stays visible even inside a cluster. */}
+      {map && selectedAed && renderAed(selectedAed.id, selectedAed.location)}
+      {map && origin && (
+        <MapMarker map={map} lngLat={origin} anchor={origin.source === 'gps' ? 'center' : 'bottom'}>
+          <OriginMarker source={origin.source} />
+        </MapMarker>
+      )}
+    </div>
+  )
+}

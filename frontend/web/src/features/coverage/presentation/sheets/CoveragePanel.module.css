@@ -1,0 +1,33 @@
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-12);
+}
+
+/* Matches the map fill patterns in features/map/lib/mapLayers.ts. */
+.swatch {
+  flex: none;
+  width: 32px;
+  height: 24px;
+  border: 1px solid var(--swatch);
+  border-radius: 4px;
+  background: repeating-linear-gradient(
+    -45deg,
+    color-mix(in srgb, var(--swatch) 70%, transparent) 0 2px,
+    color-mix(in srgb, var(--swatch) 18%, transparent) 2px 6px
+  );
+}
+
+.gap {
+  --swatch: var(--color-warning);
+}
+
+.uncertain {
+  --swatch: var(--color-unknown);
+}

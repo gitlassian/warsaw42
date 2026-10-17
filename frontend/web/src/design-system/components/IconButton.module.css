@@ -1,0 +1,34 @@
+.base {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background-color var(--duration-feedback);
+}
+
+.base:hover {
+  background: var(--color-background);
+}
+
+.base[aria-pressed='true'] {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.plain {
+  composes: base;
+}
+
+.floating {
+  composes: base;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+}

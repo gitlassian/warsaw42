@@ -1,5 +1,8 @@
 # DefiWawa — Project Plan
 
+> Historical full-scope plan. The current simplified API and database design are in
+> [ENDPOINTS.md](ENDPOINTS.md) and [backend/supabase/README.md](backend/supabase/README.md).
+
 Status: initial implementation plan, 17 October 2026. Requirements come from the project brief; technology choices and numerical thresholds below are proposed defaults.
 
 ## 1. Product and scope

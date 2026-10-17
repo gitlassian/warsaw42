@@ -1,0 +1,122 @@
+/* The link is as wide as the pin, so the marker anchor (bottom center) is the pin tip. */
+.aed {
+  position: relative;
+  display: block;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.pin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  height: 40px;
+  margin-bottom: 8px;
+  padding: 0 var(--space-12) 0 var(--space-8);
+  border: 2px solid var(--tone-fg);
+  border-radius: var(--radius-control);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  color: var(--color-text);
+  transition: box-shadow var(--duration-feedback);
+}
+
+/* Pointer below the pin. */
+.pin::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -7px;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--tone-fg);
+  border-bottom: 2px solid var(--tone-fg);
+  background: var(--color-surface);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.label {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+}
+
+.status {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--tone-fg);
+  border-radius: 50%;
+  background: var(--color-surface);
+  color: var(--tone-fg);
+}
+
+/* Selected: extra accent outline with a white separator; status colors stay. */
+.aed[aria-current='true'] .pin {
+  box-shadow:
+    0 0 0 2px var(--color-surface),
+    0 0 0 5px var(--color-accent),
+    var(--shadow-floating);
+}
+
+.pill {
+  position: absolute;
+  top: 8px;
+  left: calc(100% + 8px);
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 2px var(--space-8);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.placeholder {
+  width: 28px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-unknown-soft);
+}
+
+.cluster {
+  display: grid;
+  place-items: center;
+  min-width: 48px;
+  height: 48px;
+  padding: 0 var(--space-8);
+  border: 2px solid var(--color-border-control);
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-floating);
+  font-size: 16px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+
+.gps {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid var(--color-surface);
+  border-radius: 50%;
+  background: var(--color-location);
+  box-shadow: var(--shadow-floating);
+}
+
+.origin {
+  display: flex;
+  color: var(--color-text);
+  filter: drop-shadow(0 2px 4px rgb(23 35 29 / 25%));
+}

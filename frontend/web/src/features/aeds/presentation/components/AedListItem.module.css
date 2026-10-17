@@ -1,0 +1,31 @@
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-height: 64px;
+  padding: var(--space-12);
+  margin-inline: calc(-1 * var(--space-12));
+  border: 1px solid transparent;
+  border-bottom-color: var(--color-border);
+  border-radius: var(--radius-control);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: background-color var(--duration-feedback);
+}
+
+.row:hover {
+  background: var(--color-background);
+}
+
+.row[aria-current='true'] {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+}
+
+.name {
+  font-weight: 600;
+}
+
+.address {
+  color: var(--color-text-secondary);
+}

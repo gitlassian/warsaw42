@@ -1,0 +1,40 @@
+.travel {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: var(--space-8);
+  font-variant-numeric: tabular-nums;
+}
+
+.row .time {
+  font-weight: 700;
+}
+
+.hero .time {
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 700;
+}
+
+.straight {
+  font-weight: 600;
+}
+
+.note {
+  color: var(--color-text-secondary);
+  font-weight: 400;
+}
+
+.placeholder {
+  display: block;
+  width: 96px;
+  height: 16px;
+  margin-block: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-unknown-soft);
+}
+
+.hero .placeholder {
+  width: 160px;
+  height: 32px;
+}

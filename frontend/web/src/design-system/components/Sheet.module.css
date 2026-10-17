@@ -1,0 +1,58 @@
+.sheet {
+  position: fixed;
+  inset: auto 0 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  background: var(--color-surface);
+  box-shadow: var(--shadow-panel);
+  transition: height var(--duration-panel) ease-out;
+}
+
+.sheet[data-dragging] {
+  transition: none;
+}
+
+.handle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: none;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+/* Extends the hit area to 48 without adding visible space. */
+.handle::before {
+  content: '';
+  position: absolute;
+  inset: -16px 0 0;
+}
+
+.grip {
+  width: 40px;
+  height: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--color-border-control);
+}
+
+.content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 0 var(--space-16) calc(var(--space-24) + env(safe-area-inset-bottom));
+}
+
+.panel {
+  height: 100%;
+  overflow-y: auto;
+  padding: var(--space-8) var(--space-24) var(--space-24);
+  background: var(--color-surface);
+}
