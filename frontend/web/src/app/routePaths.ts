@@ -7,7 +7,6 @@ export const RoutePaths = {
   navigate: '/aed/:id/navigate',
   report: '/report/:id',
   coverage: '/coverage',
-  offline: '/offline',
   data: '/data',
 } as const
 

@@ -1,4 +1,4 @@
-import type { FeatureCollection, Polygon } from 'geojson'
+import type { FeatureCollection, MultiPolygon } from 'geojson'
 
 /** GET /coverage scenarios (ENDPOINTS.md §5). */
 export type CoverageScenario = 'all_public' | 'available_at' | 'always_open'
@@ -9,16 +9,12 @@ export const COVERAGE_SCENARIOS = [
   { value: 'always_open', label: 'Całodobowe' },
 ] as const satisfies readonly { value: CoverageScenario; label: string }[]
 
-export const COVERAGE_THRESHOLDS = [
-  { value: 300, label: '300 m' },
-  { value: 500, label: '500 m' },
-  { value: 750, label: '750 m' },
-  { value: 1000, label: '1 km' },
-] as const
+/** Reach radius in meters, picked with a slider. */
+export const COVERAGE_RADIUS = { min: 100, max: 1000, step: 50 } as const
 
 export type CoverageCell = {
-  /** gap: no eligible AED within the threshold; uncertain: only AEDs with unknown hours are near. */
-  kind: 'gap' | 'uncertain'
+  /** covered: an eligible AED within the threshold; gap: none (AEDs without information are never eligible). */
+  kind: 'covered' | 'gap'
   nearestDistanceM: number | null
   nearestAedId: string | null
 }
@@ -27,6 +23,7 @@ export type CoverageLayer = {
   scenario: CoverageScenario
   thresholdM: number
   evaluatedAt: string
-  gridSizeM: number
-  data: FeatureCollection<Polygon, CoverageCell>
+  /** The AEDs behind the white circles, so a tap can name the nearest one. */
+  eligible: { id: string; lng: number; lat: number }[]
+  data: FeatureCollection<MultiPolygon, Pick<CoverageCell, 'kind'>>
 }

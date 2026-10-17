@@ -7,7 +7,6 @@ import styles from './FilterMenu.module.css'
 const OPTIONS: { group: AedAvailability; icon: IconName; label: string }[] = [
   { group: 'available', icon: 'check_circle', label: 'Otwarte teraz' },
   { group: 'unavailable', icon: 'lock', label: 'Zamknięte i niedostępne' },
-  { group: 'unknown', icon: 'help', label: 'Godziny nieznane' },
 ]
 
 type FilterMenuProps = {

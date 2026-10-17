@@ -8,7 +8,6 @@ import { NearbyListPanel } from '@/features/discovery/presentation/sheets/Nearby
 import { StartPanel } from '@/features/discovery/presentation/sheets/StartPanel'
 import { NavigationPanel } from '@/features/navigation/presentation/sheets/NavigationPanel'
 import { MapPage } from '@/features/map/presentation/pages/MapPage'
-import { OfflinePanel } from '@/features/offline/presentation/sheets/OfflinePanel'
 import { ReportPanel } from '@/features/report/presentation/sheets/ReportPanel'
 
 export type RouteHandle = {
@@ -18,8 +17,11 @@ export type RouteHandle = {
   showsLocationIssue?: boolean
   /** A white card over the map (bottom on narrow, bottom-right on wide) instead of the sheet / side panel. */
   floating?: boolean
-  /** The panel shows the selected AED; its close button returns to the start screen. */
-  closable?: boolean
+  /**
+   * Close button back to the start screen. `selection`: the selected AED (sheet corner on narrow screens,
+   * header on wide ones), closing also clears its route. `panel`: header close button on wide screens only.
+   */
+  close?: 'selection' | 'panel'
   /** Turn-by-turn mode: the direction banner replaces the header and the find button is hidden. */
   navigation?: boolean
 }
@@ -33,12 +35,11 @@ export const appRouter = createBrowserRouter([
     children: [
       { index: true, element: <StartPanel />, handle: handle({ floating: true, showsLocationIssue: true }) },
       { path: RoutePaths.aeds, element: <NearbyListPanel />, handle: handle({ sheet: 'medium', showsLocationIssue: true }) },
-      { path: RoutePaths.aed, element: <AedDetailsPanel />, handle: handle({ sheet: 'medium', showsLocationIssue: true, closable: true }) },
+      { path: RoutePaths.aed, element: <AedDetailsPanel />, handle: handle({ sheet: 'medium', showsLocationIssue: true, close: 'selection' }) },
       { path: RoutePaths.navigate, element: <NavigationPanel />, handle: handle({ sheet: 'compact', navigation: true }) },
-      { path: RoutePaths.report, element: <ReportPanel />, handle: handle({ sheet: 'expanded', closable: true }) },
-      { path: RoutePaths.coverage, element: <CoveragePanel />, handle: handle({ sheet: 'compact' }) },
-      { path: RoutePaths.offline, element: <OfflinePanel />, handle: handle({ sheet: 'medium' }) },
-      { path: RoutePaths.data, element: <DataInfoPanel />, handle: handle({ sheet: 'medium' }) },
+      { path: RoutePaths.report, element: <ReportPanel />, handle: handle({ sheet: 'expanded', close: 'selection' }) },
+      { path: RoutePaths.coverage, element: <CoveragePanel />, handle: handle({ sheet: 'compact', close: 'panel' }) },
+      { path: RoutePaths.data, element: <DataInfoPanel />, handle: handle({ sheet: 'medium', close: 'panel' }) },
       { path: '*', element: <Navigate to={RoutePaths.map} replace /> },
     ],
   },

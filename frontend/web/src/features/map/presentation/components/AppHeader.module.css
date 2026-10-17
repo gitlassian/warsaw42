@@ -34,41 +34,10 @@
   width: auto;
 }
 
-.menuAnchor {
-  position: relative;
-}
-
-.menu {
-  position: absolute;
-  top: calc(100% + var(--space-8));
-  right: 0;
-  z-index: 5;
-  min-width: 260px;
-  padding: var(--space-8);
-  border-radius: var(--radius-control);
-  background: var(--color-surface);
-  box-shadow: var(--shadow-panel);
-}
-
-.item {
+/* The 24 px glyph lines up with the panel content edge; the 48 px hit area and hover reach past it. */
+.close {
   display: flex;
-  align-items: center;
-  gap: var(--space-12);
-  min-height: 48px;
-  padding: var(--space-8) var(--space-12);
-  border-radius: var(--radius-control);
-  color: var(--color-text);
-  font-weight: 600;
-  text-decoration: none;
-}
-
-.item:hover {
-  background: var(--color-background);
-}
-
-.item[aria-current='page'] {
-  background: var(--color-accent-soft);
-  color: var(--color-accent);
+  margin-right: calc(-1 * var(--space-12));
 }
 
 /* Wide layout: the header is the top of the side panel (unless it floats over the map). */

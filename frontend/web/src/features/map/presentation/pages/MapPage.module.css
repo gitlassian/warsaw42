@@ -122,16 +122,15 @@
     width: min(420px, calc(100% - 96px));
   }
 
+  /* Round controls stack right above the find card (bottom-right). */
   .controls {
-    top: var(--space-16);
-    bottom: auto;
+    bottom: calc(var(--space-48) + var(--dock-height) + var(--space-16));
   }
 
-  /* The controls are at the top here, so the picker opens beside them. */
+  /* The picker opens beside the controls, level with their bottom edge. */
   .timeBar {
     left: auto;
-    top: var(--space-16);
-    bottom: auto;
+    bottom: calc(var(--space-48) + var(--dock-height) + var(--space-16));
     width: min(440px, calc(100% - 2 * var(--space-16) - 48px - var(--space-8)));
   }
 

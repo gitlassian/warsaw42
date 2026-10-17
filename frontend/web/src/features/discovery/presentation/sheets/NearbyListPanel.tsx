@@ -67,7 +67,7 @@ export function NearbyListPanel() {
       {aedsStatus !== 'ready' && aedsStatus !== 'error' && <LoadingText>Wczytujemy dane…</LoadingText>}
 
       <AedList title="Dostępne teraz" aeds={available} now={now} etas={etas} origin={origin} />
-      <AedList title="Zamknięte lub niepotwierdzone" aeds={others} now={now} etas={etas} origin={origin} />
+      <AedList title="Zamknięte i niedostępne" aeds={others} now={now} etas={etas} origin={origin} />
 
       {limit < sorted.length && <Button onClick={() => setLimit((l) => l + PAGE_SIZE)}>Pokaż więcej</Button>}
     </Stack>

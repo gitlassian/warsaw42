@@ -7,6 +7,7 @@ import { passesFilters } from '@/features/aeds/lib/aedAvailability'
 import { aedStatus } from '@/features/aeds/lib/aedStatus'
 import { aedsStore } from '@/features/aeds/store'
 import type { CoverageCell } from '@/features/coverage/models/coverage'
+import { nearestSite } from '@/features/coverage/lib/coverageGeometry'
 import { coverageStore, selectCoverageCell } from '@/features/coverage/store'
 import { discoveryStore, pickOrigin, requestEtas } from '@/features/discovery/store'
 import { headingAt, locateOnRoute } from '@/features/navigation/lib/progress'
@@ -14,8 +15,8 @@ import { navigationStore, routePlan, stopFollowing } from '@/features/navigation
 import { WARSAW_CENTER, WARSAW_MAX_BOUNDS, circlePolygon, type LngLat } from '@/shared/geo/geo'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
-import { mapFiltersStore } from '../../store'
-import { ACCURACY_LAYER, ACCURACY_OPACITY, AEDS_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
+import { mapFiltersStore } from '@/features/aeds/filterStore'
+import { ACCURACY_LAYER, ACCURACY_OPACITY, AEDS_LAYER, COVERAGE_HALO_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
 import { MapMarker } from './MapMarker'
 import { AedMarker, ClusterMarker, HeadingMarker, OriginMarker } from './MapMarkers'
 import styles from './MapView.module.css'
@@ -46,7 +47,6 @@ export function MapView({ onLoadError }: MapViewProps) {
   const now = useStore(aedsStore, (s) => s.now)
   const showAvailable = useStore(mapFiltersStore, (s) => s.available)
   const showUnavailable = useStore(mapFiltersStore, (s) => s.unavailable)
-  const showUnknown = useStore(mapFiltersStore, (s) => s.unknown)
   const origin = useStore(discoveryStore, (s) => s.origin)
   const etas = useStore(discoveryStore, (s) => s.etas)
   const route = useStore(discoveryStore, (s) => s.route)
@@ -116,14 +116,14 @@ export function MapView({ onLoadError }: MapViewProps) {
       type: 'FeatureCollection',
       // Filters follow the clock: an AED that closes at 16:00 leaves the map without a reload.
       features: aeds
-        .filter((a) => passesFilters(a, now, { available: showAvailable, unavailable: showUnavailable, unknown: showUnknown }))
+        .filter((a) => passesFilters(a, now, { available: showAvailable, unavailable: showUnavailable }))
         .map((a) => ({
           type: 'Feature',
           properties: { id: a.id, available: aedStatus(a, now).available ? 1 : 0 },
           geometry: { type: 'Point', coordinates: [a.location.lng, a.location.lat] },
         })),
     })
-  }, [map, aeds, now, showAvailable, showUnavailable, showUnknown])
+  }, [map, aeds, now, showAvailable, showUnavailable])
 
   // Mirror the clustered source into HTML markers whenever the view or tiles change.
   useEffect(() => {
@@ -184,14 +184,14 @@ export function MapView({ onLoadError }: MapViewProps) {
     map.getCanvas().style.cursor = picking ? 'crosshair' : ''
     const onClick = (e: MapMouseEvent) => {
       if (discoveryStore.get().picking) return pickOrigin(e.lngLat)
-      const [cell] = map.queryRenderedFeatures(e.point, { layers: [COVERAGE_LAYER] })
-      if (!cell) return selectCoverageCell(null)
-      // Vector tiles drop null properties, so restore them explicitly.
-      const p = cell.properties ?? {}
+      const [area] = map.queryRenderedFeatures(e.point, { layers: [COVERAGE_LAYER, COVERAGE_HALO_LAYER] })
+      const layer = coverageStore.get().layer
+      if (!area || !layer) return selectCoverageCell(null)
+      const nearest = nearestSite(e.lngLat.lng, e.lngLat.lat, layer.eligible)
       selectCoverageCell({
-        kind: p.kind,
-        nearestDistanceM: p.nearestDistanceM ?? null,
-        nearestAedId: p.nearestAedId ?? null,
+        kind: area.properties?.kind,
+        nearestDistanceM: nearest ? Math.round(nearest.distanceM) : null,
+        nearestAedId: nearest?.site.id ?? null,
       } satisfies CoverageCell)
     }
     map.on('click', onClick)

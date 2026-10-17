@@ -113,7 +113,7 @@ Use short, concrete wording. Each message answers one question. Show an explanat
 | Access according to listed hours | `Dostępny według godzin` |
 | Around-the-clock access established by the schedule | `Dostęp całodobowy` |
 | Closing time | `Dostęp do 18:00` |
-| Unknown hours | `Godziny nieznane` |
+| No information on hours or access | `Niedostępny` with `Brak informacji o godzinach` / `Brak informacji o dostępie` |
 | Closed venue | `Teraz zamknięty` |
 | Unclear access conditions | `Dostęp niepotwierdzony` |
 | Confirmed unavailability | `AED niedostępny` |
@@ -187,7 +187,7 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 
 - The map fills the available screen. Place a compact DefiWawa name and access to secondary features at the top.
 - Use one bottom sheet for the search start, result, list, or selected AED details. Do not stack sheets on top of one another.
-- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button that clears the selection and its route: in the sheet's top-right corner on narrow screens, in the header row next to the logo from 840.
+- "Znajdź najbliższy defibrylator" is pinned on every screen, outside sheets and panels: a white bar on the bottom edge that an open sheet covers (from 840: a floating button at the bottom right of the map). The start screen has no sheet; from 840 the map fills the window and the header floats top-left. Offer manual origin selection only when location is denied or unavailable. Panels have no back button; the DefiWawa logo returns to the start. Panels for the selected AED (details, report) have a close button that clears the selection and its route: in the sheet's top-right corner on narrow screens, in the header row next to the logo from 840. From 840 the coverage and `O danych` panels get the same header close button (it does not clear a route). The close icon lines up with the panel content edge; its hit area extends past it.
 - The result sheet shows travel time, address, access, and entrance instructions. Expand additional details below.
 - Provide compact, medium, and expanded sheet states. At the default text scale, medium occupies about 70% of the available height; content and text scale determine its actual height.
 - Support a button and keyboard interaction as well as dragging to expand the sheet. Accessible button names: `Pokaż szczegóły` / `Zwiń szczegóły`.
@@ -197,7 +197,7 @@ Shadows separate controls from the map: panel `0 4 24`, color `#17231D` at 12% o
 ### Wide Screens: 840 and Above
 
 - Place a 360–420-wide panel on the left and the map in the remaining space on the right.
-- The header holds only the logo; the menu button sits at the top of the round map controls on the right, above location and layers.
+- The header holds only the logo; the info button (`O danych`) tops the round map controls, which stack right above the find card at the bottom right; their pop-ups open to the left and grow up. The web app has no offline section; offline maps are mobile-only.
 - The panel uses the same information, actions, and order as the mobile version.
 - Available logical width determines when a zoomed interface switches to the narrow layout.
 - Do not add a separate bottom sheet over the side panel.
@@ -280,7 +280,7 @@ The first release shows route geometry, time, distance, and our own entrance ins
 
 Display access and device condition separately. A green schedule-based status does not confirm that an AED works. Verified device condition requires separate evidence and a date. An unreviewed user report does not change the public status.
 
-For automatic results, evaluate access at the expected arrival time under the conditions in PLAN.md. During browsing, show access at the selected time. Unknown hours and conditions remain unknown.
+For automatic results, evaluate access at the expected arrival time under the conditions in PLAN.md. During browsing, show access at the selected time. No information on hours or access means unavailable: such AEDs show as `Niedostępny`, never as available.
 
 | Situation | Message and available action |
 | --- | --- |
@@ -326,7 +326,7 @@ Open `Zasięg AED` as a separate layer mode. Retain the map and the shared contr
 
 Provide `Wszystkie publiczne`, `Dostępne o wybranej porze`, and `Całodobowe` scenarios. Show date and time for the second scenario. Label the threshold setting `Odległość od AED`, initially 500 m as specified in PLAN.md.
 
-Show gaps with a translucent amber fill and hatching; show insufficient information with gray hatching. Include text in the legend. Routes and AEDs remain distinguishable over the layer.
+Show gaps with a translucent amber fill and hatching; AEDs without information do not cover any area. Include text in the legend. Routes and AEDs remain distinguishable over the layer.
 
 Selecting an area shows the distance to the nearest eligible AED, scenario time, data date, and a short `Odległość w linii prostej` explanation. Supporting text: `Luki w dostępnych danych. Próg: 500 m.` Substitute the current threshold value. Do not label these areas as definitively dangerous or as proof that no devices exist.
 
