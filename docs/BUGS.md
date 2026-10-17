@@ -1,48 +1,72 @@
 # DefiWawa — баг-лист для разработчиков
 
-Составил Саня (QA) по итогам работы над [fixtures](../fixtures/README.md) и [Postman-коллекцией](../postman/README.md). Код в этом документе не менялся.
+Составил Саня (QA) по итогам работы с данными города, тестовой базой и [Postman-коллекцией](../postman/README.md). Код в этом документе не менялся.
 
 - **Первая проверка:** 17.10.2026, ветка `Pofa`, коммит `4714526`.
-- **Перепроверка:** 17.10.2026, ветка `Pofa` после слияния main (`fd9d1bc`, main `dc8e00f`): упрощённая схема `20261017150000_simplify_app_schema.sql`, `20261017170000_aed_photo_district.sql`, новый ENDPOINTS.md, функции читают базу через `_shared/supabase_repository.ts`. В начале каждого пункта — блок «Перепроверка» с текущим статусом. Закрытые пункты не удалены, их исходное описание оставлено ниже блока.
-- **bug** — расходится с [ENDPOINTS.md](../ENDPOINTS.md) / [backend/supabase/README.md](../backend/supabase/README.md) (или с [PLAN.md](../PLAN.md), который теперь помечен как исторический) либо ломает работу.
+- **Перепроверка 1:** 17.10.2026, ветка `Pofa` после слияния main (`fd9d1bc`, main `dc8e00f`): упрощённая схема `20261017150000_simplify_app_schema.sql`, `20261017170000_aed_photo_district.sql`, новый ENDPOINTS.md, функции читают базу через `_shared/supabase_repository.ts`.
+- **Перепроверка 2:** 17.10.2026, main `6774a26`:
+  - seed пишет `closed` для дней, которые текст не называет (`a02d8b3`);
+  - часы берутся и из OpenStreetMap: в базе 897 AED, из них 710 из данных города и 187 только из OSM;
+  - отчёты анонимные, без SMS (`05a0970`);
+  - веб читает Supabase (`4060f34`).
+
+  Статусы в сводке — на этот коммит. В начале пунктов — блоки «Перепроверка» с текущим состоянием; исходные описания оставлены ниже. Если блока «Перепроверка 2» нет, пункт с прошлой перепроверки не изменился. Закрытые пункты не удалены.
+- **bug** — расходится с [ENDPOINTS.md](../ENDPOINTS.md) / [backend/supabase/README.md](../backend/supabase/README.md) (или с [PLAN.md](../PLAN.md), который помечен как исторический) либо ломает работу.
 - **нужно решение** — спецификация не даёт ответа, команде нужно выбрать.
-- Цифры по данным посчитаны на `backend/data/out/aed.json` (710 записей, после слияния не менялся) и на `backend/supabase/seed.sql`.
-- SQL теперь запускался: PostGIS 16 в Docker, все три миграции, `schema_smoke.sql` и `seed.sql` (`python3 fixtures/run_availability_sql.py --setup`). Запросы к базе ниже выполнять после этой команды: `docker exec -i defiwawa-pg psql -U postgres -d defiwawa_test`.
+- «Фикстуры» ниже — это тестовые AED `fx-*` в [`_shared/fixtures.ts`](../backend/supabase/functions/_shared/fixtures.ts) (режим `DEFIWAWA_USE_FIXTURES=1`), а не удалённая папка `fixtures/`.
+- Цифры по данным посчитаны на `backend/data/out/aed.json` (710 записей) и на `backend/supabase/seed.sql`.
+- SQL проверялся на PostGIS 16 в Docker: все миграции по порядку, затем `seed.sql`. На локальном Supabase то же самое даёт `supabase db reset` из `backend/`. Запросы к базе ниже — через `psql "$DB_URL"`, где `DB_URL` печатает `supabase status`.
 - Ссылки на строки старого ENDPOINTS.md ведут на версию `4714526` на GitHub: файл переписан, и старые номера строк к новому не относятся.
+
+## Главное правило: нет данных — значит закрыт
+
+**Решение (Саня, 17.10.2026).** Если о дне или о часах AED данных нет, считаем его закрытым и не придумываем часы. Приложение решает, куда побежит человек, когда у кого-то остановилось сердце. Лучше не отправить его к AED с неизвестными часами, чем отправить к запертой двери.
+
+Что из этого следует для списка:
+
+1. **Опаснее всего ошибка в сторону «открыт».** По ней человек может прийти к закрытому AED. Сейчас главный такой случай — п. 17: база после первой загрузки не обновляется. Если город сократил часы, приложение покажет AED открытым по старым данным. Рядом п. 7: часы метро придуманы и помечены проверенными. Окно 05:00–24:00, скорее всего, уже настоящего графика, но его нужно сверить со станциями.
+2. **«Неизвестно» нужно убрать из того, что видит человек** (новый п. 20). Сейчас для 224 публичных AED API отвечает `unknown`, а интерфейс пишет «Godziny nieznane».
+3. **П. 2 больше не баг.** «Пустой день = закрыто» — это и есть правило, seed в main так уже делает (`a02d8b3`).
+4. **Цена правила.** AED, о часах которого данных нет, приложение не предложит, даже если он ближайший и на самом деле открыт. Поэтому важны пункты, где часы на самом деле известны, но теряются по дороге или не проверены: п. 8 (город пишет «24/7», мы не проверили — 65 AED), п. 4 (66 AED), п. 6 и п. 5. Чем меньше AED без данных, тем меньше эта цена.
 
 ## Сводка
 
-| № | Что | Было (`4714526`) | Сейчас (`fd9d1bc`) | Кому (основной → второй) |
-| --- | --- | --- | --- | --- |
-| 1 | CI-обновление данных пишет не туда; cron раз в 3 часа | bug | **частично исправлен**: пути и `git add` поправлены, cron всё ещё раз в 3 часа | Вітя → Ярік |
-| 2 | Пустой день = «закрыто», формат не умеет `unknown` | bug | **частично исправлен**: в базе пустой день = `unknown`; `aed.json` по-прежнему не умеет `closed` | Вітя + Ярік |
-| 3 | Нумерация дней 0–6 вместо ISO 1–7 | bug (латентный) | **закрыт**: загрузчик явно переводит `mon` → `1` | Вітя |
-| 4 | Часы без дней: regex → пн–пт, LLM → все 7 дней | нужно решение | **нужно решение**; в API оба варианта сейчас `unknown` | Вітя |
-| 5 | Опечатки `17:0` и `22.0` обрабатываются по-разному | нужно решение | **нужно решение**; в API оба сейчас `unknown` | Вітя |
-| 6 | LLM теряет частично известные дни | bug | **bug**, без изменений | Вітя → Ярік |
-| 7 | Часы метро выдуманы (05:00–24:00) | нужно решение | **bug, стало хуже**: 39 AED опубликованы с `hours_verified = true` | Вітя → Ярік |
-| 8 | id 3931: противоречие помечено, но опубликовано как 24/7 | bug | **закрыт для 3931**; **нужно решение** по 74 другим AED 24/7, которые тоже стали `unknown` | Вітя → Ярік |
-| 9 | Маршрут к `active=false` отдаёт 200 | нужно решение | **частично**: с базой 404, с фикстурами 200 | Вітя |
-| 10 | Коды причин доступности: SQL ≠ фикстуры | нужно решение | **нужно решение**, коды SQL поменялись | Ярік + Вітя |
-| 11 | Функции не подключены к `is_inside_warsaw`: Ząbki и Łomianki = Варшава | bug (известная заглушка) | **закрыт** для режима базы | Вітя → Ярік |
-| 12 | Кто делает OTP: Максім или Вітя | нужно решение | **закрыт**: Supabase Phone Auth, Максім | вся команда |
-| 13 | Битые ссылки и 500 для id 2487 | bug (документы) | **частично исправлен**: `plan.md` поправлен, `DESIGN_RESEARCH.md` нет | автор документов |
-| 14 | Web на React, а PLAN §2 — один Flutter | нужно решение | **нужно решение**: DESIGN.md всё ещё про Flutter web | Максім |
-| 15 | Дыры в ENDPOINTS.md: код неверного SMS и тело отзыва override | нужно решение | **закрыт (неактуален)**: этих эндпоинтов больше нет | Максім, Вітя |
-| 16 | Старый `pipeline/seed.py` пишет `seed.sql` под архивную схему | — | **bug** (новый) | Ярік |
-| 17 | Нет импорта в базу: обновление доходит только до git | — | **bug** (новый, нет реализации) | Вітя → Ярік |
-| 18 | В контракте AED нет `photo_path` и `district` | — | **нужно решение** (новый) | Ярік, Максім |
-| 19 | Веб-фронтенд работает на моке старого контракта | — | **нужно решение** (новый) | Максім |
+| № | Что | Статус (main `6774a26`) | Кому (основной → второй) |
+| --- | --- | --- | --- |
+| 1 | CI-обновление данных: cron раз в 3 часа | **нужно решение**: пути исправлены, частота нигде не записана | Вітя → Ярік |
+| 2 | Пустой день = «закрыто» | **не баг (решение)**: так и задумано, seed пишет `closed` для не названных дней | — |
+| 3 | Нумерация дней 0–6 вместо ISO 1–7 | **закрыт** | Вітя |
+| 4 | Часы без дней: regex → пн–пт, LLM → все 7 дней | **нужно решение**: 66 AED с непроверенными часами (41 + 25), по правилу будут закрыты | Вітя |
+| 5 | Опечатки `17:0` и `22.0` обрабатываются по-разному | **нужно решение**: id 1324 получил часы из OSM, id 3500 по правилу будет закрыт | Вітя |
+| 6 | LLM теряет частично известные дни | **bug**: id 750 спасли данные OSM, id 2957 по-прежнему целиком без часов | Вітя → Ярік |
+| 7 | Часы метро выдуманы (05:00–24:00) | **bug**: часы 39 AED не из источника, но помечены проверенными | Вітя → Ярік |
+| 8 | Непроверенные «24/7» из данных города | **нужно решение**: 65 AED, по правилу будут закрыты круглосуточно; id 3931 закрыт | Вітя → Ярік |
+| 9 | Маршрут к `active=false` отдаёт 200 | **частично**: с базой 404, с фикстурами 200 | Вітя |
+| 10 | Коды причин доступности: SQL ≠ фикстуры | **нужно решение** | Ярік + Вітя |
+| 11 | Функции не подключены к `is_inside_warsaw` | **закрыт** для режима базы | Вітя → Ярік |
+| 12 | Кто делает OTP: Максім или Вітя | **закрыт (неактуален)**: SMS-кодов больше нет | — |
+| 13 | Битые ссылки и 500 для id 2487 | **частично**: `DESIGN_RESEARCH.md` по-прежнему нет | автор документов |
+| 14 | Web на React, а PLAN §2 — один Flutter | **нужно решение**: DESIGN.md всё ещё про Flutter web | Максім |
+| 15 | Дыры в ENDPOINTS.md: код неверного SMS и тело отзыва override | **закрыт (неактуален)** | — |
+| 16 | Старый `pipeline/seed.py` пишет `seed.sql` под архивную схему | **bug** | Ярік |
+| 17 | Нет импорта в базу: город меняет часы, база — нет | **bug, может показать открытым по устаревшим часам** | Вітя → Ярік |
+| 18 | В контракте AED нет `photo_path` и `district` | **нужно решение** | Ярік, Максім |
+| 19 | Веб-фронтенд работает на моке старого контракта | **закрыт**: веб читает Supabase | Максім |
+| 20 | «Неизвестно» видно человеку, а должно быть «закрыт» | **нужно сделать** (новый) | Максім → Вітя, Ярік |
 
-**Открытые по людям.** Вітя: 1, 2, 4, 5, 6, 7, 8, 9, 10, 17. Ярік: 1, 2, 6, 7, 8, 10, 16, 17, 18. Максім: 14, 18, 19. Все: 13. Закрыты: 3, 11, 12, 15 (и 8 для самого id 3931).
+**Порядок.** Сначала 20 (само правило) и 17 (риск «открыт, хотя закрыт»), затем 7, потом 8, 4, 6 и 5 (уменьшают цену правила), остальное — по мере сил.
+
+**Открытые по людям.** Вітя: 1, 4, 5, 6, 7, 8, 9, 10, 17, 20. Ярік: 1, 6, 7, 8, 10, 16, 17, 18, 20. Максім: 14, 18, 20. Автор документов: 13. Закрыты: 2 (не баг), 3, 11, 12, 15, 19.
 
 ---
 
 ## 1. CI обновления данных пишет не в `backend/data`, cron раз в 3 часа
 
-**bug** · Вітя (пути pipeline и workflow), Ярік (импорт и расписание)
+**нужно решение** · Вітя (пути pipeline и workflow), Ярік (импорт и расписание)
 
-> **Перепроверка (`fd9d1bc`): частично исправлен.**
+> **Перепроверка 2 (`6774a26`): нужно решение.** Cron по-прежнему [`0 */3 * * *`](../.github/workflows/refresh-aed.yml#L5). Фронтенд больше не считает свой интервал обновления (`REFRESH_INTERVAL_MS` удалён вместе с моком, п. 19), так что расхождение осталось только с историческим PLAN. Нужно записать частоту в ENDPOINTS.md или backend/supabase/README.md. Без импорта в базу (п. 17) частота на приложение пока не влияет.
+
+> **Перепроверка 1 (`fd9d1bc`): частично исправлен.**
 > - Пути исправлены: пять файлов pipeline (и новый `seed_sql.py`) работают с `backend/data` (`build.ROOT` → `backend/data`), workflow делает `git add backend/data/raw backend/data/out backend/data/cache` (`git add --dry-run` → exit 0). `build` снова находит закоммиченные `backend/data/raw/osm_levels.json`, `backend/data/out/aed_building.json` и `backend/data/cache/hours_cache.json`, так что `floor_source=osm`, `in_footprint` и кэш LLM не теряются (сами `osm_levels`/`building` в workflow по-прежнему не запускаются, файлы просто не обновляются).
 > - Подпункт про `.gitignore` снят: тяжёлый снимок лежит в `<repo>/data/{aed,geo,population,bo}` (так его читают `pipeline/photos.py` и `pipeline/seed.py`), и эти пути игнорируются.
 > - **Осталось: cron.** [`0 */3 * * *`](../.github/workflows/refresh-aed.yml#L5) — раз в 3 часа. Два часа требовал [PLAN §4](../PLAN.md#L150), который теперь помечен как исторический; новые ENDPOINTS.md и backend/supabase/README.md частоту не задают. Фронтенд при этом считает интервал 2 часа ([`REFRESH_INTERVAL_MS`](../frontend/web/src/features/aeds/services/aedApi.ts#L8), п. 19). Нужно либо `0 */2 * * *`, либо записать 3 часа в ENDPOINTS.md и во фронтенд.
@@ -62,14 +86,22 @@
   python3 -c "import os,sys; sys.path.insert(0,'backend'); from pipeline import build; print(os.path.normpath(build.ROOT))"
   # <repo>/data, а не <repo>/backend/data
   ```
-- **Ожидается.** Pipeline читает и пишет `backend/data/{raw,out,cache}`, а workflow коммитит именно их. Варианты: (а) заменить `"..", ".."` на `".."` в пяти файлах pipeline и в workflow писать `git add backend/data/raw backend/data/out backend/data/cache` (рекомендую: `check_fixtures.py` уже читает `backend/data/raw`); (б) вернуть `data/` в корень.
+- **Ожидается.** Pipeline читает и пишет `backend/data/{raw,out,cache}`, а workflow коммитит именно их. Варианты: (а) заменить `"..", ".."` на `".."` в пяти файлах pipeline и в workflow писать `git add backend/data/raw backend/data/out backend/data/cache` (рекомендую); (б) вернуть `data/` в корень.
 - **Отдельно: cron.** [Строка 5](../.github/workflows/refresh-aed.yml#L5): `0 */3 * * *`, раз в 3 часа. [PLAN §4](../PLAN.md#L150) и [критерий приёмки](../PLAN.md#L370) требуют раз в 2 часа (см. также [ENDPOINTS.md](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L142)). Нужно `0 */2 * * *`.
 
-## 2. Пустой день трактуется как «закрыто», формат `aed.json` не умеет `unknown`
+## 2. Пустой день трактуется как «закрыто»
 
-**bug** · Вітя (формат pipeline), Ярік (загрузка в `aed_day_state`)
+**не баг (решение)**
 
-> **Перепроверка (`fd9d1bc`): частично исправлен.** В базу расписание попадает через [`pipeline/seed_sql.py`](../backend/pipeline/seed_sql.py#L144-L147): день без интервалов пишется как `unknown`, никогда как `closed`. Опасная половина (пустой день = «закрыто» в API) закрыта. **Осталось:** `is_open` по-прежнему возвращает `False` для `[]` (команды ниже дают те же `[] False` и `470`), а формат `aed.json` не умеет `closed`. Поэтому явные «sobota, niedziela – nieczynne» теряются: в `seed.sql` нет ни одного дня `closed` у 710 AED. Так же теряется политика на праздники: у всех 710 `holiday_policy = unknown` и нет исключений по датам.
+> **Перепроверка 2 (`6774a26`): не баг, так и задумано.** По [главному правилу](#главное-правило-нет-данных--значит-закрыт) день, о котором в источнике ничего нет, считается закрытым. Seed в main так уже делает ([`seed_sql.py`](../backend/pipeline/seed_sql.py#L10-L14), коммит `a02d8b3`):
+> - если текст называет дни («poniedziałek-piątek 8-16»), не названные дни пишутся как `closed`;
+> - в данных OSM не указанный день — тоже `closed`.
+>
+> Пример из PLAN §5 (id 622) в базе: пн–пт открыт, сб и вс `closed`. Дни `closed` есть у 407 из 897 AED. `is_open([]) = False` в pipeline теперь совпадает с правилом.
+>
+> Исходное «Ожидается» ниже (суббота остаётся `unknown`) этим правилом отменено. Не закрыто правилом только то, где в источнике вообще нет дней или часов: тексты без дней (п. 4), сезонные и «w godzinach pracy …», праздники. Там API по-прежнему отвечает `unknown` — это п. 20.
+
+Исходное описание (до решения):
 
 - **Что.** [`is_open`](../backend/pipeline/hours.py#L247-L252) для пустого списка дня возвращает `False` (закрыто). [PLAN §5](../PLAN.md#L170): «Empty intervals alone must not imply closure». Сам формат расписания ([hours.py](../backend/pipeline/hours.py#L8), [validate_schedule](../backend/pipeline/hours.py#L148-L165)) хранит день только списком интервалов, поэтому «закрыто» и «неизвестно» в нём не различить. В БД [`aed_day_state`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L253-L260) это различие есть.
 - **Масштаб.** У 470 из 710 записей `sat: []`: 428 со статусом `scheduled` (из них 44 с `weekdays_assumed`) и 42 `unknown`. Загрузчик из `aed.json` в БД не сможет решить, чем заменить `[]`.
@@ -87,7 +119,7 @@
 
 **bug (латентный)** · Вітя
 
-> **Перепроверка (`fd9d1bc`): закрыт.** На границе pipeline → база нумерация явная: [`DAYS = {"mon": 1, …, "sun": 7}`](../backend/pipeline/seed_sql.py#L22), в `seed.sql` дни `"1"`–`"7"`. `is_open(dow)` по-прежнему считает 0 = понедельник (команда ниже: `True False`), но вызывается только из теста.
+> **Перепроверка 1 (`fd9d1bc`): закрыт.** На границе pipeline → база нумерация явная: [`DAYS = {"mon": 1, …, "sun": 7}`](../backend/pipeline/seed_sql.py#L22), в `seed.sql` дни `"1"`–`"7"`. `is_open(dow)` по-прежнему считает 0 = понедельник (команда ниже: `True False`), но вызывается только из теста.
 
 - **Что.** В pipeline день — индекс 0–6: [`DAY_KEYS`](../backend/pipeline/hours.py#L14), [`_DAY_INDEX`](../backend/pipeline/hours.py#L25-L33), [`_range`](../backend/pipeline/hours.py#L86-L89), [`is_open(dow)`](../backend/pipeline/hours.py#L247-L249) с docstring «0=Mon». В контракте ISO: [PLAN §5](../PLAN.md#L170), [`dow BETWEEN 1 AND 7`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L253-L260), [`extract(isodow ...)`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L734), [fixtures.ts](../backend/supabase/functions/_shared/fixtures.ts#L90-L95).
 - **Оговорка.** В `aed.json` дни записаны именами (`mon`…`sun`), так что число видно только в аргументе `is_open` и в будущем загрузчике. Сейчас ошибки нет, но на стыке со сдвигом на 1 она тихая.
@@ -102,7 +134,11 @@
 
 **нужно решение** · Вітя
 
-> **Перепроверка (`fd9d1bc`): нужно решение, в API сейчас безопасно.** Pipeline и `aed.json` не менялись (команда ниже даёт то же). В базе оба варианта неопасны: [`seed_sql.review()`](../backend/pipeline/seed_sql.py#L67-L79) ставит `needs_review` и для `weekdays_assumed`, и для любого разбора LLM, поэтому `hours_verified = false` и `aed_availability()` отвечает `unknown`. Таких расписаний 78: 44 с `weekdays_assumed` и 34 от LLM (в том числе id 700 `7.30-18.00` и id 3303). Решение всё равно нужно: иначе эти AED никогда не станут проверенными.
+> **Перепроверка 2 (`6774a26`): нужно решение.** Часть таких AED подтвердили данные OSM: 3 с `weekdays_assumed` и 9 от LLM стали проверенными. Осталось 66 AED с непроверенными часами: 41 с `weekdays_assumed` и 25 от LLM, в том числе id 700 `7.30-18.00` и id 3303. API отвечает по ним `unknown`, по правилу они будут закрыты всегда. Варианты:
+> - (а) дни не названы — значит закрыто. Строго по правилу, но эти 66 AED не будут предложены никогда;
+> - (б) команда принимает правило источника «только часы = пн–пт», одинаковое для regex и LLM. Тогда пн–пт открыт, выходные закрыты, а AED помечается как проверенный.
+
+> **Перепроверка 1 (`fd9d1bc`): нужно решение, в API сейчас безопасно.** Pipeline и `aed.json` не менялись (команда ниже даёт то же). В базе оба варианта неопасны: [`seed_sql.review()`](../backend/pipeline/seed_sql.py#L67-L79) ставит `needs_review` и для `weekdays_assumed`, и для любого разбора LLM, поэтому `hours_verified = false` и `aed_availability()` отвечает `unknown`. Таких расписаний 78: 44 с `weekdays_assumed` и 34 от LLM (в том числе id 700 `7.30-18.00` и id 3303). Решение всё равно нужно: иначе эти AED никогда не станут проверенными.
 
 - **Что.** Для текста «только часы» regex подставляет пн–пт и ставит флаг `weekdays_assumed` ([hours.py](../backend/pipeline/hours.py#L199-L205); 44 записи, например id 700 `7.30-18.00`, 723 `7-19`, 907 `8-16`). Это поведение закреплено [тестом](../backend/tests/test_hours.py#L28-L31). В [системном промпте LLM](../backend/pipeline/llm_hours.py#L21-L29) правила для текста без дней нет, и id 3303 и 3991 («W godzinach 5:30-0:30 …») модель разворачивает на все 7 дней. Тексты одного типа получают разные дни.
 - **Воспроизвести** (из корня):
@@ -110,13 +146,15 @@
   python3 -c "import sys,json; sys.path.insert(0,'backend'); from pipeline.hours import parse_regex; print(parse_regex('8-16').assumed); d={r['id']:r for r in json.load(open('backend/data/out/aed.json'))}; print(list(k for k,v in d['3303']['schedule'].items() if v))"
   # ['weekdays_assumed'] (пн–пт), затем все 7 дней для id 3303
   ```
-- **Ожидается.** [PLAN §5](../PLAN.md#L195): не названные дни остаются `unknown`; допущения города оформляются версионированным правилом источника (поле [`applied_source_rules`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L239)), а не догадкой. Вариант (а): `unknown` для не названных дней (в фикстуре `scb-3303` ждём `unknown` + `needs_review`). Вариант (б): город подтверждает «часы без дней = пн–пт», тогда правило одно для regex и LLM. Если выберете (б), добавьте его в промпт и обновите тест.
+- **Ожидается.** [PLAN §5](../PLAN.md#L195): не названные дни остаются `unknown`; допущения города оформляются версионированным правилом источника (поле [`applied_source_rules`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L239)), а не догадкой. Вариант (а): не названные дни не открыты (сейчас по правилу — закрыты). Вариант (б): город подтверждает «часы без дней = пн–пт», тогда правило одно для regex и LLM. Если выберете (б), добавьте его в промпт и обновите тест.
 
 ## 5. Опечатки `17:0` и `22.0` обрабатываются по-разному
 
 **нужно решение** · Вітя
 
-> **Перепроверка (`fd9d1bc`): нужно решение, в API сейчас обе `unknown`.** id 1324 в базе — `hours_status = unknown`; id 3500 разобран LLM, поэтому `hours_verified = false`, и `aed_availability()` тоже отвечает `unknown`. Расхождение осталось в `aed.json` и в кэше LLM.
+> **Перепроверка 2 (`6774a26`): нужно решение.** id 1324 получил проверенные часы из OSM, так что в приложении его опечатка больше не видна. id 3500 разобран LLM и не проверен: API отвечает `unknown`, по правилу он будет закрыт, хотя пн–сб 6:00–22:00 почти наверняка верно. Одно правило для таких опечаток в детерминированном парсере вернуло бы его в выдачу.
+
+> **Перепроверка 1 (`fd9d1bc`): нужно решение, в API сейчас обе `unknown`.** id 1324 в базе — `hours_status = unknown`; id 3500 разобран LLM, поэтому `hours_verified = false`, и `aed_availability()` тоже отвечает `unknown`. Расхождение осталось в `aed.json` и в кэше LLM.
 
 - **Что.** Оба текста regex отдаёт в LLM: хвост с цифрой даёт `None` ([hours.py](../backend/pipeline/hours.py#L211-L212)). Модель отвечает по-разному:
   - id 1324 `Dni powszednie 07:00-17:0` → `unknown` («godzina zakończenia jest niekompletna»);
@@ -126,32 +164,41 @@
   ```sh
   python3 -c "import json;d={r['id']:r for r in json.load(open('backend/data/out/aed.json'))};[print(i,d[i]['status'],d[i]['parse_source'],repr(d[i]['raw_hours'])) for i in ('1324','3500')]"
   ```
-- **Ожидается.** [PLAN §5](../PLAN.md#L206): часы не выдумываем, неразобранное остаётся `unknown`. Нужно одно правило для обеих опечаток. Рекомендую `unknown` + `needs_review`. Если решите читать `X:0` как `X:00`, делайте это в детерминированном парсере, а не в LLM.
+- **Ожидается.** [PLAN §5](../PLAN.md#L206): часы не выдумываем, неразобранное остаётся `unknown`. Нужно одно правило для обеих опечаток. Неразобранный текст по главному правилу — закрыто. Если решите читать `X:0` как `X:00`, делайте это в детерминированном парсере, а не в LLM.
 
 ## 6. LLM теряет частично известные дни
 
 **bug** · Вітя (схема и промпт), Ярік (если в `aed.json` нужно состояние дня, см. п. 2)
 
-> **Перепроверка (`fd9d1bc`): bug, без изменений.** В `llm_hours.py` поменялся только путь к кэшу. id 750 и 2957 в `seed.sql` — `hours_status = unknown` с пустым `weekly`: известные будни в API не попадают.
+> **Перепроверка 2 (`6774a26`): bug, в pipeline без изменений.**
+> - id 750 спасли данные OSM: в базе пн 8–18, вт–пт 8–16, сб и вс `closed`, часы проверены. В приложении он верен.
+> - id 2957 по-прежнему без часов. API отвечает `unknown`, по правилу он будет закрыт и в будни, хотя «пн–пт 8–18» в тексте есть. Это ровно та цена правила, о которой сказано в начале: открытый AED человек не увидит.
+> - Причина не исправлена: схема ответа LLM в `llm_hours.py` по-прежнему не умеет состояние дня.
+
+> **Перепроверка 1 (`fd9d1bc`): bug, без изменений.** В `llm_hours.py` поменялся только путь к кэшу. id 750 и 2957 в `seed.sql` — `hours_status = unknown` с пустым `weekly`: известные будни в API не попадают.
 
 - **Что.** Схема ответа LLM содержит один `status` на весь AED и ни одного состояния дня ([llm_hours.py](../backend/pipeline/llm_hours.py#L31-L58)), а [промпт](../backend/pipeline/llm_hours.py#L25-L27) велит при сомнении возвращать `unknown`. Поэтому частично известные расписания схлопываются целиком:
   - id 750 «пн 08–18, вт–чт 08–16», пятница не названа → весь AED `unknown`;
   - id 2957 «пн–пт 8–18; wybrane soboty i niedziele 9–21» → весь AED `unknown`, хотя будни известны.
-- id 750 повторяет пример из [PLAN §5](../PLAN.md#L172-L193) (`validated_partial`). Фикстуры `scb-750` и `scb-2957` ждут `weekly` + `validated_partial`.
+- id 750 повторяет пример из [PLAN §5](../PLAN.md#L172-L193) (`validated_partial`).
 - **Воспроизвести** (из корня):
   ```sh
   python3 -c "import json;d={r['id']:r for r in json.load(open('backend/data/out/aed.json'))};[print(i,d[i]['status'],d[i]['note']) for i in ('750','2957')]"
   ```
-- **Ожидается.** Известные дни сохраняются, неизвестные получают `unknown` ([PLAN §5](../PLAN.md#L195), [приёмка](../PLAN.md#L372)).
+- **Ожидается.** Известные дни сохраняются, а не названные в тексте по главному правилу считаются закрытыми.
 - **Осторожно при исправлении.** Кэш [ключуется только текстом](../backend/pipeline/llm_hours.py#L113-L116): после правки промпта старые ответы не пересчитаются, пока кэш не сбросить (в схеме БД кэш ключуется ещё и версией парсера).
 
 ## 7. `metro_hours_assumed`: выдуманные часы 05:00–24:00
 
-**нужно решение** · Вітя → Ярік
+**bug** · Вітя → Ярік
 
-> **Перепроверка (`fd9d1bc`): bug, стало хуже.** Раньше это был вопрос, теперь выдуманные часы публикуются как проверенные. [`seed_sql.review()`](../backend/pipeline/seed_sql.py#L67-L79) даёт `metro_hours_assumed` статус `validated_partial` с правилом `metro_hours@1`, а [`render()`](../backend/pipeline/seed_sql.py#L150-L154) превращает его в `hours_verified = true`. Колонки для правила источника в таблице `aeds` нет, признак «допущение» теряется. В `seed.sql` все 39 AED с «stacji metra» — `hours_verified = true` и `[[300, 1440]]` каждый день. `aed_availability()` отвечает `closed` в 03:00 и `open` в 12:00, так что `/aeds/find` будет выбирать их автоматически.
+> **Перепроверка 2 (`6774a26`): bug, без изменений.** 39 AED, `hours_verified = true`, 05:00–24:00 каждый день (запрос ниже даёт то же). По главному правилу придуманные часы — это не данные. Направление ошибки, скорее всего, безопасное: окно уже обычного графика метро, так что ночью приложение скорее покажет «закрыт», чем пошлёт к запертому входу. Но это допущение, а не факт.
+> - **Если есть кому сверить:** сверить с графиком станций и с тем, доступен ли AED всё время работы станции, и записать реальные часы как правило источника.
+> - **Если некому:** `needs_review`, и по правилу эти AED будут закрыты.
+
+> **Перепроверка 1 (`fd9d1bc`): bug, стало хуже.** Раньше это был вопрос, теперь выдуманные часы публикуются как проверенные. [`seed_sql.review()`](../backend/pipeline/seed_sql.py#L67-L79) даёт `metro_hours_assumed` статус `validated_partial` с правилом `metro_hours@1`, а [`render()`](../backend/pipeline/seed_sql.py#L150-L154) превращает его в `hours_verified = true`. Колонки для правила источника в таблице `aeds` нет, признак «допущение» теряется. В `seed.sql` все 39 AED с «stacji metra» — `hours_verified = true` и `[[300, 1440]]` каждый день. `aed_availability()` отвечает `closed` в 03:00 и `open` в 12:00, так что `/aeds/find` будет выбирать их автоматически.
 > ```sh
-> echo "SELECT hours_verified, hours->'weekly'->'1'->>'intervals', count(*) FROM aeds WHERE hours_text ~* 'stacji metra' GROUP BY 1, 2;" | docker exec -i defiwawa-pg psql -U postgres -d defiwawa_test
+> psql "$DB_URL" -c "SELECT hours_verified, hours->'weekly'->'1'->>'intervals', count(*) FROM aeds WHERE hours_text ~* 'stacji metra|otwacia stacji' GROUP BY 1, 2;"
 > # t | [[300, 1440]] | 39
 > ```
 > **Ожидается:** `needs_review` для `metro_hours_assumed` (одна строка в `review()`) или настоящее расписание метро.
@@ -165,9 +212,20 @@
 
 ## 8. id 3931: `device_availability=Tak` + сезонные часы → публикуется как 24/7
 
-**bug** · Вітя (pipeline) → Ярік (загрузчик: `suspicious` → `review_status`)
+**нужно решение** · Вітя (pipeline) → Ярік (загрузчик: `suspicious` → `review_status`)
 
-> **Перепроверка (`fd9d1bc`): закрыт для id 3931, нужно решение по остальным 74.** Pipeline не менялся (команда ниже даёт то же), но [`seed_sql.review()`](../backend/pipeline/seed_sql.py#L73-L74) ставит `needs_review` всем 24/7 с `suspicious`, если не передан `--trust-flagged-247`. id 3931 в `seed.sql` — `hours_verified = false`, `aed_availability()` → `unknown`. **Нужно решение:** так же `unknown` стали все 75 помеченных AED 24/7 (74 «в помещении вне охраняемого здания» и 3931). Проверенными из 100 AED 24/7 остались 25; остальные 75 в `/aeds/find` попадают только в `unknown_access_alternatives`. Это самое заметное для пользователя изменение в seed. Для 74 флаг — только эвристика pipeline, противоречия в тексте нет. Варианты: оставить так (строго, как PLAN §5), пересобрать seed с `--trust-flagged-247` или проверить эти 74 вручную и поставить `hours_verified = true` точечно.
+> **Перепроверка 2 (`6774a26`): нужно решение.** Из 100 AED «24/7» в данных города:
+> - 18 проверены по данным города;
+> - 10 подтвердил OSM;
+> - 1 получил часы из OSM;
+> - **65 не проверены** (флаг «в помещении вне охраняемого здания», 46 из них публичные). Сюда же входит id 3931: как 24/7 он больше не публикуется.
+>
+> API отвечает по этим 65 `unknown`, по правилу они станут закрытыми круглосуточно, причём и днём, хотя город пишет «доступен 24/7». Варианты:
+> - (а) оставить так — строго по правилу;
+> - (б) проверить 65 вручную (фото, звонок в учреждение) и поставить `hours_verified = true` точечно — лучший вариант;
+> - (в) пересобрать seed с `--trust-flagged-247` — тогда ночью возможна ошибка «открыт, хотя закрыт», самая опасная по правилу.
+
+> **Перепроверка 1 (`fd9d1bc`): закрыт для id 3931, нужно решение по остальным 74.** Pipeline не менялся (команда ниже даёт то же), но [`seed_sql.review()`](../backend/pipeline/seed_sql.py#L73-L74) ставит `needs_review` всем 24/7 с `suspicious`, если не передан `--trust-flagged-247`. id 3931 в `seed.sql` — `hours_verified = false`, `aed_availability()` → `unknown`. **Нужно решение:** так же `unknown` стали все 75 помеченных AED 24/7 (74 «в помещении вне охраняемого здания» и 3931). Проверенными из 100 AED 24/7 остались 25; остальные 75 в `/aeds/find` попадают только в `unknown_access_alternatives`. Это самое заметное для пользователя изменение в seed. Для 74 флаг — только эвристика pipeline, противоречия в тексте нет. Варианты: оставить так (строго, как PLAN §5), пересобрать seed с `--trust-flagged-247` или проверить эти 74 вручную и поставить `hours_verified = true` точечно.
 
 - **Что.** Текст id 3931: «Ochrona 24h. Dla odwiedzających: maj-wrzesień pn-pt 12:00-20:00, weekendy 10:00-20:00; październik-kwiecień pn-nd 12:00-18:00». Ветка `Tak` ([build.py](../backend/pipeline/build.py#L72-L75)) безусловно ставит `24/7`. Запись при этом помечена `suspicious: true` («24/7 flag but the text lists limited hours»), то есть противоречие pipeline заметил, но опубликовал как 24/7. В выходной записи [нет поля `review_status`](../backend/pipeline/build.py#L93-L106), а в БД значение `needs_review` [есть](../backend/supabase/migrations/20261017120000_initial_schema.sql#L27) и непроверенные часы дают [`unknown`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L779-L781).
 - **Воспроизвести** (из корня):
@@ -175,13 +233,13 @@
   python3 -c "import json;r=[x for x in json.load(open('backend/data/out/aed.json')) if x['id']=='3931'][0];print(r['status'],r['suspicious'],r['suspicious_reasons'])"
   # 24/7 True ['24/7 flag but the text lists limited hours', '24/7 indoors outside a staffed building']
   ```
-- **Ожидается.** [PLAN §5](../PLAN.md#L206) (сомнение не превращается в 24/7) и [приёмка](../PLAN.md#L373) (conflicting classifications). Фикстура `scb-3931`: `unknown` + `needs_review`. Для сведения: ещё у 74 записей `24/7` помечен `suspicious` по эвристике «в помещении вне охраняемого здания». Это только флаг, но он тоже не доходит до БД.
+- **Ожидается.** [PLAN §5](../PLAN.md#L206) (сомнение не превращается в 24/7) и [приёмка](../PLAN.md#L373) (conflicting classifications). Для сведения: ещё у 74 записей `24/7` помечен `suspicious` по эвристике «в помещении вне охраняемого здания». Это только флаг, но он тоже не доходит до БД.
 
 ## 9. `POST /routes/walking` к AED с `active=false` отвечает 200
 
 **нужно решение** · Вітя
 
-> **Перепроверка (`fd9d1bc`): частично.** С базой ответ уже 404: функции читают `aed_public`, где только активные AED, и [`toRecord`](../backend/supabase/functions/_shared/supabase_repository.ts#L136-L149) ставит `active: true`. Неактивный AED просто не находится, и [walking.ts](../backend/supabase/functions/_shared/handlers/walking.ts#L29-L30) отвечает `404 aed_not_found`. С фикстурами (`fx-inactive`) по-прежнему 200 и `warnings: ["inactive"]`, это закреплено в Postman LIVE. Новый ENDPOINTS.md: «404 for missing records». Нужно решить: привести фикстуры к 404 (и поправить LIVE-тест) или записать в ENDPOINTS.md, что неактивный AED — это «missing record».
+> **Перепроверка 1 (`fd9d1bc`): частично.** С базой ответ уже 404: функции читают `aed_public`, где только активные AED, и [`toRecord`](../backend/supabase/functions/_shared/supabase_repository.ts#L136-L149) ставит `active: true`. Неактивный AED просто не находится, и [walking.ts](../backend/supabase/functions/_shared/handlers/walking.ts#L29-L30) отвечает `404 aed_not_found`. С фикстурами (`fx-inactive`) по-прежнему 200 и `warnings: ["inactive"]`, это закреплено в Postman LIVE. Новый ENDPOINTS.md: «404 for missing records». Нужно решить: привести фикстуры к 404 (и поправить LIVE-тест) или записать в ENDPOINTS.md, что неактивный AED — это «missing record».
 
 - **Что.** [walking.ts](../backend/supabase/functions/_shared/handlers/walking.ts#L29-L30) возвращает 404 только когда AED не найден. Для снятого с учёта AED маршрут строится, ответ 200, `eligible_for_automatic_selection=false`, `warnings=["inactive"]` ([eligibility.ts](../backend/supabase/functions/_shared/eligibility.ts#L19-L23)). [ENDPOINTS.md](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L65) явно разрешает ручной выбор закрытых и неопределённых AED, но про неактивные молчит. [PLAN §6](../PLAN.md#L216) исключает неактивные только из автоматического выбора.
 - **Воспроизвести.** Postman: `LIVE · … / POST /routes/walking / Маршрут к fx-inactive → inactive`. Либо в тестовом окружении `makeDeps()` из [helpers.ts](../backend/tests/helpers.ts): `POST` с `aed_id: "fx-inactive"` → `200`, `warnings: ["inactive"]`.
@@ -191,30 +249,32 @@
 
 **нужно решение** · Ярік (SQL) + Вітя (фикстуры)
 
-> **Перепроверка (`fd9d1bc`): нужно решение, коды SQL поменялись.** Новая `aed_availability()` (миграция `20261017150000_simplify_app_schema.sql`) отдаёт `always_open`, `listed_hours`, `holiday_hours`, `outside_hours`, `closes_within_window`, `hours_unknown` и `next_day_<код>`. Оценщик базы в [`supabase_repository.ts`](../backend/supabase/functions/_shared/supabase_repository.ts#L131) при пустом ответе подставляет `no_hours`. Фикстуры не менялись: `no_schedule`, `day_unknown`, `day_closed`, `outside_hours`, `weekly_hours`, `always_open`. Совпадают только `always_open` и `outside_hours`. Новые коды к тому же общие: явно закрытый день, неизвестный день и исключение по дате — все `listed_hours`; «не проверено», «не известно» и «текст изменился» — все `hours_unknown`. Коды уходят клиенту ([`reasons`](../backend/supabase/functions/_shared/eligibility.ts#L56)), а ENDPOINTS.md их по-прежнему не перечисляет. `reason_hint` в [availability_cases.json](../fixtures/availability_cases.json) обновлён под новые коды SQL. Ссылки на строки миграции ниже относятся к начальной схеме (файл не менялся, но функции из него теперь в `defi_legacy`).
+> **Перепроверка 1 (`fd9d1bc`): нужно решение, коды SQL поменялись.** Новая `aed_availability()` (миграция `20261017150000_simplify_app_schema.sql`) отдаёт `always_open`, `listed_hours`, `holiday_hours`, `outside_hours`, `closes_within_window`, `hours_unknown` и `next_day_<код>`. Оценщик базы в [`supabase_repository.ts`](../backend/supabase/functions/_shared/supabase_repository.ts#L131) при пустом ответе подставляет `no_hours`. Фикстуры не менялись: `no_schedule`, `day_unknown`, `day_closed`, `outside_hours`, `weekly_hours`, `always_open`. Совпадают только `always_open` и `outside_hours`. Новые коды к тому же общие: явно закрытый день, неизвестный день и исключение по дате — все `listed_hours`; «не проверено», «не известно» и «текст изменился» — все `hours_unknown`. Коды уходят клиенту ([`reasons`](../backend/supabase/functions/_shared/eligibility.ts#L56)), а ENDPOINTS.md их по-прежнему не перечисляет. Ссылки на строки миграции ниже относятся к начальной схеме (файл не менялся, но функции из него теперь в `defi_legacy`).
 
 - **Что.**
   - Явно закрытый день: SQL отдаёт `weekly_hours` ([строка 737](../backend/supabase/migrations/20261017120000_initial_schema.sql#L737), возвращается через [`ARRAY[d.reason]`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L793-L796)), фикстуры отдают `day_closed` ([fixtures.ts](../backend/supabase/functions/_shared/fixtures.ts#L68)).
   - Нет расписания: SQL — `no_hours` ([строка 773](../backend/supabase/migrations/20261017120000_initial_schema.sql#L773)) или `hours_unknown` ([784](../backend/supabase/migrations/20261017120000_initial_schema.sql#L784)), фикстуры — `no_schedule` ([fixtures.ts](../backend/supabase/functions/_shared/fixtures.ts#L61)).
   - Совпадают: `day_unknown`, `outside_hours`, `weekly_hours` для открытого дня, `always_open`.
 - **Воспроизвести.** Фикстуры (из `backend/`, Node 22.18+): вызвать `createFixtureEvaluator([...]).evaluate(...)` для AED с `weekly: {"1": {state: "closed", intervals: []}}` в понедельник → `reasons: ["day_closed"]`. SQL: читать код (я его не запускал).
-- **Ожидается.** [ENDPOINTS.md](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L41) говорит о `reasons`, но не перечисляет коды. Нужен закрытый список кодов в ENDPOINTS.md, и SQL с фикстурами должны выдавать одни и те же. Клиенты локализуют стабильные коды ([ENDPOINTS.md](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L170)). Сейчас `reason_hint` в [availability_cases.json](../fixtures/availability_cases.json) следует SQL.
+- **Ожидается.** [ENDPOINTS.md](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L41) говорит о `reasons`, но не перечисляет коды. Нужен закрытый список кодов в ENDPOINTS.md, и SQL с фикстурами должны выдавать одни и те же. Клиенты локализуют стабильные коды ([ENDPOINTS.md](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L170)). С главным правилом нужен и отдельный код «закрыт, потому что нет данных», чтобы интерфейс мог это подписать (п. 20).
 
 ## 11. Edge Functions не подключены к `is_inside_warsaw`: Ząbki и Łomianki проходят как Варшава
 
 **bug (известная заглушка)** · Вітя (подключение), Ярік (граница в `service_area`)
 
-> **Перепроверка (`fd9d1bc`): закрыт для режима базы.** [`supabase_repository.ts`](../backend/supabase/functions/_shared/supabase_repository.ts#L96-L98) вызывает RPC `is_inside_warsaw`, а `seed.sql` загружает границу города в `service_area` (из `backend/data/raw/warsaw_boundary.geojson`). На тестовой базе `fixtures/run_availability_sql.py` проверяет все 10 точек из `origins.json` через `is_inside_warsaw()`: Ząbki и Łomianki — `outside`, все 10 совпали с ожиданием. Тест `service area and dataset version come from database functions` в `backend/tests/supabase_repository.test.ts` проходит. С `DEFIWAWA_USE_FIXTURES=1` проверка по-прежнему по грубому bbox, поэтому Postman KNOWN GAPS остаётся красным только в режиме фикстур. Edge Functions с базой целиком (`supabase functions serve` без фикстур) я не запускал: Supabase CLI нет.
+> **Перепроверка 1 (`fd9d1bc`): закрыт для режима базы.** [`supabase_repository.ts`](../backend/supabase/functions/_shared/supabase_repository.ts#L96-L98) вызывает RPC `is_inside_warsaw`, а `seed.sql` загружает границу города в `service_area` (из `backend/data/raw/warsaw_boundary.geojson`). На тестовой базе `is_inside_warsaw()` проверен на 10 точках: Ząbki, Łomianki, Pruszków, Piaseczno и перепутанные широта с долготой — `outside`, точки в городе (в том числе аэропорт Шопена и русло Вислы) — `inside`, все совпали с ожиданием. Тест `service area and dataset version come from database functions` в `backend/tests/supabase_repository.test.ts` проходит. С `DEFIWAWA_USE_FIXTURES=1` проверка по-прежнему по грубому bbox, поэтому Postman KNOWN GAPS остаётся красным только в режиме фикстур. Edge Functions с базой целиком (`supabase functions serve` без фикстур) я не запускал: Supabase CLI нет.
 
 - **Что.** Единственная реализация репозитория — фикстурная: [`isInsideWarsaw`](../backend/supabase/functions/_shared/fixtures.ts#L30-L34) сравнивает с грубым bbox ([строки 23–24](../backend/supabase/functions/_shared/fixtures.ts#L23-L24): долгота 20.85–21.28, широта 52.09–52.37). [deps.ts](https://github.com/gitlassian/warsaw42/blob/4714526/backend/supabase/functions/_shared/deps.ts#L21-L25) без `DEFIWAWA_USE_FIXTURES=1` вообще не стартует. Настоящая проверка [`is_inside_warsaw`](../backend/supabase/migrations/20261017120000_initial_schema.sql#L648-L654) в БД есть, но не вызывается. В репозитории не загружена и реальная граница: единственный `INSERT INTO service_area` лежит в [schema_smoke.sql](https://github.com/gitlassian/warsaw42/blob/4714526/backend/supabase/tests/schema_smoke.sql#L40).
-- **Воспроизвести.** Postman: `KNOWN GAPS / Ząbki: вне Варшавы, но внутри bbox фикстур → должно быть 422`. Либо `POST /routes/walking` или `/aeds/find` с origin Ząbki `{52.2927, 21.1053}` или Łomianki `{52.3337, 20.8866}` (координаты из [origins.json](../fixtures/origins.json), ±50 м) → `200` вместо `422 outside_service_area` ([validation.ts](../backend/supabase/functions/_shared/validation.ts#L52-L56)). Pruszków и Piaseczno отсекаются.
+- **Воспроизвести.** Postman: `KNOWN GAPS / Ząbki: вне Варшавы, но внутри bbox фикстур → должно быть 422`. Либо `POST /routes/walking` или `/aeds/find` с origin Ząbki `{52.2927, 21.1053}` или Łomianki `{52.3337, 20.8866}` (±50 м) → `200` вместо `422 outside_service_area` ([validation.ts](../backend/supabase/functions/_shared/validation.ts#L52-L56)). Pruszków и Piaseczno отсекаются.
 - **Ожидается.** [PLAN §1](../PLAN.md#L12) и [приёмка](../PLAN.md#L371): origin вне административной границы города получает отказ. Нужно подключить `is_inside_warsaw` (через RPC) и загрузить границу. До тех пор не считать Postman-тест «outside» пройденным.
 
 ## 12. Кто отвечает за OTP: Максім или Вітя
 
-**нужно решение** · вся команда (подтвердить)
+**закрыт (неактуален)**
 
-> **Перепроверка (`fd9d1bc`): закрыт.** Новый ENDPOINTS.md (раздел «Reports»): SMS-коды отправляет и проверяет сам Supabase Phone Auth, фронтенд и Twilio — у Максіма; своих OTP-эндпоинтов и одноразовых токенов нет. `POST /reports` — у Віті.
+> **Перепроверка 2 (`6774a26`): закрыт, вопрос отпал.** Отчёты стали анонимными: телефон и SMS-код больше не нужны (`05a0970`, ENDPOINTS.md: «Reports need no login or phone verification»). От спама защищают лимиты в базе (5 отчётов с одного IP, 20 на один AED в час) и флаги подозрительных отчётов.
+
+> **Перепроверка 1 (`fd9d1bc`): закрыт.** Новый ENDPOINTS.md (раздел «Reports»): SMS-коды отправляет и проверяет сам Supabase Phone Auth, фронтенд и Twilio — у Максіма; своих OTP-эндпоинтов и одноразовых токенов нет. `POST /reports` — у Віті.
 
 - **Что.** В репозитории всё согласовано: OTP и Twilio у **Максіма** ([ENDPOINTS.md](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L20-L21) — строки таблицы; [строка 27](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L27); три эндпоинта `reports/otp/*` в [строках 77–79](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L77-L79)). Расхождение — с распределением задач команды вне репозитория (по нему OTP у **Віті**). Самого распределения в репозитории нет, поэтому проверить его я не мог.
 - **Воспроизвести.** Сверить ENDPOINTS.md с актуальным распределением.
@@ -224,7 +284,7 @@
 
 **bug (документы)** · автор ENDPOINTS.md / DESIGN.md
 
-> **Перепроверка (`fd9d1bc`): частично исправлен.** В новом ENDPOINTS.md ссылка уже на `PLAN.md`. `DESIGN_RESEARCH.md` по-прежнему нет, а [DESIGN.md:5](../DESIGN.md#L5) на него ссылается. id 2487 теперь единственный AED без фото: в `seed.sql` у него `photo_path = NULL` (фото у 709 из 710). Колонка допускает NULL, так что база это выражает; как показывать карточку без фото — вопрос к фронтенду.
+> **Перепроверка 1 (`fd9d1bc`): частично исправлен.** В новом ENDPOINTS.md ссылка уже на `PLAN.md`. `DESIGN_RESEARCH.md` по-прежнему нет, а [DESIGN.md:5](../DESIGN.md#L5) на него ссылается. id 2487 теперь единственный AED без фото: в `seed.sql` у него `photo_path = NULL` (фото у 709 из 710). Колонка допускает NULL, так что база это выражает; как показывать карточку без фото — вопрос к фронтенду.
 
 - **Ссылки на `plan.md`.** В [ENDPOINTS.md:3](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L3) и [ENDPOINTS.md:147](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L147) стоит `plan.md`, а файл называется `PLAN.md`. На macOS работает (`core.ignorecase=true`), на Linux и в GitHub-рендере ссылка битая.
 - **Ссылка на несуществующий файл.** [DESIGN.md:5](../DESIGN.md#L5) ссылается на `DESIGN_RESEARCH.md`; такого файла в репозитории нет (`git ls-files | grep -i design`).
@@ -235,7 +295,7 @@
 
 **нужно решение** · Максім
 
-> **Перепроверка (`fd9d1bc`): нужно решение.** PLAN.md теперь начинается с пометки «Historical full-scope plan», `frontend/AGENTS.md` удалён. Но [DESIGN.md:5](../DESIGN.md#L5) по-прежнему «Applies to Flutter web, Android, and iOS», а `frontend/web` — React + Vite, и в main добавлено полноценное веб-приложение (коммит `057cf15`). Документа, где решено, на чём делается веб и где живёт логика доступности, всё ещё нет.
+> **Перепроверка 1 (`fd9d1bc`): нужно решение.** PLAN.md теперь начинается с пометки «Historical full-scope plan», `frontend/AGENTS.md` удалён. Но [DESIGN.md:5](../DESIGN.md#L5) по-прежнему «Applies to Flutter web, Android, and iOS», а `frontend/web` — React + Vite, и в main добавлено полноценное веб-приложение (коммит `057cf15`). Документа, где решено, на чём делается веб и где живёт логика доступности, всё ещё нет.
 
 - **Что.**
   - [PLAN §2](../PLAN.md#L38): «One Flutter codebase, built separately for web, Android, and iOS»; то же в [DESIGN.md:5](../DESIGN.md#L5) и [frontend/AGENTS.md:4](https://github.com/gitlassian/warsaw42/blob/4714526/frontend/AGENTS.md#L4).
@@ -247,9 +307,11 @@
 
 ## 15. В ENDPOINTS.md не зафиксированы код ошибки неверного SMS-кода и тело PATCH отзыва override
 
-**нужно решение** · Максім (OTP), Вітя (override)
+**закрыт (неактуален)**
 
-> **Перепроверка (`fd9d1bc`): закрыт (неактуален).** Своих OTP-эндпоинтов нет: ошибки неверного или истёкшего кода отдаёт Supabase Auth. Admin API нет вовсе: отчёты и AED правят в Supabase dashboard и ставят `manually_edited = true`. Соответствующие запросы из Postman удалены.
+> **Перепроверка 2 (`6774a26`): закрыт.** SMS-кодов в продукте больше нет вовсе: отчёты анонимные (`05a0970`, п. 12).
+
+> **Перепроверка 1 (`fd9d1bc`): закрыт (неактуален).** Своих OTP-эндпоинтов нет: ошибки неверного или истёкшего кода отдаёт Supabase Auth. Admin API нет вовсе: отчёты и AED правят в Supabase dashboard и ставят `manually_edited = true`. Соответствующие запросы из Postman удалены.
 
 - **Что.**
   - **Неверный код.** Для `POST /reports/otp/verify` ([строка 79](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L79)) не указан ни код ошибки, ни HTTP-статус для: неверного кода, истёкшего кода, исчерпанных попыток (лимит «пять попыток» только упомянут в [строке 84](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L84)). Общие правила ([строки 169–170](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L169-L170)) допускают и `422`, и `401`, и `429`. Для отчётов определён только `409 authorization_used` ([строка 88](https://github.com/gitlassian/warsaw42/blob/4714526/ENDPOINTS.md#L88)).
@@ -274,9 +336,11 @@
 
 **bug (нет реализации)** · Вітя (workflow) → Ярік (импорт)
 
+> **Перепроверка 2 (`6774a26`): bug, без изменений. По главному правилу — самый опасный пункт.** Скрипта импорта по-прежнему нет. Если город сократит часы AED или уберёт его, база этого не узнает, и приложение покажет AED открытым по старым часам. Это ошибка в сторону «открыт», по которой человек может прийти к запертой двери. Импорт должен сбрасывать `hours_verified` при смене текста часов, чтобы такие AED до новой проверки уходили в «закрыт, нет данных», а не оставались открытыми по старым часам.
+
 - **Что.** Workflow `refresh-aed` обновляет `backend/data/{raw,out,cache}` и коммитит их в git. В базу данные попадают только через `seed.sql`, а он [отказывается работать](../backend/supabase/seed.sql#L4-L8) с непустой `aeds` (`seed expects an empty aeds table`). [backend/supabase/README.md](../backend/supabase/README.md) описывает импорт: «upsert by `source_id`, skip `manually_edited` rows, and write hours and `hours_verified` together. Changed text must be re-parsed before its schedule is trusted». Такого скрипта в репозитории нет.
-- **Последствия.** После первого seed база не обновляется вовсе. Защита от устаревшего расписания тоже держится только на этом будущем импорте: хеша текста (`source_text_hash`) в новой схеме нет, и `aed_availability()` смену текста сама не замечает. Проверено на тестовой базе: AED с изменённым `hours_text` и оставленным `hours_verified = true` даёт `open` (см. [fixtures/README.md](../fixtures/README.md), кейс `source-text-changed`).
-- **Ожидается.** Скрипт импорта по контракту из README (upsert по `source_id`, пропуск `manually_edited`, сброс `hours_verified` при смене текста) и шаг workflow, который его запускает. Тогда кейс `source-text-changed` можно будет проверить на самом импорте.
+- **Последствия.** После первого seed база не обновляется вовсе. Защита от устаревшего расписания тоже держится только на этом будущем импорте: хеша текста (`source_text_hash`) в новой схеме нет, и `aed_availability()` смену текста сама не замечает. Проверено на тестовой базе: AED с изменённым `hours_text` и оставленным `hours_verified = true` в понедельник в 10:00 даёт `open`.
+- **Ожидается.** Скрипт импорта по контракту из README (upsert по `source_id`, пропуск `manually_edited`, сброс `hours_verified` при смене текста) и шаг workflow, который его запускает. После этого проверить на самом импорте: сменился текст часов — AED больше не показывается открытым по старым часам.
 
 ## 18. В контракте AED нет `photo_path` и `district`
 
@@ -287,7 +351,9 @@
 
 ## 19. Веб-фронтенд работает на моке старого контракта
 
-**нужно решение** · Максім
+**закрыт** · Максім
+
+> **Перепроверка 2 (`6774a26`): закрыт.** Веб читает `aeds` и `app_data.status` прямо из Supabase, когда заданы его переменные окружения ([`aedApi.ts`](../frontend/web/src/features/aeds/services/aedApi.ts), коммит `4060f34`). Мок остался только как запасной режим для запуска без Supabase. `REFRESH_INTERVAL_MS` удалён.
 
 - **Что.** [`aedApi.ts`](../frontend/web/src/features/aeds/services/aedApi.ts#L4-L5) имитирует `GET /api/v1/aeds` и `/data/status` по разделам старого ENDPOINTS.md (§1, §7) поверх `public/mock/aeds.json`. В новом контракте:
   - `/data/status` нет, есть только `app_data.status` в базе (публичное чтение);
@@ -297,16 +363,51 @@
 - Это не баг кода — мок честно помечен как shortcut, — но без решения интеграция сломается.
 - **Ожидается.** Решить, откуда фронтенд берёт статус данных (эндпоинт или прямое чтение `app_data`), и перевести модель на формат ENDPOINTS.md.
 
+## 20. «Неизвестно» видно человеку, а по правилу должно быть «закрыт»
+
+**нужно сделать** (решение принято) · Максім (интерфейс, DESIGN.md) → Вітя (`/aeds/find`), Ярік (если менять в API)
+
+- **Что.** [Главное правило](#главное-правило-нет-данных--значит-закрыт) пока применено только в seed и только к дням, которые текст не называет. Для AED, о часах которых данных нет совсем, API отвечает `unknown`, и человек видит это как отдельный статус:
+  - [`aedStatus.ts`](../frontend/web/src/features/aeds/lib/aedStatus.ts#L39-L40): серый статус «Godziny nieznane»;
+  - [`aedAvailability.ts`](../frontend/web/src/features/aeds/lib/aedAvailability.ts#L5-L11): отдельная категория `unknown` в фильтрах карты;
+  - [`find.ts`](../backend/supabase/functions/_shared/handlers/find.ts#L136): `/aeds/find` такие AED не выбирает (это правильно), но отдаёт их списком `unknown_access_alternatives`;
+  - [DESIGN.md](../DESIGN.md#L116): в таблице подписей «Unknown hours → Godziny nieznane», а [строка 283](../DESIGN.md#L283) требует «Unknown hours … remain unknown».
+- **Масштаб** (тестовая база, main `6774a26`). Из 797 публичных AED 224 не бывают открыты никогда: API всегда отвечает `unknown`.
+  - 97 — из OSM, без часов;
+  - 58 — из данных города, расписание не проверено (п. 4, 5, 6);
+  - 46 — «24/7» из данных города, которые мы не проверили (п. 8);
+  - 23 — из данных города, часов в тексте нет.
+
+  Кроме того, в праздник (11.11) AED с часами «пн–пт» получают `unknown` (`holiday_hours`).
+- **Воспроизвести.** На тестовой базе:
+  ```sh
+  psql "$DB_URL" -c "SELECT v.status, count(*) FROM aeds a CROSS JOIN LATERAL aed_availability(a.id, '2026-10-20T14:00:00+02:00') v WHERE a.public_access = 'public' GROUP BY 1;"
+  # closed 4, open 569, unknown 224
+  ```
+  В вебе такой AED (например, id 744 «W godzinach pracy pływalni») по коду `aedStatus.ts` получает статус «Godziny nieznane».
+- **Ожидается.** Если данных нет, человек видит «закрыт». Предлагаю:
+  - подпись «Zamknięty · brak danych» в карточке и «Zamknięty» на карте — по правилу и без выдумки;
+  - убрать отдельный фильтр «unknown» или слить его с закрытыми;
+  - в `/aeds/find` такие AED не предлагать: убрать `unknown_access_alternatives` или отдавать его только по явному запросу;
+  - в базе и API `unknown` оставить: по нему видно, какие AED нужно проверить. Переводить в «закрыт» там, где показываем человеку, и завести код причины «нет данных» (п. 10);
+  - обновить подписи и строку 283 в DESIGN.md.
+
 ---
 
 ## Как проверялось
 
 **Первая проверка (`4714526`).** Каждый пункт сверялся с кодом на ветке `Pofa`: pipeline запускался на `aed.json`, Edge Functions вызывались через обработчики с фейковым провайдером маршрутов (`backend/tests/helpers.ts`), CI эмулировался на чистой копии репозитория. SQL читался, но не выполнялся.
 
-**Перепроверка (`fd9d1bc`).**
+**Перепроверка 1 (`fd9d1bc`).**
 
 - `npm test` (37 тестов) и `python3 -m pytest` (22 теста) в `backend/` проходят.
-- База: PostGIS 16 в Docker, заглушки Supabase, все три миграции по порядку, `schema_smoke.sql` (`all checks passed`), `seed.sql` — `python3 fixtures/run_availability_sql.py --setup`. На ней прогнаны 29 кейсов доступности (все проходят) и 10 точек старта через `is_inside_warsaw()` (все совпали), а также запросы к `seed.sql` из пунктов 2, 4, 5, 7, 8, 13.
+- База: PostGIS 16 в Docker, заглушки Supabase, все три миграции по порядку, `schema_smoke.sql` (`all checks passed`), `seed.sql`. Скрипт сборки базы лежал в папке `fixtures/`, которую потом удалили. На базе прогнаны 29 кейсов доступности (все прошли) и 10 точек старта через `is_inside_warsaw()` (все совпали), а также запросы к `seed.sql` из пунктов 2, 4, 5, 7, 8, 13.
 - Команды воспроизведения из пунктов 1–8 запущены заново.
 - Postman: LIVE прогнан через обработчики с фикстурами в трёх временных точках, SPEC — против макета по ENDPOINTS.md (подробно в [postman/README.md](../postman/README.md)).
 - Пункты 12 и 13 (id 2487) по-прежнему нельзя подтвердить из репозитория полностью: распределения задач и ключа API города здесь нет.
+
+**Перепроверка 2 (`6774a26`).**
+
+- `npm test` (37 тестов) и `python3 -m pytest` (27 тестов) в `backend/` проходят.
+- Тестовая база та же: PostGIS 16 в Docker, миграции и `seed.sql` от `a02d8b3`. С тех пор `seed.sql` не менялся, а две новые миграции касаются только отчётов. На ней посчитаны статусы всех 897 AED и цифры пунктов 2, 4, 5, 6, 7, 8 и 20.
+- Пункты 1, 9 и 12–19 сверены по коду и по истории коммитов main.
