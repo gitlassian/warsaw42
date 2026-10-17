@@ -10,3 +10,5 @@ data/_fetch_log.json
 .env
 __pycache__/
 *.pyc
+
+endpoints_example.md
