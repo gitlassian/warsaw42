@@ -3,6 +3,7 @@ import { useParams } from 'react-router'
 import { buildPath } from '@/app/routePaths'
 import { Button, ButtonLink } from '@/design-system/components/Button'
 import { Disclosure } from '@/design-system/components/Disclosure'
+import { WIDE_LAYOUT_QUERY } from '@/design-system/components/Sheet'
 import { Notice } from '@/design-system/components/Notice'
 import { LoadingText } from '@/design-system/components/Spinner'
 import { Stack } from '@/design-system/components/Stack'
@@ -15,6 +16,7 @@ import { AedUsageGuide } from '@/features/aeds/presentation/components/AedUsageG
 import { AedStatusView } from '@/features/aeds/presentation/components/AedStatusView'
 import { aedsStore } from '@/features/aeds/store'
 import { distanceMeters, type LngLat } from '@/shared/geo/geo'
+import { useMediaQuery } from '@/shared/hooks/useMediaQuery'
 import { formatDateTime, formatDistance } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
 import { discoveryStore, requestEtas, routeTo, startPicking } from '../../store'
@@ -48,6 +50,8 @@ export function AedDetailsPanel() {
   const routing = useStore(discoveryStore, (s) => s.routing)
   const search = useStore(discoveryStore, (s) => s.search)
   const issue = useStore(discoveryStore, (s) => s.issue)
+  // On a phone the photo waits in the source details to keep the card short; the guide shows it on the way.
+  const wide = useMediaQuery(WIDE_LAYOUT_QUERY)
 
   useEffect(() => {
     if (origin) requestEtas([id])
@@ -95,7 +99,7 @@ export function AedDetailsPanel() {
         </Text>
         <Text>{aed.entrance ?? 'Brak informacji o wejściu.'}</Text>
         <Text tone="secondary">{placementLabel(aed)}</Text>
-        <AedPhoto aed={aed} />
+        {wide && <AedPhoto aed={aed} />}
       </Stack>
 
       <Stack gap={8}>
@@ -142,6 +146,7 @@ export function AedDetailsPanel() {
         </Disclosure>
         <Disclosure title="Informacje ze źródła">
           <Text>{aed.sourceHours ?? 'Źródło nie podaje godzin.'}</Text>
+          {!wide && <AedPhoto aed={aed} />}
         </Disclosure>
         <Disclosure title="Urządzenie i dane">
           <Text>{DEVICE_CONDITION[aed.operationalStatus]}</Text>
