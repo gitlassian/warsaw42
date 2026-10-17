@@ -30,7 +30,7 @@ Still mocks, marked `shortcut:` in code (callers and stores stay the same when t
 
 | Service | Mocks | Why |
 | --- | --- | --- |
-| `features/coverage/services/coverageApi.ts` | `GET /coverage` | `app_data` has no `coverage` document yet; 250 m grid over the real AEDs, computed in the browser |
+| `features/coverage/services/coverageApi.ts` | `GET /coverage` | circles of the threshold radius around the eligible AEDs, merged into white covered areas and red gaps in the browser (`polygon-clipping`) |
 
 ## Structure
 

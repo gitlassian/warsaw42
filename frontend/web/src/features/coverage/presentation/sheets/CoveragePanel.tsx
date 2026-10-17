@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { buildPath } from '@/app/routePaths'
 import { Button, ButtonLink } from '@/design-system/components/Button'
 import { ChoiceGroup } from '@/design-system/components/ChoiceGroup'
@@ -11,7 +11,8 @@ import { TextField } from '@/design-system/components/TextField'
 import { aedsStore } from '@/features/aeds/store'
 import { formatDateTime, formatDistance } from '@/shared/lib/format'
 import { useStore } from '@/shared/lib/store'
-import { COVERAGE_SCENARIOS, COVERAGE_THRESHOLDS, type CoverageScenario } from '../../models/coverage'
+import { mapFiltersStore } from '@/features/aeds/filterStore'
+import { COVERAGE_RADIUS, COVERAGE_SCENARIOS, type CoverageScenario } from '../../models/coverage'
 import { coverageStore, loadCoverage, setCoverageQuery } from '../../store'
 import styles from './CoveragePanel.module.css'
 
@@ -29,17 +30,30 @@ export function CoveragePanel() {
   const layer = useStore(coverageStore, (s) => s.layer)
   const selected = useStore(coverageStore, (s) => s.selected)
   const dataStatus = useStore(aedsStore, (s) => s.dataStatus)
+  const showGrey = useStore(mapFiltersStore, (s) => s.available && s.unknown)
+  // The slider moves freely; the layer is recalculated once it rests.
+  const [radius, setRadius] = useState(thresholdM)
+  useEffect(() => {
+    if (radius === thresholdM) return
+    const timer = setTimeout(() => setCoverageQuery({ thresholdM: radius }), 250)
+    return () => clearTimeout(timer)
+  }, [radius, thresholdM])
   const nearestAed = useStore(aedsStore, (s) => (selected?.nearestAedId ? s.byId.get(selected.nearestAedId) : undefined))
 
+  // In the time-based scenario the layer follows the time picked on the map (live: the clock).
+  const now = useStore(aedsStore, (s) => s.now)
   useEffect(() => {
-    if (coverageStore.get().status === 'idle') loadCoverage()
-  }, [])
+    if (scenario === 'available_at' && coverageStore.get().at.getTime() !== now.getTime()) setCoverageQuery({ at: now })
+    else if (coverageStore.get().status === 'idle') loadCoverage()
+  }, [now, scenario])
 
   return (
     <Stack gap={24}>
       <Stack gap={8}>
         <PanelHeader title="Zasięg AED" />
-        <Text tone="secondary">Luki w dostępnych danych. Próg: {formatDistance(thresholdM)}.</Text>
+        <Text tone="secondary">
+          Białe koła: zasięg dostępnych AED ({formatDistance(thresholdM)}). Czerwone obszary: tam nie ma dostępnego AED w pobliżu.
+        </Text>
       </Stack>
 
       <ChoiceGroup
@@ -56,13 +70,26 @@ export function CoveragePanel() {
           onChange={(value) => value && setCoverageQuery({ at: new Date(value) })}
         />
       )}
-      <ChoiceGroup
-        legend="Odległość od AED"
-        layout="inline"
-        options={COVERAGE_THRESHOLDS}
-        value={thresholdM}
-        onChange={(value) => setCoverageQuery({ thresholdM: value })}
-      />
+      <div className={styles.radius}>
+        <label htmlFor="coverage-radius" className={styles.radiusLabel}>
+          Odległość od AED: <strong>{formatDistance(radius)}</strong>
+        </label>
+        <input
+          id="coverage-radius"
+          type="range"
+          className={styles.slider}
+          min={COVERAGE_RADIUS.min}
+          max={COVERAGE_RADIUS.max}
+          step={COVERAGE_RADIUS.step}
+          value={radius}
+          aria-valuetext={formatDistance(radius)}
+          onChange={(e) => setRadius(Number(e.target.value))}
+        />
+        <div className={styles.radiusScale} aria-hidden="true">
+          <span>{formatDistance(COVERAGE_RADIUS.min)}</span>
+          <span>{formatDistance(COVERAGE_RADIUS.max)}</span>
+        </div>
+      </div>
 
       {status === 'loading' && <LoadingText>Obliczamy zasięg…</LoadingText>}
       {status === 'error' && (
@@ -81,10 +108,14 @@ export function CoveragePanel() {
             </Text>
             <ul className={styles.legend}>
               <li>
+                <span className={`${styles.swatch} ${styles.covered}`} />
+                W zasięgu {formatDistance(layer.thresholdM)} od dostępnego AED
+              </li>
+              <li>
                 <span className={`${styles.swatch} ${styles.gap}`} />
                 Dalej niż {formatDistance(layer.thresholdM)} od dostępnego AED
               </li>
-              {layer.scenario === 'available_at' && (
+              {layer.scenario === 'available_at' && showGrey && (
                 <li>
                   <span className={`${styles.swatch} ${styles.uncertain}`} />
                   Blisko są tylko AED o nieznanych godzinach
@@ -128,7 +159,7 @@ export function CoveragePanel() {
       )}
 
       <Text variant="meta" tone="muted">
-        Odległość w linii prostej od środka komórki siatki {layer?.gridSizeM ?? 250} m, bez uwzględnienia przejść i barier.
+        Koła mają promień progu w linii prostej, bez uwzględnienia przejść i barier.
         Obszary nie dowodzą braku urządzeń: dane mogą być niepełne.
       </Text>
     </Stack>

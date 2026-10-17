@@ -7,13 +7,14 @@ import { passesFilters } from '@/features/aeds/lib/aedAvailability'
 import { aedStatus } from '@/features/aeds/lib/aedStatus'
 import { aedsStore } from '@/features/aeds/store'
 import type { CoverageCell } from '@/features/coverage/models/coverage'
+import { nearestSite, withUncertain } from '@/features/coverage/lib/coverageGeometry'
 import { coverageStore, selectCoverageCell } from '@/features/coverage/store'
 import { discoveryStore, pickOrigin, requestEtas } from '@/features/discovery/store'
 import { WARSAW_CENTER, WARSAW_MAX_BOUNDS, circlePolygon, type LngLat } from '@/shared/geo/geo'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
-import { mapFiltersStore } from '../../store'
-import { AEDS_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
+import { mapFiltersStore } from '@/features/aeds/filterStore'
+import { AEDS_LAYER, COVERAGE_HALO_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
 import { MapMarker } from './MapMarker'
 import { AedMarker, ClusterMarker, OriginMarker } from './MapMarkers'
 import styles from './MapView.module.css'
@@ -158,23 +159,30 @@ export function MapView({ onLoadError }: MapViewProps) {
     setSourceData(map, SOURCE.accuracy, accuracy ?? EMPTY_COLLECTION)
   }, [map, origin])
 
+  // Grey (reached only by unknown-hours AEDs) appears only when both "open" and "unknown" are selected in the filters.
+  const showGrey = showAvailable && showUnknown
   useEffect(() => {
-    if (map) setSourceData(map, SOURCE.coverage, showCoverage && coverageLayer ? coverageLayer.data : EMPTY_COLLECTION)
-  }, [map, showCoverage, coverageLayer])
+    if (!map) return
+    const data =
+      showCoverage && coverageLayer
+        ? { ...coverageLayer.data, features: withUncertain(coverageLayer.data.features, showGrey) }
+        : EMPTY_COLLECTION
+    setSourceData(map, SOURCE.coverage, data)
+  }, [map, showCoverage, coverageLayer, showGrey])
 
   useEffect(() => {
     if (!map) return
     map.getCanvas().style.cursor = picking ? 'crosshair' : ''
     const onClick = (e: MapMouseEvent) => {
       if (discoveryStore.get().picking) return pickOrigin(e.lngLat)
-      const [cell] = map.queryRenderedFeatures(e.point, { layers: [COVERAGE_LAYER] })
-      if (!cell) return selectCoverageCell(null)
-      // Vector tiles drop null properties, so restore them explicitly.
-      const p = cell.properties ?? {}
+      const [area] = map.queryRenderedFeatures(e.point, { layers: [COVERAGE_LAYER, COVERAGE_HALO_LAYER] })
+      const layer = coverageStore.get().layer
+      if (!area || !layer) return selectCoverageCell(null)
+      const nearest = nearestSite(e.lngLat.lng, e.lngLat.lat, layer.eligible)
       selectCoverageCell({
-        kind: p.kind,
-        nearestDistanceM: p.nearestDistanceM ?? null,
-        nearestAedId: p.nearestAedId ?? null,
+        kind: area.properties?.kind,
+        nearestDistanceM: nearest ? Math.round(nearest.distanceM) : null,
+        nearestAedId: nearest?.site.id ?? null,
       } satisfies CoverageCell)
     }
     map.on('click', onClick)

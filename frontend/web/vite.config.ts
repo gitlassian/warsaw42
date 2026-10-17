@@ -8,4 +8,7 @@ export default defineConfig({
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
+  // Hostnames besides localhost that may reach the dev and preview servers (e.g. a tunnel).
+  server: { allowedHosts: ['test.t.froti.dev'] },
+  preview: { allowedHosts: ['test.t.froti.dev'] },
 })

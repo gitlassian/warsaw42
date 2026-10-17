@@ -15,7 +15,7 @@ type CoverageState = {
 }
 
 export const coverageStore = createStore<CoverageState>({
-  scenario: 'all_public',
+  scenario: 'available_at',
   thresholdM: 500,
   at: new Date(),
   status: 'idle',

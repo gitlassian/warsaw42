@@ -16,19 +16,20 @@ export const SOURCE = {
 } as const
 
 export const COVERAGE_LAYER = 'coverage-fill'
+export const COVERAGE_HALO_LAYER = 'coverage-halo'
 export const AEDS_LAYER = 'aeds-hit'
 
 /** Map colors come from the design tokens (DESIGN.md §2). */
 const token = (name: string) => getComputedStyle(document.documentElement).getPropertyValue(name).trim()
 
 /** Translucent fill with diagonal hatching, so gaps never rely on color alone (DESIGN.md §11). */
-function hatchPattern(hex: string, size = 12) {
+function hatchPattern(hex: string, size = 12, stripe = 170, base = 45) {
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16))
   const data = new Uint8Array(size * size * 4)
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const i = (y * size + x) * 4
-      data.set([r, g, b, (x + y) % 6 < 2 ? 170 : 45], i)
+      data.set([r, g, b, (x + y) % 6 < 2 ? stripe : base], i)
     }
   }
   return { width: size, height: size, data }
@@ -48,7 +49,8 @@ export function addAppLayers(map: MapboxMap) {
     paint: { 'line-color': token('--color-border-control'), 'line-width': 2, 'line-dasharray': [3, 2] },
   })
 
-  map.addImage('hatch-gap', hatchPattern(token('--color-warning')))
+  // Gaps are red with a strong tint; the white halos of the covered areas are drawn above them.
+  map.addImage('hatch-gap', hatchPattern(token('--color-danger'), 12, 215, 95))
   map.addImage('hatch-uncertain', hatchPattern(token('--color-unknown')))
   map.addSource(SOURCE.coverage, { type: 'geojson', data: EMPTY_COLLECTION })
   map.addLayer({
@@ -60,6 +62,24 @@ export function addAppLayers(map: MapboxMap) {
       'fill-pattern': ['match', ['get', 'kind'], 'uncertain', 'hatch-uncertain', 'hatch-gap'],
       'fill-antialias': false,
     },
+    filter: ['!=', ['get', 'kind'], 'covered'],
+  })
+  // White circles around the AEDs that count: soft white fill and a clear outline.
+  map.addLayer({
+    id: COVERAGE_HALO_LAYER,
+    type: 'fill',
+    source: SOURCE.coverage,
+    slot: 'middle',
+    filter: ['==', ['get', 'kind'], 'covered'],
+    paint: { 'fill-color': '#ffffff', 'fill-opacity': 0.55, 'fill-outline-color': '#ffffff' },
+  })
+  map.addLayer({
+    id: `${COVERAGE_HALO_LAYER}-edge`,
+    type: 'line',
+    source: SOURCE.coverage,
+    slot: 'middle',
+    filter: ['==', ['get', 'kind'], 'covered'],
+    paint: { 'line-color': '#ffffff', 'line-width': 3, 'line-opacity': 0.95 },
   })
 
   map.addSource(SOURCE.accuracy, { type: 'geojson', data: EMPTY_COLLECTION })
