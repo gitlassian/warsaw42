@@ -116,10 +116,10 @@
                       "    pm.expect([r.duration_seconds, r.distance_m, r.estimated_arrival_at]).to.eql([null, null, null]);",
                       "  });",
                       "});",
-                      "pm.test('meta: dataset_version, буфер 120 с, атрибуция Google', () => {",
+                      "pm.test('meta: dataset_version, буфер 120 с, атрибуция Mapbox', () => {",
                       "  pm.expect(meta.dataset_version).to.be.a('string');",
                       "  pm.expect(meta.access_buffer_seconds).to.eql(120);",
-                      "  pm.expect(meta.attribution).to.include('Google');",
+                      "  pm.expect(meta.attribution).to.include('Mapbox');",
                       "});",
                       "pm.test('fx-unknown-hours не открыт при прибытии', () => {",
                       "  const r = data.find((x) => x.aed_id === 'fx-unknown-hours');",
@@ -1154,7 +1154,7 @@
               }
             ],
             "url": "{{functions_url}}/aeds-find",
-            "description": "С фикстурами ПАДАЕТ (200): грубый прямоугольник из fixtures.ts. С базой должен быть 422 outside_service_area: is_inside_warsaw(52.2927, 21.1053) = false на границе из seed.sql (проверено fixtures/run_availability_sql.py).",
+            "description": "С фикстурами ПАДАЕТ (200): грубый прямоугольник из fixtures.ts. С базой должен быть 422 outside_service_area: is_inside_warsaw(52.2927, 21.1053) = false на границе из seed.sql (проверено на тестовой базе).",
             "body": {
               "mode": "raw",
               "raw": "{\n  \"origin\": {\n    \"latitude\": 52.2927,\n    \"longitude\": 21.1053\n  }\n}",

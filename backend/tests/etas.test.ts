@@ -28,9 +28,9 @@ test("returns one entry per requested id, in request order", async () => {
   assert.equal(ok.estimated_arrival_at, "2026-10-19T08:05:00.000Z");
   assert.deepEqual(ok.availability_at_arrival, { status: "open", covers_access_buffer: true, reasons: ["weekly_hours"] });
   assert.equal(res.body.data[1].duration_seconds, null);
-  assert.equal(routes.matrixCalls[0].length, 2, "unknown ids are not sent to Google");
+  assert.equal(routes.matrixCalls[0].length, 2, "unknown ids are not sent to Mapbox");
   assert.equal(res.body.meta.dataset_version, "fixture-1");
-  assert.equal(res.body.meta.attribution, "Google Maps");
+  assert.equal(res.body.meta.attribution, "Mapbox, © OpenStreetMap contributors");
   assert.equal(res.headers.get("Cache-Control"), "no-store");
 });
 

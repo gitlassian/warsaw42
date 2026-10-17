@@ -20,7 +20,7 @@ npm test         # node --test for pure domain logic (*.test.ts)
 | Service | Source |
 | --- | --- |
 | `features/aeds/services/aedApi.ts` | table `aeds` (active rows, mapped by `lib/fromRow.ts`, photos from Storage) and `app_data` key `status` via PostgREST |
-| `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Google walking routes) |
+| `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Mapbox walking routes) |
 | `features/report/services/reportApi.ts` | insert into `reports` via PostgREST (simulated without Supabase settings) |
 
 The Edge Functions answer CORS only for origins listed in their `ALLOWED_ORIGINS` secret
@@ -30,7 +30,7 @@ Still mocks, marked `shortcut:` in code (callers and stores stay the same when t
 
 | Service | Mocks | Why |
 | --- | --- | --- |
-| `features/coverage/services/coverageApi.ts` | `GET /coverage` | `app_data` has no `coverage` document yet; 250 m grid over the real AEDs, computed in the browser |
+| `features/coverage/services/coverageApi.ts` | `GET /coverage` | circles of the threshold radius around the eligible AEDs, merged into white covered areas and red gaps in the browser (`polygon-clipping`) |
 
 ## Structure
 

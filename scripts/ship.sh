@@ -19,7 +19,7 @@ EOF
 
 is_safe() {
   case "$1" in
-    docs/*|fixtures/*|postman/*) return 0 ;;
+    docs/*|postman/*) return 0 ;;
     scripts/ship.sh|scripts/rollback.sh|scripts/lib.sh|scripts/README.md) return 0 ;;
     *) return 1 ;;
   esac
@@ -121,9 +121,6 @@ $CONFLICTS
   # ---------------------------------------------------------------- 5. checks
   check backend npm test --silent
   check backend python3 -m pytest -q tests
-  if grep -qE '^fixtures/' <<<"$CHANGED"; then
-    check . python3 fixtures/check_fixtures.py
-  fi
   while IFS= read -r f; do
     if [ -f "$f" ]; then
       check . python3 -c 'import json, sys; json.load(open(sys.argv[1]))' "$f"

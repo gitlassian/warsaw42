@@ -23,7 +23,7 @@ export function fakeRoutes(options: {
   const matrixCalls: Origin[][] = [];
   const routeCalls: Origin[] = [];
   return {
-    attribution: "Google Maps",
+    attribution: "Mapbox, © OpenStreetMap contributors",
     matrixCalls,
     routeCalls,
     walkingMatrix(origin, destinations) {
