@@ -19,8 +19,12 @@ export function aedStatus(aed: Aed, at: Date): AedStatus {
   if (aed.operationalStatus === 'confirmed_unavailable') {
     return { tone: 'danger', icon: 'error', label: 'AED niedostępny', detail: null, available: false }
   }
-  if (aed.publicAccess !== 'public') {
+  if (aed.publicAccess === 'restricted') {
     return { tone: 'warning', icon: 'warning', label: 'Dostęp niepotwierdzony', detail: null, available: false }
+  }
+  // No information means unavailable.
+  if (aed.publicAccess === 'unknown') {
+    return { tone: 'neutral', icon: 'lock', label: 'Niedostępny', detail: 'Brak informacji o dostępie', available: false }
   }
   const hours = evaluateHours(aed.schedule, at)
   switch (hours.state) {
@@ -37,7 +41,13 @@ export function aedStatus(aed: Aed, at: Date): AedStatus {
         available: false,
       }
     case 'unknown':
-      return { tone: 'neutral', icon: 'help', label: 'Godziny nieznane', detail: sourceHoursDetail(aed.sourceHours), available: false }
+      return {
+        tone: 'neutral',
+        icon: 'lock',
+        label: 'Niedostępny',
+        detail: sourceHoursDetail(aed.sourceHours) ?? 'Brak informacji o godzinach',
+        available: false,
+      }
   }
 }
 

@@ -84,12 +84,6 @@ export function CoveragePanel() {
                 <span className={`${styles.swatch} ${styles.gap}`} />
                 Dalej niż {formatDistance(layer.thresholdM)} od dostępnego AED
               </li>
-              {layer.scenario === 'available_at' && (
-                <li>
-                  <span className={`${styles.swatch} ${styles.uncertain}`} />
-                  Blisko są tylko AED o nieznanych godzinach
-                </li>
-              )}
             </ul>
             <Text variant="meta" tone="muted">
               Widoczna warstwa: {scenarioLabel(layer.scenario)}, {formatDateTime(layer.evaluatedAt)}

@@ -17,8 +17,8 @@ export const COVERAGE_THRESHOLDS = [
 ] as const
 
 export type CoverageCell = {
-  /** gap: no eligible AED within the threshold; uncertain: only AEDs with unknown hours are near. */
-  kind: 'gap' | 'uncertain'
+  /** No eligible AED within the threshold (AEDs without information are not eligible). */
+  kind: 'gap'
   nearestDistanceM: number | null
   nearestAedId: string | null
 }

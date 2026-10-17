@@ -54,7 +54,6 @@ src/
     map/                        # MapPage shell, Mapbox view, HTML markers, header/menu, camera controller
     coverage/                   # "Zasięg AED" layer: scenarios, threshold, legend, area details
     report/                     # "Zgłoś problem": draft → confirmation
-    offline/                    # web explainer for the mobile offline maps
     dataInfo/                   # data source, freshness, status legend
 ```
 

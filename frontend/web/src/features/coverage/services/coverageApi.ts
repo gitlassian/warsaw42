@@ -27,8 +27,6 @@ export async function fetchCoverage({ scenario, thresholdM, at }: Query): Promis
         ? a.schedule.kind === 'always_open'
         : evaluateHours(a.schedule, at).state === 'open',
   )
-  const unknownHours =
-    scenario === 'available_at' ? usable.filter((a) => evaluateHours(a.schedule, at).state === 'unknown') : []
 
   const lngs = WARSAW_BOUNDARY.coordinates[0].map(([lng]) => lng)
   const lats = WARSAW_BOUNDARY.coordinates[0].map(([, lat]) => lat)
@@ -53,13 +51,12 @@ export async function fetchCoverage({ scenario, thresholdM, at }: Query): Promis
       if (!isInsideWarsaw({ lng, lat })) continue
       const near = nearest(lng, lat, eligible)
       if (near.d <= thresholdM) continue
-      const covered = unknownHours.length > 0 && nearest(lng, lat, unknownHours).d <= thresholdM
       const [w, e, s, n] = [lng - dLng / 2, lng + dLng / 2, lat - dLat / 2, lat + dLat / 2]
       features.push({
         type: 'Feature',
         geometry: { type: 'Polygon', coordinates: [[[w, s], [e, s], [e, n], [w, n], [w, s]]] },
         properties: {
-          kind: covered ? 'uncertain' : 'gap',
+          kind: 'gap',
           nearestDistanceM: near.id ? Math.round(near.d) : null,
           nearestAedId: near.id,
         },

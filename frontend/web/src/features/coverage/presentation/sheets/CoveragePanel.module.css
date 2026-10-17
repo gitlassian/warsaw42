@@ -28,6 +28,3 @@
   --swatch: var(--color-warning);
 }
 
-.uncertain {
-  --swatch: var(--color-unknown);
-}

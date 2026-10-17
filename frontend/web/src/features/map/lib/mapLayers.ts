@@ -49,7 +49,6 @@ export function addAppLayers(map: MapboxMap) {
   })
 
   map.addImage('hatch-gap', hatchPattern(token('--color-warning')))
-  map.addImage('hatch-uncertain', hatchPattern(token('--color-unknown')))
   map.addSource(SOURCE.coverage, { type: 'geojson', data: EMPTY_COLLECTION })
   map.addLayer({
     id: COVERAGE_LAYER,
@@ -57,7 +56,7 @@ export function addAppLayers(map: MapboxMap) {
     source: SOURCE.coverage,
     slot: 'middle',
     paint: {
-      'fill-pattern': ['match', ['get', 'kind'], 'uncertain', 'hatch-uncertain', 'hatch-gap'],
+      'fill-pattern': 'hatch-gap',
       'fill-antialias': false,
     },
   })

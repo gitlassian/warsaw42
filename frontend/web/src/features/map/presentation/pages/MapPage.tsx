@@ -16,7 +16,7 @@ import { useViewportHeight } from '@/shared/hooks/useViewportHeight'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
 import { mapFiltersStore, toggleFilter } from '../../store'
-import { AppHeader, AppMenu } from '../components/AppHeader'
+import { AppHeader, InfoButton } from '../components/AppHeader'
 import { MapControls } from '../components/MapControls'
 import { MapView } from '../components/MapView'
 import { TimeBar } from '../components/TimeBar'
@@ -48,17 +48,21 @@ export function MapPage() {
   const live = useStore(aedsStore, (s) => s.live)
   const available = useStore(mapFiltersStore, (s) => s.available)
   const unavailable = useStore(mapFiltersStore, (s) => s.unavailable)
-  const unknown = useStore(mapFiltersStore, (s) => s.unknown)
   const coverageShown = location.pathname === RoutePaths.coverage
   const floating = !!handle?.floating
   const wide = useMediaQuery(WIDE_LAYOUT_QUERY)
   const dockRef = useRef<HTMLDivElement>(null)
+  // Wide layout: the round controls stack above the find card, whatever its height.
+  const [dockHeight, setDockHeight] = useState(0)
   const mapCover = Math.max(cover.sheet, cover.dock)
 
   useEffect(() => {
     const dock = dockRef.current
     if (!dock) return
-    const observer = new ResizeObserver(() => updateCover({ dock: wide ? 0 : dock.offsetHeight }))
+    const observer = new ResizeObserver(() => {
+      setDockHeight(dock.offsetHeight)
+      updateCover({ dock: wide ? 0 : dock.offsetHeight })
+    })
     observer.observe(dock)
     return () => observer.disconnect()
   }, [wide, updateCover])
@@ -74,7 +78,7 @@ export function MapPage() {
   }
 
   const onClose = () => {
-    clearRoute()
+    if (handle?.close === 'selection') clearRoute()
     navigate(RoutePaths.map)
   }
 
@@ -87,10 +91,10 @@ export function MapPage() {
     <div
       className={styles.layout}
       data-floating={floating || undefined}
-      style={{ '--sheet-cover': `${mapCover}px` } as CSSProperties}
+      style={{ '--sheet-cover': `${mapCover}px`, '--dock-height': `${dockHeight}px` } as CSSProperties}
     >
       <div className={styles.header}>
-        <AppHeader floating={floating} withMenu={!wide} onClose={wide && handle?.closable ? onClose : undefined} />
+        <AppHeader floating={floating} withInfo={!wide} onClose={wide && handle?.close ? onClose : undefined} />
       </div>
 
       {!floating && (
@@ -100,7 +104,7 @@ export function MapPage() {
             label="Panel"
             initialSnap={handle?.sheet}
             onCoverChange={onCoverChange}
-            onClose={!wide && handle?.closable ? onClose : undefined}
+            onClose={!wide && handle?.close === 'selection' ? onClose : undefined}
           >
             <Outlet />
           </Sheet>
@@ -143,11 +147,11 @@ export function MapPage() {
         </div>
         {mapCover < viewportHeight * 0.7 && (
           <div className={styles.controls}>
-            {wide && <AppMenu />}
+            {wide && <InfoButton />}
             <MapControls
               locating={locating}
               coverageShown={coverageShown}
-              filters={{ available, unavailable, unknown }}
+              filters={{ available, unavailable }}
               onToggleFilter={toggleFilter}
               timeOpen={timeOpen}
               onToggleTime={toggleTime}

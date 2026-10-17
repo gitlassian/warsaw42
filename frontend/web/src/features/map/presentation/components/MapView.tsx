@@ -42,7 +42,6 @@ export function MapView({ onLoadError }: MapViewProps) {
   const now = useStore(aedsStore, (s) => s.now)
   const showAvailable = useStore(mapFiltersStore, (s) => s.available)
   const showUnavailable = useStore(mapFiltersStore, (s) => s.unavailable)
-  const showUnknown = useStore(mapFiltersStore, (s) => s.unknown)
   const origin = useStore(discoveryStore, (s) => s.origin)
   const etas = useStore(discoveryStore, (s) => s.etas)
   const route = useStore(discoveryStore, (s) => s.route)
@@ -106,14 +105,14 @@ export function MapView({ onLoadError }: MapViewProps) {
       type: 'FeatureCollection',
       // Filters follow the clock: an AED that closes at 16:00 leaves the map without a reload.
       features: aeds
-        .filter((a) => passesFilters(a, now, { available: showAvailable, unavailable: showUnavailable, unknown: showUnknown }))
+        .filter((a) => passesFilters(a, now, { available: showAvailable, unavailable: showUnavailable }))
         .map((a) => ({
           type: 'Feature',
           properties: { id: a.id, available: aedStatus(a, now).available ? 1 : 0 },
           geometry: { type: 'Point', coordinates: [a.location.lng, a.location.lat] },
         })),
     })
-  }, [map, aeds, now, showAvailable, showUnavailable, showUnknown])
+  }, [map, aeds, now, showAvailable, showUnavailable])
 
   // Mirror the clustered source into HTML markers whenever the view or tiles change.
   useEffect(() => {

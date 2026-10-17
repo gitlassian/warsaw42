@@ -37,8 +37,8 @@ export function DataInfoPanel() {
         <Badge tone="neutral" icon="lock">
           Teraz zamknięty
         </Badge>
-        <Badge tone="neutral" icon="help">
-          Godziny nieznane
+        <Badge tone="neutral" icon="lock">
+          Niedostępny: brak informacji o godzinach lub dostępie
         </Badge>
         <Badge tone="warning" icon="warning">
           Dostęp niepotwierdzony

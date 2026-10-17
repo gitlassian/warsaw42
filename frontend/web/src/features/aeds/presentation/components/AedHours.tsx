@@ -26,7 +26,7 @@ export function AedHours({
   if (schedule.kind === 'unknown') {
     return (
       <>
-        <Text tone="secondary">Godziny nieznane</Text>
+        <Text tone="secondary">Brak informacji o godzinach, więc traktujemy AED jako niedostępny.</Text>
         {sourceHours && <Text variant="meta" tone="muted">Wg źródła: {sourceHours}</Text>}
       </>
     )
@@ -39,7 +39,7 @@ export function AedHours({
           <div key={day} className={styles.row}>
             <dt>{day}</dt>
             <dd className={intervals ? undefined : styles.unknown}>
-              {intervals ? (intervals.length ? intervals.map(formatInterval).join(', ') : 'zamknięte') : 'nie podano w źródle'}
+              {intervals ? (intervals.length ? intervals.map(formatInterval).join(', ') : 'zamknięte') : 'niedostępny (brak danych)'}
             </dd>
           </div>
         )
