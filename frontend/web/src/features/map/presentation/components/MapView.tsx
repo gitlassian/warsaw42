@@ -3,6 +3,7 @@ import type { Point } from 'geojson'
 import { useEffect, useRef, useState } from 'react'
 import { useMatch } from 'react-router'
 import { RoutePaths, buildPath } from '@/app/routePaths'
+import { passesFilters } from '@/features/aeds/lib/aedAvailability'
 import { aedStatus } from '@/features/aeds/lib/aedStatus'
 import { aedsStore } from '@/features/aeds/store'
 import type { CoverageCell } from '@/features/coverage/models/coverage'
@@ -11,6 +12,7 @@ import { discoveryStore, pickOrigin, requestEtas } from '@/features/discovery/st
 import { WARSAW_CENTER, WARSAW_MAX_BOUNDS, circlePolygon, type LngLat } from '@/shared/geo/geo'
 import { useStore } from '@/shared/lib/store'
 import { mapCamera } from '../../lib/mapCamera'
+import { mapFiltersStore } from '../../store'
 import { AEDS_LAYER, COVERAGE_LAYER, EMPTY_COLLECTION, SOURCE, addAppLayers, setSourceData } from '../../lib/mapLayers'
 import { MapMarker } from './MapMarker'
 import { AedMarker, ClusterMarker, OriginMarker } from './MapMarkers'
@@ -35,6 +37,9 @@ export function MapView({ onLoadError }: MapViewProps) {
   const aeds = useStore(aedsStore, (s) => s.aeds)
   const byId = useStore(aedsStore, (s) => s.byId)
   const now = useStore(aedsStore, (s) => s.now)
+  const showAvailable = useStore(mapFiltersStore, (s) => s.available)
+  const showUnavailable = useStore(mapFiltersStore, (s) => s.unavailable)
+  const showUnknown = useStore(mapFiltersStore, (s) => s.unknown)
   const origin = useStore(discoveryStore, (s) => s.origin)
   const etas = useStore(discoveryStore, (s) => s.etas)
   const route = useStore(discoveryStore, (s) => s.route)
@@ -87,13 +92,16 @@ export function MapView({ onLoadError }: MapViewProps) {
     if (!map) return
     setSourceData(map, SOURCE.aeds, {
       type: 'FeatureCollection',
-      features: aeds.map((a) => ({
-        type: 'Feature',
-        properties: { id: a.id },
-        geometry: { type: 'Point', coordinates: [a.location.lng, a.location.lat] },
-      })),
+      // Filters follow the clock: an AED that closes at 16:00 leaves the map without a reload.
+      features: aeds
+        .filter((a) => passesFilters(a, now, { available: showAvailable, unavailable: showUnavailable, unknown: showUnknown }))
+        .map((a) => ({
+          type: 'Feature',
+          properties: { id: a.id },
+          geometry: { type: 'Point', coordinates: [a.location.lng, a.location.lat] },
+        })),
     })
-  }, [map, aeds])
+  }, [map, aeds, now, showAvailable, showUnavailable, showUnknown])
 
   // Mirror the clustered source into HTML markers whenever the view or tiles change.
   useEffect(() => {

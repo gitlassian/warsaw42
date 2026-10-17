@@ -1,0 +1,6667 @@
+[
+{
+"osm_id": 1779456496,
+"lat": 52.1707513,
+"lon": 20.9725857,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Żwirki i Wigury 1, Warszawa",
+"district": "Włochy",
+"indoor": true,
+"floor": null,
+"location": "W halach przylotów i odlotów\n(w części ogólnodostępnej i tranzytowej) zainstalowanych jest 25 automatycznych defibrylatorów (AED).",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 8760740492,
+"lat": 52.3265878,
+"lon": 20.9731673,
+"name": "AED",
+"address": "Podróżnicza 11, 03-111 Warszawa",
+"district": "Białołęka",
+"indoor": true,
+"floor": null,
+"location": "Główne wejście, Parter po prawej stronie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9411406417,
+"lat": 52.2337174,
+"lon": 20.9828305,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grzybowska 80/82, 00-844 Warszawa",
+"district": "Wola",
+"indoor": false,
+"floor": null,
+"location": "Na ścianie przy windach",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9413742317,
+"lat": 52.1903525,
+"lon": 21.0163851,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Niepodległości 69, 02-626 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": -2,
+"location": "Na peronie stacji metra Wierzbno, pierwsza ławka od wejścia od północy (ulica Naruszewicza)",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9414050017,
+"lat": 52.2295551,
+"lon": 21.0075925,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 50, 00-024 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Na stacji Warszawa Środmieście na ścianie peronu III",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9417717828,
+"lat": 52.2185748,
+"lon": 21.0153861,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Ludwika Waryńskiego 3A, 00-645 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Na peronie stacji metra Politechnika",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9418923518,
+"lat": 52.2421468,
+"lon": 20.9297397,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Wola",
+"indoor": true,
+"floor": 0,
+"location": "Na lewej ścianie przy wejściu do Auchan na parterze",
+"opening_hours": null,
+"check_date": "2023-02-05",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9422528717,
+"lat": 52.214019,
+"lon": 21.0147219,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Śródmieście",
+"indoor": false,
+"floor": null,
+"location": "Przy recepcji",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9422535217,
+"lat": 52.2441258,
+"lon": 21.0863138,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grochowska 207, 04-077 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": "Na słupku przed wejściem do sklepu WSS Społem Universam (parter)",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9424015117,
+"lat": 52.2392587,
+"lon": 20.9436034,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Górczewska 92, 01-117 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": -2,
+"location": "Na wschodnim filarze peronu stacji metra Księcia Janusza.",
+"opening_hours": null,
+"check_date": "2023-02-05",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9425842717,
+"lat": 52.2131025,
+"lon": 20.9523775,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ochota",
+"indoor": false,
+"floor": null,
+"location": "CH ATRIUM REDUTA - MONITORING / POMIESZCZENIE OCHRONY CENTRUM - parter, przy strefie dostaw Dostępny 24h/7",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9428644717,
+"lat": 52.2305253,
+"lon": 21.1058548,
+"name": "Ochrona Centrum",
+"address": "Warszawa (adres nieznany)",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": "Centrum Handlowe Atrium Promenada - parter pomieszczenie ochrony od ul. JNJ",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9445509218,
+"lat": 52.203687,
+"lon": 21.0106032,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Niepodległości 128, 02-554 Warszawa",
+"district": "Mokotów",
+"indoor": false,
+"floor": null,
+"location": "Na parterze na ścianie pomiędzy holem głównym a szatnią",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9445513217,
+"lat": 52.2056315,
+"lon": 21.0203712,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Antoniego Józefa Madalińskiego 6/8, 02-513 Warszawa",
+"district": "Mokotów",
+"indoor": false,
+"floor": null,
+"location": "Na parterze przy windzie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9445518517,
+"lat": 52.2047656,
+"lon": 21.0090265,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Niepodległości 147, 02-555 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 0,
+"location": "Na parterze w holu naprzeciw recepcji",
+"opening_hours": null,
+"check_date": "2023-02-08",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9445527017,
+"lat": 52.2042067,
+"lon": 21.015956,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Antoniego Józefa Madalińskiego 31/33, 02-544 Warszawa",
+"district": "Mokotów",
+"indoor": false,
+"floor": null,
+"location": "W holu naprzeciw recepcji na parterze",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9450842155,
+"lat": 52.2085389,
+"lon": 21.0080017,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Niepodległości 162, 02-554 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "Na peronie stacji metra Pole Mokotowskie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9450846479,
+"lat": 52.181793,
+"lon": 21.0231433,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Puławska 143, 02-715 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "Na peronie stacji metra Wilanowska",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9450852257,
+"lat": 52.1320926,
+"lon": 21.0650723,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Komisji Edukacji Narodowej 18, 02-797 Warszawa",
+"district": "Ursynów",
+"indoor": true,
+"floor": null,
+"location": "Na peronie stacji metra Kabaty",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9450873841,
+"lat": 52.2351297,
+"lon": 21.0078977,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Marszałkowska 107, 00-110 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Na peronie stacji metra Świętokrzyska (M1)",
+"opening_hours": null,
+"check_date": "2026-03-17",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9450880924,
+"lat": 52.2376218,
+"lon": 20.9608057,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Górczewska 39, 01-144 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": -3,
+"location": "Na peronie stacji metra Młynów",
+"opening_hours": null,
+"check_date": "2023-02-08",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9666248317,
+"lat": 52.2343868,
+"lon": 20.9873248,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grzybowska 60, 00-844 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "Recepcja Grzybowska 60",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9666250117,
+"lat": 52.2352274,
+"lon": 20.9880692,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Krochmalna 59A, 00-864 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "Grzybowska 56 recepcja B",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9667008717,
+"lat": 52.2343163,
+"lon": 20.9860651,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grzybowska 62, 00-844 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "Na recepcji budynku",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 9860029017,
+"lat": 52.2502838,
+"lon": 21.0119882,
+"name": "Muzeum Warszawy",
+"address": "Rynek Starego Miasta 28, 00-272 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Na ścianie na prawo od wejścia służbowego przy ochronie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10093520205,
+"lat": 52.2045447,
+"lon": 20.9612102,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Usypiskowa 18, 02-386 Warszawa",
+"district": "Ochota",
+"indoor": false,
+"floor": null,
+"location": "Urządzenie zawieszone na zewnętrznej ścianie budynku przy samym wejściu do obiektu",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 10093520206,
+"lat": 52.2149981,
+"lon": 20.9731141,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Rokosowska 10, 02-348 Warszawa",
+"district": "Ochota",
+"indoor": false,
+"floor": null,
+"location": "AED zawieszone na ścianie na wprost wejścia do obiektu krytej pływalni",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 10100910117,
+"lat": 52.2399056,
+"lon": 21.0468177,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10101353317,
+"lat": 52.2400523,
+"lon": 21.0470967,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10127805917,
+"lat": 52.230602,
+"lon": 21.0127452,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 44, 00-024 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "W budynku urzędu miasta, na parterze po prawej stronie od wejścia",
+"opening_hours": null,
+"check_date": "2023-02-14",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10132659671,
+"lat": 52.2126964,
+"lon": 20.9553922,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 179, 02-222 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": null,
+"location": "W punkcie Obsługi Pasażera WTP",
+"opening_hours": "Mo-Su 10:00-20:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"10:00",
+"20:00"
+]
+],
+"tue": [
+[
+"10:00",
+"20:00"
+]
+],
+"wed": [
+[
+"10:00",
+"20:00"
+]
+],
+"thu": [
+[
+"10:00",
+"20:00"
+]
+],
+"fri": [
+[
+"10:00",
+"20:00"
+]
+],
+"sat": [
+[
+"10:00",
+"20:00"
+]
+],
+"sun": [
+[
+"10:00",
+"20:00"
+]
+]
+}
+},
+{
+"osm_id": 10168196172,
+"lat": 52.2190076,
+"lon": 20.9658185,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 142, 02-305 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": -1,
+"location": "Na ścianie tunelu - prawa strona przed wejściem do hallu dworca. Przy wnęce z biletomatem",
+"opening_hours": null,
+"check_date": "2022-11-08",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10186204632,
+"lat": 52.2316002,
+"lon": 20.9802674,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Przyokopowa 33, 01-208 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "W luxmed, prawo od wejscia, na scianie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10216462264,
+"lat": 52.2413161,
+"lon": 20.9327858,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "Luxmed 4p, po wejściu za rogiem na ścianie po prawej stronie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10241085309,
+"lat": 52.2287183,
+"lon": 20.9846948,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "rondo Ignacego Daszyńskiego 2C, 00-839 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": -1,
+"location": "Na korytarzu na poziomie -1 Warsaw Hub przy schodach ruchomych na parking",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 10296987309,
+"lat": 52.3105858,
+"lon": 20.9177654,
+"name": "Wydział Medyczny. Collegium Medicum UKSW",
+"address": "Żubrowa 7, 01-978 Warszawa",
+"district": "Bielany",
+"indoor": true,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": "2022-12-31",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10695311258,
+"lat": 52.1865018,
+"lon": 20.8875191,
+"name": "OSiR Ursus",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursus",
+"indoor": true,
+"floor": null,
+"location": "Budynek z szatniami piłkarskimi - wejście główne.",
+"opening_hours": "Mo-Fr 06:00-22:00; Sa-Su 08:00-22:00",
+"check_date": "2023-02-19",
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"08:00",
+"22:00"
+]
+],
+"sun": [
+[
+"08:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 10700147405,
+"lat": 52.2568663,
+"lon": 20.9832181,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": null,
+"opening_hours": null,
+"check_date": "2023-02-28",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10737176706,
+"lat": 52.2316603,
+"lon": 21.0247688,
+"name": "Muzeum Narodowe w Warszawie",
+"address": "Warszawa (adres nieznany)",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Muzeum Narodowe w Warszawie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10795282445,
+"lat": 52.2277759,
+"lon": 21.0050726,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Emilii Plater 30, 00-698 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "Na parterze (poziom 0) w recepcji Marriott",
+"opening_hours": null,
+"check_date": "2022-12-30",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10923592805,
+"lat": 52.2353955,
+"lon": 21.0175294,
+"name": "Polski Instytut Spraw Miedzynarodowych",
+"address": "Warecka 1A, 00-034 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "przy recepcji\nat the reception desk",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10936758805,
+"lat": 52.1827579,
+"lon": 20.9689667,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Komitetu Obrony Robotników 43, 02-146 Warszawa",
+"district": "Włochy",
+"indoor": true,
+"floor": null,
+"location": "Biurowiec LOT. Na ścianie w głównym lobby, naprzeciwko recepcji.",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 10939996100,
+"lat": 52.2108158,
+"lon": 20.952076,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 181, 02-222 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie przy recepcji",
+"opening_hours": null,
+"check_date": "2026-03-10",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11025952381,
+"lat": 52.1644583,
+"lon": 21.0884942,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Wilanów",
+"indoor": true,
+"floor": 0,
+"location": null,
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11114922209,
+"lat": 52.2484323,
+"lon": 21.2238333,
+"name": "OSP Wesoła",
+"address": "1 Praskiego Pułku WP 31, 05-075 Warszawa",
+"district": "Wesoła",
+"indoor": true,
+"floor": 0,
+"location": "Pojazd ratowniczo-gaśniczy.",
+"opening_hours": "24/7",
+"check_date": "2023-08-13",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 11206070074,
+"lat": 52.2407754,
+"lon": 21.0279507,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Wybrzeże Kościuszkowskie 43C, 00-347 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "Przy zejściu na piętro -1, przy hotdogarnii",
+"opening_hours": null,
+"check_date": "2023-07-29",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11348359469,
+"lat": 52.1808243,
+"lon": 21.0554831,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "św. Bonifacego 70, 02-936 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "Bonifacego 70, I piętro przy wyjściu z windy",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11364275969,
+"lat": 52.198471,
+"lon": 21.0471819,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Bobrowiecka 8, 00-728 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 0,
+"location": "Na lewo od wejścia, na ścianie przy szatni",
+"opening_hours": null,
+"check_date": "2023-11-20",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11414685372,
+"lat": 52.2213166,
+"lon": 21.0419572,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Śródmieście",
+"indoor": false,
+"floor": null,
+"location": "Stadion Legii Warszawa. Brama wjazdowa nr 2 Biuro Ochrony",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11653917386,
+"lat": 52.2353529,
+"lon": 21.0104412,
+"name": "Poczta Polska - UP Warszawa 1",
+"address": "Świętokrzyska 31/33, 00-049 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "na ścianie głównej sali operacyjnej, na lewo od wejścia z ul. Świętokrzyskiej",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 11681138869,
+"lat": 52.2245365,
+"lon": 20.9912805,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Nowogrodzka 82, 02-018 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": 1,
+"location": "pomieszczenie ochrony na parterze",
+"opening_hours": null,
+"check_date": "2024-03-01",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11747921169,
+"lat": 52.3440948,
+"lon": 21.055878,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Białołęka",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie, przy wejściu do szkoły od stronu ul. Verdiego",
+"opening_hours": null,
+"check_date": "2024-03-20",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11850412071,
+"lat": 52.1729,
+"lon": 20.99827,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Obrzeżna 1E, 02-691 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 0,
+"location": "AED znajduje się na parterze budynku, za recepcją, na ścianie po lewej stronie.",
+"opening_hours": null,
+"check_date": "2024-04-26",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11896378169,
+"lat": 52.2521755,
+"lon": 21.0512365,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Kijowska 20, 03-743 Warszawa",
+"district": "Praga-Północ",
+"indoor": true,
+"floor": 0,
+"location": "Na kolumnie przy poczekalni",
+"opening_hours": null,
+"check_date": "2025-01-02",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11913271469,
+"lat": 52.1711003,
+"lon": 20.9914043,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Postępu 1, 02-676 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 0,
+"location": "AED znajduje się na ścianie przy toaletach za recepcją. \nAED dostępny w godzinach 06:00-21:00 od poniedziałku-piątku oraz 08:00-19:00 w soboty.",
+"opening_hours": null,
+"check_date": "2024-05-17",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 11962218769,
+"lat": 52.2302403,
+"lon": 20.9835145,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "biurowiec",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12123736215,
+"lat": 52.2265707,
+"lon": 20.9492771,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Jana Kazimierza 10, 01-248 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 0,
+"location": null,
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12201181501,
+"lat": 52.2260159,
+"lon": 21.0038415,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Tytusa Chałubińskiego 8, 00-613 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "W hallu głównym, na parterze, na lewo od wejścia na ścianie.",
+"opening_hours": null,
+"check_date": "2024-09-26",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12231908801,
+"lat": 52.1712108,
+"lon": 20.972676,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Włochy",
+"indoor": true,
+"floor": 0,
+"location": null,
+"opening_hours": null,
+"check_date": "2024-10-07",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12251272789,
+"lat": 52.1728284,
+"lon": 20.9697296,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Włochy",
+"indoor": true,
+"floor": 0,
+"location": "Przyloty strefa non-schengen: przed odprawą celną na ścianie przy toaletach",
+"opening_hours": null,
+"check_date": "2024-10-14",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12273501901,
+"lat": 52.2149451,
+"lon": 20.968848,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Szczęśliwicka 54, 02-353 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie przy wejściu po lewej stronie",
+"opening_hours": null,
+"check_date": "2024-10-21",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12435036263,
+"lat": 52.2263522,
+"lon": 21.0418059,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Zagórna 1A, 00-441 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "W budynku Ibis Styles, po lewej przy wejściu koło recepcji",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12536501301,
+"lat": 52.3119243,
+"lon": 21.066482,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Głębocka 66, 03-287 Warszawa",
+"district": "Białołęka",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu do placówki w holu głównym",
+"opening_hours": "24/7",
+"check_date": "2025-03-06",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12538924288,
+"lat": 52.2444876,
+"lon": 21.0757135,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grenadierów 73/75, 04-007 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": "recepcja",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12559808410,
+"lat": 52.2363803,
+"lon": 20.9841274,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Chłodna 52, 00-872 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 0,
+"location": "na parterze (w recepcji)",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12559808411,
+"lat": 52.2364403,
+"lon": 20.9838981,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Chłodna 52, 00-872 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 5,
+"location": "przy sekretariacie",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12580062927,
+"lat": 52.2124565,
+"lon": 21.007169,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Niepodległości 188/192, 00-608 Warszawa",
+"district": "Śródmieście",
+"indoor": false,
+"floor": null,
+"location": "przy wejściu głównym",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12580092420,
+"lat": 52.210795,
+"lon": 20.9737518,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Opaczewska 8, 02-368 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": null,
+"location": "w rejestracji",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12587627540,
+"lat": 52.216863,
+"lon": 21.0061091,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Niepodległości 208A, 00-608 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "na korytarzu obok ochrony",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12591709501,
+"lat": 52.2172804,
+"lon": 20.9701383,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Szczęśliwicka 40A, 02-353 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": 0,
+"location": "w budynku C",
+"opening_hours": "24/7",
+"check_date": "2025-02-18",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12596156318,
+"lat": 52.2313573,
+"lon": 21.0222324,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Nowy Świat 6/12, 00-497 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "u ochrony budynku na dyżurce dowódcy zmiany w holu głównym Centrum Bankowo-Finansowego",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12599154935,
+"lat": 52.2269416,
+"lon": 20.9921781,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Chmielna 89, 00-805 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 0,
+"location": "hol główny",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12599154936,
+"lat": 52.210571,
+"lon": 21.0221127,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Puławska 15, 02-515 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 0,
+"location": "hol główny, recepcja",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12601484896,
+"lat": 52.236584,
+"lon": 21.0141738,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Świętokrzyska 14, 00-050 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w pomieszczeniu ochrony obiektu, przy wejściu głównym",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12601601980,
+"lat": 52.2292451,
+"lon": 21.01754,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Krucza 38/42, 00-512 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w portierni Urzędu",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12601853370,
+"lat": 52.2287351,
+"lon": 21.0204093,
+"name": "Ministerstwo Funduszy i Polityki Regionalnej",
+"address": "Wspólna 2, 00-505 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "na parterze w pokoju 092 (pokój ochrony przy wejściu do budynku Wspólna 2)",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12602205670,
+"lat": 52.2360422,
+"lon": 20.9292375,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Jana Olbrachta 94B, 01-102 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "w holu po lewej stronie od wejścia do obiektu – przy pok. nr 7",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12602240713,
+"lat": 52.2473642,
+"lon": 21.0089254,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Miodowa 15, 00-246 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu głównym obok portierni",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12602240714,
+"lat": 52.2469125,
+"lon": 21.0082226,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w Sali Kolumnowej",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12602240715,
+"lat": 52.246866,
+"lon": 21.0080965,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 1,
+"location": "Urządzenie dostępne w godzinach pracy Ministerstwa Zdrowia, a po ich zakończeniu są w dyspozycji ochrony obiektu.",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12602240716,
+"lat": 52.247113,
+"lon": 21.0040707,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Długa 38/40, 00-238 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "przy wejściu głównym obok portierni",
+"opening_hours": null,
+"check_date": "2025-12-14",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12603340807,
+"lat": 52.1909742,
+"lon": 20.9526043,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Marcina Flisa 2, 02-247 Warszawa",
+"district": "Włochy",
+"indoor": true,
+"floor": 0,
+"location": "w budynku A, w korytarzu prowadzącym do Punktu Obsługi Klienta",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12603436930,
+"lat": 52.2101461,
+"lon": 21.0155022,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Rakowiecka 2D, 02-517 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 0,
+"location": "w recepcji przy wejściu głównym",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12603659719,
+"lat": 52.1609911,
+"lon": 21.0014864,
+"name": "Poczta Polska",
+"address": "Łączyny 12, 02-820 Warszawa",
+"district": "Ursynów",
+"indoor": true,
+"floor": null,
+"location": "WER Warszawa",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12605104733,
+"lat": 52.2164492,
+"lon": 21.0253924,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Ujazdowskie 5, 00-583 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w pobliżu Biura Przepustek",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12605104734,
+"lat": 52.215779,
+"lon": 21.0257436,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Ujazdowskie 1/3, 00-583 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w pobliżu wejścia",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12605104735,
+"lat": 52.2157583,
+"lon": 21.0255279,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Ujazdowskie 1/3, 00-583 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w holu",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12605104736,
+"lat": 52.2165565,
+"lon": 21.0237262,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jana Chrystiana Szucha 14, 00-582 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w pobliżu wejścia",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12605511290,
+"lat": 52.2370484,
+"lon": 20.9839,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Wronia 53, 00-874 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 0,
+"location": "Hol wejścia głównego do budynku",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12605562834,
+"lat": 52.2488546,
+"lon": 21.0597398,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Mińska 25, 03-808 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": 7,
+"location": "Hol wejścia do GDDKiA",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12607158198,
+"lat": 52.2208489,
+"lon": 20.972463,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 136, 02-305 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": null,
+"location": "w holu głównym przy recepcji budynku Alfa",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12607261645,
+"lat": 52.2136526,
+"lon": 21.0045794,
+"name": "Biblioteka Narodowa",
+"address": "al. Niepodległości 213, 02-086 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": 0,
+"location": "przy wejściu służbowym u ochrony",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12621508141,
+"lat": 52.1908859,
+"lon": 21.058142,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Powsińska 69/71, 02-903 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12621775724,
+"lat": 52.2075996,
+"lon": 21.0094135,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Rakowiecka 37A, 02-521 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "w Zakładzie Opieki Zdrowotnej Medycyny Pracy Służby Więziennej w Warszawie",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12621775726,
+"lat": 52.2319377,
+"lon": 21.0597604,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Zwycięzców 34, 03-938 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu głównym do budynku (w środku budynku przy dyżurce funkcjonariuszy pionu ochrony)",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12624560166,
+"lat": 52.2083672,
+"lon": 21.0241055,
+"name": "Rzecznik Praw Dziecka",
+"address": "Chocimska 6, 00-791 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 0,
+"location": "w pobliżu recepcji",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12624595000,
+"lat": 52.2211679,
+"lon": 20.973638,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 134, 02-305 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": null,
+"location": "w holu głównym przy recepcji budynku Beta/Gamma",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478070,
+"lat": 52.2445315,
+"lon": 21.0031944,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. „Solidarności” 77, 00-090 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w okolicy wejścia głównego, obok recepcji",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478071,
+"lat": 52.2474447,
+"lon": 21.0055922,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Długa 23/25, 00-238 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w okolicy wejścia głównego, obok recepcji",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478413,
+"lat": 52.2430322,
+"lon": 21.0005453,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "pl. Bankowy 3/5, 00-142 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "wejście C parter hol główny",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478414,
+"lat": 52.2147136,
+"lon": 21.0206901,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Marszałkowska 3/5, 00-624 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "wejście główne parter",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478415,
+"lat": 52.2246514,
+"lon": 21.0189822,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Krucza 5/11, 00-548 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "wejście główne parter",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478416,
+"lat": 52.2317298,
+"lon": 21.0194841,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jerozolimskie 28, 00-024 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "wejście główne parter",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478420,
+"lat": 52.163522,
+"lon": 21.0517774,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Nowoursynowska 164A, 02-787 Warszawa",
+"district": "Ursynów",
+"indoor": true,
+"floor": 0,
+"location": "pokój 4",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478421,
+"lat": 52.2533994,
+"lon": 20.9986217,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Muranowska 1, 00-209 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Urządzenia są dostępne w godzinach pracy urzędu, tj. od 8:00 do 16:00. Poza tymi godzinami dostęp do AED jest możliwy po kontakcie z ochroną w wymienionych obiektach.",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625478423,
+"lat": 52.2426432,
+"lon": 21.0017474,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "pl. Bankowy 1A, 00-142 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "korytarz dyspozytorni medycznej",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12625885609,
+"lat": 52.1731925,
+"lon": 21.0319719,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Wałbrzyska 3/5, 02-739 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "Portiernia - czerwony budynek",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12629387729,
+"lat": 52.253151,
+"lon": 21.0723499,
+"name": "ZUS",
+"address": "Żupnicza 32, 03-821 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": 0,
+"location": "parter",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12640806622,
+"lat": 52.2331814,
+"lon": 21.0135846,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Przeskok 2, 00-032 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w recepcji przy wejściu głównym",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12641413151,
+"lat": 52.2453852,
+"lon": 21.00427,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. „Solidarności” 62, 00-240 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w wejściu głównym przy stanowisku pracy pracownika ochrony",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12641413164,
+"lat": 52.2668145,
+"lon": 21.0005788,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Skazańców 25, 01-532 Warszawa",
+"district": "Żoliborz",
+"indoor": true,
+"floor": null,
+"location": "w wejściu głównym przy stanowisku pracy pracownika ochrony",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12663555272,
+"lat": 52.212389,
+"lon": 21.0227262,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Chocimska 28, 00-791 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "Przy stanowisku ochrony,",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12663555274,
+"lat": 52.2596334,
+"lon": 20.9640902,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Zygmunta Krasińskiego 65, 01-755 Warszawa",
+"district": "Żoliborz",
+"indoor": true,
+"floor": null,
+"location": "Przy stanowisku ochrony",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12684827602,
+"lat": 52.1560924,
+"lon": 20.9840747,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Wirażowa 35, 02-158 Warszawa",
+"district": "Włochy",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie w holu",
+"opening_hours": null,
+"check_date": "2025-03-20",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 12685859606,
+"lat": 52.231528,
+"lon": 20.9987934,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Jana Pawła II 11, 00-828 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 7,
+"location": "7 piętro, przy sali konferencyjnej",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12703756437,
+"lat": 52.2505398,
+"lon": 21.0112588,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Krzywe Koło 7, 00-270 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "hol parter",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 12709405776,
+"lat": 52.1883075,
+"lon": 21.0517624,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Bolesława Limanowskiego 23, 02-943 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "w recepcji",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13001502401,
+"lat": 52.240017,
+"lon": 20.9739681,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Żytnia 40, 01-198 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 1,
+"location": "Przy sekretariacie",
+"opening_hours": null,
+"check_date": "2025-07-15",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13019437277,
+"lat": 52.1845482,
+"lon": 21.0192296,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "al. Niepodległości 27, 02-653 Warszawa",
+"district": "Mokotów",
+"indoor": false,
+"floor": null,
+"location": "Przed budynkiem szkoły, po lewej stronie wejścia.",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13049709403,
+"lat": 52.1882453,
+"lon": 21.0828704,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Augustówka 24, 02-981 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": 1,
+"location": "Przy wejściu do Stacji Ratownictwa Medycznego Lux Med",
+"opening_hours": null,
+"check_date": "2025-08-05",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13078739140,
+"lat": 52.2040457,
+"lon": 21.0469566,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Mokotów",
+"indoor": false,
+"floor": null,
+"location": "z lewej strony Paczkomatu InPost",
+"opening_hours": "24/7",
+"check_date": "2025-08-29",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13091773509,
+"lat": 52.2285984,
+"lon": 20.9539335,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grabowska 1, 01-236 Warszawa",
+"district": "Wola",
+"indoor": false,
+"floor": null,
+"location": "przy wejściu głównym do budynku od ul. Grabowskiej",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13140529901,
+"lat": 52.2129652,
+"lon": 20.9869253,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Żwirki i Wigury 99A, 02-089 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": 0,
+"location": null,
+"opening_hours": null,
+"check_date": "2025-09-13",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13185422101,
+"lat": 52.2384624,
+"lon": 21.0195655,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Kazimierza Karasia 2, 00-327 Warszawa",
+"district": "Śródmieście",
+"indoor": false,
+"floor": null,
+"location": "Genova ",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13192282701,
+"lat": 52.2251679,
+"lon": 21.0048856,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Wspólna 70, 00-687 Warszawa",
+"district": "Śródmieście",
+"indoor": false,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": "2025-10-04",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13233057632,
+"lat": 52.1874225,
+"lon": 20.8880992,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Michała Drzymały 1, 02-495 Warszawa",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "przy wejściu do szkoły, od ul. Drzymały",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13238978001,
+"lat": 52.3178279,
+"lon": 20.9677065,
+"name": "Galeria Północna",
+"address": "Kościeszów 6, 03-188 Warszawa",
+"district": "Białołęka",
+"indoor": true,
+"floor": null,
+"location": "Galeria Północna Monitoring Ochrony",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13238979501,
+"lat": 52.3176717,
+"lon": 20.9678197,
+"name": "Galeria Północna",
+"address": "Kościeszów 6, 03-188 Warszawa",
+"district": "Białołęka",
+"indoor": false,
+"floor": null,
+"location": "Galeria Północna Monitoring Ochrony 2",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13251476302,
+"lat": 52.1994161,
+"lon": 20.9367082,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Włochy",
+"indoor": true,
+"floor": null,
+"location": "przy biurze obsługi klienta",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13260163658,
+"lat": 52.1898818,
+"lon": 20.8901342,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Kazimierza Pużaka 4, 02-495 Warszawa",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "Na zewnętrznej ścianie budynku Miasteczka Ruchu Drogowego.",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13274462101,
+"lat": 52.1933915,
+"lon": 20.8614251,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawska 63, 02-495 Warszawa",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "Szkoła Podstawowa nr 383 im. Ks. Stefana Kard. Wyszyńskiego w Warszawie",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13277605405,
+"lat": 52.2314339,
+"lon": 20.9798292,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Przyokopowa 33, 01-208 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 4,
+"location": "Faktorone, klatka C, piętro IV  na prawo od drzwi wejściowych na ścianie. Dostępny od poniedziałku do piątku w godzinach 8:00 - 16:00.",
+"opening_hours": null,
+"check_date": "2025-11-03",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13299352601,
+"lat": 52.1619934,
+"lon": 21.0463603,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursynów",
+"indoor": true,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": "2025-11-12",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13299352602,
+"lat": 52.1631903,
+"lon": 21.0387769,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursynów",
+"indoor": false,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": "2025-11-12",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13299357701,
+"lat": 52.1600877,
+"lon": 21.0447357,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursynów",
+"indoor": false,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": "2025-11-12",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13299358801,
+"lat": 52.1633347,
+"lon": 21.0490569,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursynów",
+"indoor": false,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": "2025-11-12",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13299360203,
+"lat": 52.1647469,
+"lon": 21.0503954,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursynów",
+"indoor": false,
+"floor": null,
+"location": null,
+"opening_hours": null,
+"check_date": "2025-11-12",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13301879994,
+"lat": 52.3166896,
+"lon": 20.967314,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Białołęka",
+"indoor": true,
+"floor": null,
+"location": "DUPLIKAT",
+"opening_hours": null,
+"check_date": "2026-07-06",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13321893604,
+"lat": 52.2307937,
+"lon": 20.9696686,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Skierniewicka 16/20, 01-230 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 0,
+"location": "Na wprost za obrotowymi drzwiami, w poczekalni/holu, na lewej ścianie, w zielonej szafce. Nie potrzeba klucza.",
+"opening_hours": "Mo-Fr 06:00-23:00; Sa-Su 07:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"23:00"
+]
+],
+"tue": [
+[
+"06:00",
+"23:00"
+]
+],
+"wed": [
+[
+"06:00",
+"23:00"
+]
+],
+"thu": [
+[
+"06:00",
+"23:00"
+]
+],
+"fri": [
+[
+"06:00",
+"23:00"
+]
+],
+"sat": [
+[
+"07:00",
+"22:00"
+]
+],
+"sun": [
+[
+"07:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13325084575,
+"lat": 52.2168363,
+"lon": 21.0380229,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Szwoleżerów 9, 00-464 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "W dyspozycji Wewnętrznej Straży Muzealnej. Do defibrylatora w Oberży można uzyskać dostęp od strony\nul. Agrykola 1 – za słupkiem automatycznym udając się do wejścia, tj. pierwszymi drzwiami po lewej stronie.",
+"opening_hours": "24/7",
+"check_date": "2025-03-24",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13333278001,
+"lat": 52.1938432,
+"lon": 20.8693173,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Zagłoby 11, 02-495 Warszawa",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "Przed furtką wejściową na teren przedszkola ",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13339431384,
+"lat": 52.2324253,
+"lon": 21.0067325,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "pl. Defilad 1, 00-110 Warszawa",
+"district": "Śródmieście",
+"indoor": false,
+"floor": null,
+"location": "na kolumnie, przy wejściu do Teatru Studio",
+"opening_hours": "24/7",
+"check_date": "2025-11-28",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13344147501,
+"lat": 52.2367505,
+"lon": 21.1190636,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grochowska 21, 04-186 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie zaraz przy głównym wejściu, przy kasach. AED firmy Philips",
+"opening_hours": null,
+"check_date": "2025-12-01",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13353373501,
+"lat": 52.1620304,
+"lon": 21.0430427,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursynów",
+"indoor": true,
+"floor": 0,
+"location": "W szatni budynku nr 37",
+"opening_hours": null,
+"check_date": "2025-12-04",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13394898873,
+"lat": 52.2220684,
+"lon": 21.0069389,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Defibrylator jest dostępny na portierni, po lewej stronie od wejścia głównego.",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13414591901,
+"lat": 52.2267725,
+"lon": 20.9699233,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Wola",
+"indoor": true,
+"floor": 1,
+"location": "W korytarzu przy izbie przyjęć",
+"opening_hours": null,
+"check_date": "2025-12-28",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13440909501,
+"lat": 52.2730311,
+"lon": 20.9540687,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Włodzimierza Perzyńskiego 10, 01-883 Warszawa",
+"district": "Bielany",
+"indoor": true,
+"floor": 0,
+"location": "W budynku Zespołu Szkół nr 10 im Stanisława Staszica, w szatni. Wejście od strony boiska. Dostępny w godzinach funkcjonowania szkoły",
+"opening_hours": null,
+"check_date": "2026-01-09",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13454380654,
+"lat": 52.1943893,
+"lon": 20.8862081,
+"name": "Ochotnicza Straż Pożarna Ursus",
+"address": "Rynkowa 8, 02-495 Warszawa",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "na ścianie remizy OSP Ursus",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13457932301,
+"lat": 52.3083779,
+"lon": 21.0535101,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Ostródzka 58D, 03-289 Warszawa",
+"district": "Białołęka",
+"indoor": false,
+"floor": null,
+"location": "AED: przy wejściu głównym do fabryki eSmoking Liquids, na ścianie zewnętrznej od strony ulicy",
+"opening_hours": null,
+"check_date": "2026-01-15",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13610308638,
+"lat": 52.1964323,
+"lon": 20.8683735,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Mariana Keniga 14, 02-495 Warszawa",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "w podświetlanej kapsule przy wejściu do szkoły od strony Keniga",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13610559864,
+"lat": 52.2251971,
+"lon": 21.0179203,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Wilcza 21, 00-544 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "w pomieszczeniu recepcyjnym",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13624944101,
+"lat": 52.2210476,
+"lon": 20.965149,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Tunelowa 6, 01-221 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": 0,
+"location": "Na hali głównej na lewo od wejścia na ścianie obok Żabki.",
+"opening_hours": null,
+"check_date": "2026-06-12",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13654491401,
+"lat": 52.2291924,
+"lon": 21.0809162,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grzegorza Przemyka 5, 03-982 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie obok wejścia",
+"opening_hours": null,
+"check_date": "2026-03-17",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13669899201,
+"lat": 52.237049,
+"lon": 21.017532,
+"name": "Manager sécurité",
+"address": "Nowy Świat 67, 00-046 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "HA3",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13686564301,
+"lat": 52.2483976,
+"lon": 21.0660415,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Chodakowska 19/31, 03-815 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie w holu",
+"opening_hours": null,
+"check_date": "2026-03-28",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13695327601,
+"lat": 52.1843118,
+"lon": 20.868651,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Górna Droga 10, 02-495 Warszawa",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "Na lewo od drzwi wejściowych do przedszkola",
+"opening_hours": null,
+"check_date": "2026-03-31",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13722017078,
+"lat": 52.3111958,
+"lon": 21.0125749,
+"name": "Tramwaje Warszawskie",
+"address": "Annopol 15, 03-236 Warszawa",
+"district": "Białołęka",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017079,
+"lat": 52.2984302,
+"lon": 21.0221101,
+"name": "Tramwaje Warszawskie",
+"address": "Annopol 1, 03-236 Warszawa",
+"district": "Białołęka",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017087,
+"lat": 52.2097112,
+"lon": 20.981966,
+"name": "Tramwaje Warszawskie",
+"address": "Stefana Banacha 3, 02-097 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017088,
+"lat": 52.1678683,
+"lon": 21.0159345,
+"name": "Tramwaje Warszawskie",
+"address": "Puławska 256, 02-684 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu do budynku",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017089,
+"lat": 52.2383153,
+"lon": 21.1189327,
+"name": "Tramwaje Warszawskie",
+"address": "Grochowska 26, 04-217 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": "hol",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017090,
+"lat": 52.2447678,
+"lon": 21.085058,
+"name": "Tramwaje Warszawskie",
+"address": "Grochowska 209, 04-077 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu do budynku",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017091,
+"lat": 52.2581945,
+"lon": 21.059733,
+"name": "Tramwaje Warszawskie",
+"address": "Kawęczyńska 42, 03-770 Warszawa",
+"district": "Praga-Północ",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017092,
+"lat": 52.224685,
+"lon": 20.9306271,
+"name": "Tramwaje Warszawskie",
+"address": "Fort Wola 4, 01-258 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017093,
+"lat": 52.2388903,
+"lon": 20.9011534,
+"name": "Tramwaje Warszawskie",
+"address": "Górczewska 241, 01-459 Warszawa",
+"district": "Bemowo",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017094,
+"lat": 52.2470528,
+"lon": 20.9382146,
+"name": "Tramwaje Warszawskie",
+"address": "Dywizjonu 303 2, 01-470 Warszawa",
+"district": "Wola",
+"indoor": true,
+"floor": null,
+"location": "Przy wejściu do budynku",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017095,
+"lat": 52.2599073,
+"lon": 20.924271,
+"name": "Tramwaje Warszawskie",
+"address": "Powstańców Śląskich 118, 01-466 Warszawa",
+"district": "Bemowo",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu do budynku",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017096,
+"lat": 52.2714349,
+"lon": 20.9442438,
+"name": "Tramwaje Warszawskie",
+"address": "Galla Anonima 5, 01-853 Warszawa",
+"district": "Bielany",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722017097,
+"lat": 52.2725298,
+"lon": 20.9720671,
+"name": "Tramwaje Warszawskie",
+"address": "Gdańska 1A, 01-633 Warszawa",
+"district": "Żoliborz",
+"indoor": true,
+"floor": null,
+"location": "przy wejściu do budynku",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722071403,
+"lat": 52.2923006,
+"lon": 20.9303465,
+"name": "Tramwaje Warszawskie",
+"address": "Zgrupowania AK „Kampinos” 44, 01-943 Warszawa",
+"district": "Bielany",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722071404,
+"lat": 52.2906879,
+"lon": 21.0018869,
+"name": "Tramwaje Warszawskie",
+"address": "Modlińska 1, 03-216 Warszawa",
+"district": "Praga-Północ",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722071405,
+"lat": 52.1818921,
+"lon": 20.9883156,
+"name": "Tramwaje Warszawskie",
+"address": "Suwak 1, 02-676 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722071406,
+"lat": 52.1759625,
+"lon": 20.9440465,
+"name": "Tramwaje Warszawskie",
+"address": "al. Krakowska 100B, 02-256 Warszawa",
+"district": "Włochy",
+"indoor": true,
+"floor": null,
+"location": "Pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722071407,
+"lat": 52.1573076,
+"lon": 21.0769491,
+"name": "Tramwaje Warszawskie",
+"address": "Adama Branickiego 12, 02-972 Warszawa",
+"district": "Wilanów",
+"indoor": true,
+"floor": null,
+"location": "Punkt socjalno-sanitarny Wilanów (ul. Adama Branickiego 12 lok. 75) - pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722071408,
+"lat": 52.2072625,
+"lon": 21.0472919,
+"name": "Tramwaje Warszawskie",
+"address": "Jurija Gagarina 4, 00-754 Warszawa",
+"district": "Mokotów",
+"indoor": true,
+"floor": null,
+"location": "Punkt socjalno-sanitarny Sielce (ul. Jurija Gagarina 4) -pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13722071409,
+"lat": 52.2191335,
+"lon": 20.9860975,
+"name": "Tramwaje Warszawskie",
+"address": "Filtrowa 83, 02-032 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": null,
+"location": "Punkt socjalno-sanitarny przy placu Narutowicza (ul. Filtrowa 83 róg ul. Akademicka) - pomieszczenie socjalne",
+"opening_hours": "Mo-Su 06:00-22:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"06:00",
+"22:00"
+]
+],
+"tue": [
+[
+"06:00",
+"22:00"
+]
+],
+"wed": [
+[
+"06:00",
+"22:00"
+]
+],
+"thu": [
+[
+"06:00",
+"22:00"
+]
+],
+"fri": [
+[
+"06:00",
+"22:00"
+]
+],
+"sat": [
+[
+"06:00",
+"22:00"
+]
+],
+"sun": [
+[
+"06:00",
+"22:00"
+]
+]
+}
+},
+{
+"osm_id": 13725034402,
+"lat": 52.2292318,
+"lon": 21.0749276,
+"name": "ochrona ",
+"address": "Jana Nowaka-Jeziorańskiego 49, 03-982 Warszawa",
+"district": "Praga-Południe",
+"indoor": true,
+"floor": null,
+"location": " recepcja",
+"opening_hours": null,
+"check_date": null,
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13844194501,
+"lat": 52.1964319,
+"lon": 20.8982135,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Warszawa (adres nieznany)",
+"district": "Ursus",
+"indoor": false,
+"floor": null,
+"location": "Przy wejściu do poradni psychologiczno-pedagogicznej",
+"opening_hours": null,
+"check_date": "2026-05-18",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 13980821601,
+"lat": 52.1404807,
+"lon": 21.0347452,
+"name": "GDDKiA O/Warszawa",
+"address": "Filipiny Płaskowickiej 41, 02-791 Warszawa",
+"district": "Ursynów",
+"indoor": true,
+"floor": 0,
+"location": "Na ścianie w holu głównym budynku Centrum Zarządzania Tunelem",
+"opening_hours": "24/7",
+"check_date": "2026-07-01",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 13984448500,
+"lat": 52.2364784,
+"lon": 21.0229469,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Okólnik 1, 00-368 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "wewnątrz obiektu, przy wejściu głównym, w pobliżu pomieszczenia ochrony",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 14004422501,
+"lat": 52.2089694,
+"lon": 20.9755142,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Grójecka 97, 02-101 Warszawa",
+"district": "Ochota",
+"indoor": false,
+"floor": null,
+"location": "Na ścianie, róg budynku, obok parkingu rowerowego, obok ochorny",
+"opening_hours": "24/7",
+"check_date": "2026-07-11",
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+},
+{
+"osm_id": 14004476454,
+"lat": 52.2030665,
+"lon": 20.9781913,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Wiślicka 6, 02-114 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": null,
+"location": null,
+"opening_hours": "Mo-Fr 09:00-15:00",
+"check_date": null,
+"status": "scheduled",
+"schedule": {
+"mon": [
+[
+"09:00",
+"15:00"
+]
+],
+"tue": [
+[
+"09:00",
+"15:00"
+]
+],
+"wed": [
+[
+"09:00",
+"15:00"
+]
+],
+"thu": [
+[
+"09:00",
+"15:00"
+]
+],
+"fri": [
+[
+"09:00",
+"15:00"
+]
+],
+"sat": [],
+"sun": []
+}
+},
+{
+"osm_id": 14045768102,
+"lat": 52.2112455,
+"lon": 20.9857702,
+"name": "Uniwersytet Warszawski",
+"address": "Stefana Banacha 2B, 02-097 Warszawa",
+"district": "Ochota",
+"indoor": true,
+"floor": 0,
+"location": "W głównym holu, na prawo od głównego wejścia (przy stole z czarnymi krzesłami).",
+"opening_hours": null,
+"check_date": "2026-07-24",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 14056040806,
+"lat": 52.2214031,
+"lon": 21.014657,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Jana i Jędrzeja Śniadeckich 10, 00-656 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": 0,
+"location": "Recepcja",
+"opening_hours": null,
+"check_date": "2026-07-28",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 14189073701,
+"lat": 52.2418044,
+"lon": 21.0032805,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "pl. Bankowy 1, 00-139 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Wejście do budynku biurowego",
+"opening_hours": null,
+"check_date": "2026-09-17",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 14189074201,
+"lat": 52.2418553,
+"lon": 21.0029667,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "pl. Bankowy 1, 00-139 Warszawa",
+"district": "Śródmieście",
+"indoor": true,
+"floor": null,
+"location": "Wejście do budynku biurowego / recepcja",
+"opening_hours": null,
+"check_date": "2026-09-17",
+"status": "unknown",
+"schedule": null
+},
+{
+"osm_id": 14262135601,
+"lat": 52.2097108,
+"lon": 20.9780135,
+"name": "Defibrylator (OpenStreetMap)",
+"address": "Metrykantów 3, 02-102 Warszawa",
+"district": "Ochota",
+"indoor": false,
+"floor": null,
+"location": "na ścianie budynku",
+"opening_hours": "24/7",
+"check_date": null,
+"status": "24/7",
+"schedule": {
+"mon": [
+[
+"00:00",
+"24:00"
+]
+],
+"tue": [
+[
+"00:00",
+"24:00"
+]
+],
+"wed": [
+[
+"00:00",
+"24:00"
+]
+],
+"thu": [
+[
+"00:00",
+"24:00"
+]
+],
+"fri": [
+[
+"00:00",
+"24:00"
+]
+],
+"sat": [
+[
+"00:00",
+"24:00"
+]
+],
+"sun": [
+[
+"00:00",
+"24:00"
+]
+]
+}
+}
+]

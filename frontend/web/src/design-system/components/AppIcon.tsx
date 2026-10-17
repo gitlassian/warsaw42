@@ -7,6 +7,7 @@ import download from '@material-symbols/svg-500/rounded/download.svg'
 import ecgHeart from '@material-symbols/svg-500/rounded/ecg_heart.svg'
 import error from '@material-symbols/svg-500/rounded/error.svg'
 import expandMore from '@material-symbols/svg-500/rounded/keyboard_arrow_down.svg'
+import filterList from '@material-symbols/svg-500/rounded/filter_list.svg'
 import flag from '@material-symbols/svg-500/rounded/flag.svg'
 import help from '@material-symbols/svg-500/rounded/help.svg'
 import info from '@material-symbols/svg-500/rounded/info.svg'
@@ -33,6 +34,7 @@ const ICONS = {
   download,
   error,
   expand_more: expandMore,
+  filter_list: filterList,
   flag,
   help,
   info,

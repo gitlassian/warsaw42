@@ -47,7 +47,8 @@ Keep the original `hours_text` for display. Structured hours live in one JSON fi
 
 Weekdays run from `1` (Monday) to `7`; intervals contain minutes after midnight.
 Date exceptions use `YYYY-MM-DD` keys with the same day shape. Missing days mean
-unknown. Set `hours_verified` only after checking the parsed schedule; unverified
+unknown. The seed writes `closed` for the days a source text leaves out when that text
+names its days ("poniedziałek-piątek 8-16"), and from OpenStreetMap, where an unlisted day is closed. Set `hours_verified` only after checking the parsed schedule; unverified
 hours stay unknown. Opening hours do not prove that a device works.
 
 ## Finding and routing
