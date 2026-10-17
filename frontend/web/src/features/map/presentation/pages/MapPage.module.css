@@ -100,6 +100,11 @@
   transition: bottom var(--duration-panel) ease-out;
 }
 
+/* Navigation: no round controls or find bar, so no corner scrim under them. */
+.layout[data-navigating] .mapArea::after {
+  display: none;
+}
+
 /* Navigation: notices sit below the taller direction banner. */
 .layout[data-navigating] .overlay {
   top: calc(env(safe-area-inset-top) + 160px);

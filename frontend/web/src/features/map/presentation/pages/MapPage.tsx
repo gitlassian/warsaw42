@@ -59,6 +59,8 @@ export function MapPage() {
   // Wide layout: the round controls stack above the find card, whatever its height.
   const [dockHeight, setDockHeight] = useState(0)
   const mapCover = Math.max(cover.sheet, cover.dock)
+  // Navigation keeps the map clear: no round controls or time picker beside it.
+  const controlsShown = !navigating && mapCover < viewportHeight * 0.7
 
   useEffect(() => {
     const dock = dockRef.current
@@ -175,7 +177,7 @@ export function MapPage() {
             />
           )}
         </div>
-        {mapCover < viewportHeight * 0.7 && (
+        {controlsShown && (
           <div className={styles.controls}>
             {wide && <InfoButton text="Info" />}
             <MapControls
@@ -192,7 +194,7 @@ export function MapPage() {
             />
           </div>
         )}
-        {timeOpen && mapCover < viewportHeight * 0.7 && (
+        {timeOpen && controlsShown && (
           <div className={styles.timeBar}>
             <TimeBar
               at={now}
