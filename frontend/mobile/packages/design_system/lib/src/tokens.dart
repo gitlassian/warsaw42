@@ -39,3 +39,20 @@ abstract final class AppRadius {
   static const sheet = BorderRadius.vertical(top: Radius.circular(24));
   static const pill = BorderRadius.all(Radius.circular(999));
 }
+
+// CSS blur b equals Flutter blurRadius ≈ (b / 2 - 0.5) / 0.577, so the shadows match the web.
+abstract final class AppShadows {
+  /// 0 4px 24px rgb(23 35 29 / 12%)
+  static const panel = [BoxShadow(color: Color(0x1F17231D), offset: Offset(0, 4), blurRadius: 20)];
+
+  /// 0 2px 8px rgb(23 35 29 / 10%)
+  static const floating = [BoxShadow(color: Color(0x1A17231D), offset: Offset(0, 2), blurRadius: 6)];
+
+  /// Round map controls: 0 2px 10px rgb(23 35 29 / 28%).
+  static const control = [BoxShadow(color: Color(0x4717231D), offset: Offset(0, 2), blurRadius: 8)];
+}
+
+abstract final class AppDurations {
+  static const feedback = Duration(milliseconds: 140);
+  static const panel = Duration(milliseconds: 220);
+}

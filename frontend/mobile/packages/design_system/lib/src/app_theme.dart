@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'app_text.dart';
 import 'tokens.dart';
 
 abstract final class AppTheme {
@@ -17,6 +18,18 @@ abstract final class AppTheme {
       onError: AppColors.surface,
     ),
     scaffoldBackgroundColor: AppColors.background,
-    // shortcut: Noto Sans is not bundled yet, uses the platform font; add local font assets with the first real UI.
+    fontFamily: 'NotoSans',
+    package: 'design_system',
+    textTheme: TextTheme(
+      bodyLarge: AppTextStyles.body.copyWith(color: AppColors.textPrimary),
+      bodyMedium: AppTextStyles.body.copyWith(color: AppColors.textPrimary),
+    ),
+    textSelectionTheme: const TextSelectionThemeData(
+      cursorColor: AppColors.accent,
+      selectionHandleColor: AppColors.accent,
+      selectionColor: AppColors.accentSoft,
+    ),
+    splashFactory: NoSplash.splashFactory,
+    highlightColor: Colors.transparent,
   );
 }
