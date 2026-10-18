@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Button } from '@/design-system/components/Button'
 import { ChoiceGroup } from '@/design-system/components/ChoiceGroup'
+import { Disclosure } from '@/design-system/components/Disclosure'
 import { Notice } from '@/design-system/components/Notice'
 import { PanelHeader } from '@/design-system/components/PanelHeader'
 import { RangeSlider } from '@/design-system/components/RangeSlider'
@@ -80,60 +81,96 @@ export function PlacementPanel() {
 
       {data && view && (
         <>
-          <Notice title={`Otwartych AED o tej porze: ${view.slot.a}`}>
-            <Stack gap={4}>
-              <Text>
-                W promieniu {formatDistance(data.radius_m)} od nich mieszka {view.slot.c}% mieszkańców. Bez AED w zasięgu:{' '}
-                {people.format(view.slot.u)} osób (w tym {people.format(view.slot.u65)} w wieku 65+).
-              </Text>
+          <section className={styles.summary} aria-label="Podsumowanie">
+            <span className={styles.summaryLabel}>Mieszkańcy do {formatDistance(data.radius_m)} od otwartego AED</span>
+            <div className={styles.headline}>
+              <span className={styles.pct}>{view.slot.c}%</span>
               {view.picks.length > 0 && (
-                <Text>
-                  <strong>
-                    {count} {mode === 'new' ? 'nowych punktów' : 'udostępnionych AED'}: do {view.coveredPctAfter}% (+{view.gainPct} p.p.,
-                    ok. {people.format(view.gainPeople)} osób).
-                  </strong>
-                </Text>
+                <>
+                  <span className={styles.arrow} aria-label="po zmianie">
+                    →
+                  </span>
+                  <span className={`${styles.pct} ${styles.pctAfter}`}>{view.coveredPctAfter}%</span>
+                  <span className={styles.gain}>+{view.gainPct} p.p.</span>
+                </>
               )}
-              <Text variant="meta" tone="secondary">
-                {mode === 'new'
-                  ? `Szacunkowy koszt: ${count} × ${zloty(data.cost_per_aed_pln)} = ${zloty(count * data.cost_per_aed_pln)} (${data.cost_basis}).`
-                  : 'Bez zakupu: wystarczy udostępnić istniejące urządzenie całą dobę, np. szafka na zewnątrz budynku.'}
-              </Text>
-            </Stack>
-          </Notice>
+            </div>
+            <div className={styles.bar} aria-hidden="true">
+              <span className={styles.barNow} style={{ width: `${view.slot.c}%` }} />
+              <span className={styles.barGain} style={{ width: `${view.coveredPctAfter - view.slot.c}%` }} />
+            </div>
+
+            <dl className={styles.facts}>
+              <div>
+                <dt>Otwarte AED o tej porze</dt>
+                <dd>{people.format(view.slot.a)}</dd>
+              </div>
+              <div>
+                <dt>Bez AED w zasięgu</dt>
+                <dd>{people.format(view.slot.u)} osób</dd>
+              </div>
+              <div className={styles.sub}>
+                <dt>w tym w wieku 65+</dt>
+                <dd>{people.format(view.slot.u65)}</dd>
+              </div>
+              {view.picks.length > 0 && (
+                <div className={styles.highlight}>
+                  <dt>
+                    Zyskuje dostęp ({count} {mode === 'new' ? 'nowych punktów' : 'udostępnionych AED'})
+                  </dt>
+                  <dd>+{people.format(view.gainPeople)} osób</dd>
+                </div>
+              )}
+              {mode === 'new' && (
+                <div>
+                  <dt>Szacunkowy koszt</dt>
+                  <dd>{zloty(count * data.cost_per_aed_pln)}</dd>
+                </div>
+              )}
+            </dl>
+
+            <Text variant="meta" tone="secondary">
+              {mode === 'new'
+                ? `${count} × ${zloty(data.cost_per_aed_pln)} (${data.cost_basis}).`
+                : 'Bez zakupu: wystarczy udostępnić istniejące urządzenie całą dobę, np. szafka na zewnątrz budynku.'}
+            </Text>
+          </section>
 
           {view.picks.length === 0 ? (
             <Text tone="secondary">O tej porze nie ma takich punktów.</Text>
           ) : (
-            <ol className={styles.list}>
-              {view.picks.map((pick) => (
-                <li key={pick.rank}>
-                  <button
-                    type="button"
-                    className={styles.item}
-                    aria-pressed={selected === pick.rank}
-                    onClick={() => {
-                      selectPlacement(pick.rank)
-                      mapCamera.focus({ lng: pick.lng, lat: pick.lat })
-                    }}
-                  >
-                    <span className={styles.rank}>{pick.rank}</span>
-                    <span className={styles.body}>
-                      <span className={styles.title}>{pick.title}</span>
-                      {mode === 'convert' && <span className={styles.meta}>{pick.address}</span>}
-                      <span className={styles.meta}>
-                        +{people.format(pick.gain)} osób w zasięgu (w tym {people.format(pick.gain65)} w wieku 65+)
+            <Disclosure title={`Lista punktów (${view.picks.length})`}>
+              <ol className={styles.list}>
+                {view.picks.map((pick) => (
+                  <li key={pick.rank}>
+                    <button
+                      type="button"
+                      className={styles.item}
+                      aria-pressed={selected === pick.rank}
+                      onClick={() => {
+                        selectPlacement(pick.rank)
+                        mapCamera.focus({ lng: pick.lng, lat: pick.lat })
+                      }}
+                    >
+                      <span className={styles.rank}>{pick.rank}</span>
+                      <span className={styles.body}>
+                        <span className={styles.title}>{pick.title}</span>
+                        {mode === 'convert' && <span className={styles.meta}>{pick.address}</span>}
+                        <span className={styles.stats}>
+                          <span className={styles.statGain}>+{people.format(pick.gain)} osób</span>
+                          <span className={styles.stat65}>65+: {people.format(pick.gain65)}</span>
+                        </span>
                       </span>
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ol>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </Disclosure>
           )}
 
           <Text variant="meta" tone="muted">
-            Zasięg w linii prostej ({formatDistance(data.radius_m)}). Mieszkańcy: spis GUS 2021 rozłożony na budynki mieszkalne
-            Warszawy, to szacunek do ustalania priorytetów, nie projekt rozmieszczenia.
+            Zasięg w linii prostej ({formatDistance(data.radius_m)}). Mieszkańcy: spis GUS 2021 rozłożony na budynki
+            mieszkalne Warszawy, to szacunek do ustalania priorytetów, nie projekt rozmieszczenia.
           </Text>
         </>
       )}
