@@ -21,6 +21,7 @@ npm test         # node --test for pure domain logic (*.test.ts)
 | --- | --- |
 | `features/aeds/services/aedApi.ts` | table `aeds` (active rows, mapped by `lib/fromRow.ts`, photos from Storage) and `app_data` key `status` via PostgREST |
 | `features/discovery/services/routingApi.ts` | Edge Functions `aeds-find`, `routes-etas`, `routes-walking` (Mapbox walking routes) |
+| `features/placement/services/placementApi.ts` | `app_data` `placement` | database when Supabase is configured, else `public/mock/placement.json` (a copy of `backend/data/out/placement.json`; refresh it after `python3 -m pipeline.placement`) |
 | `features/report/services/reportApi.ts` | insert into `reports` via PostgREST (simulated without Supabase settings) |
 
 The Edge Functions answer CORS only for origins listed in their `ALLOWED_ORIGINS` secret

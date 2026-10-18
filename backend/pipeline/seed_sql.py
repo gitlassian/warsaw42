@@ -5,7 +5,8 @@
 Inputs: data/raw/scb_aed_list.json (addresses, raw fields), data/out/aed.json (parsed hours,
 floors) and data/raw/warsaw_boundary.geojson (service area),
 data/out/aed_district.json (pipeline.districts), data/out/aed_photos.json (pipeline.photos),
-data/out/aed_osm_hours.json and data/out/osm_extra.json (pipeline.osm_match), all optional. The seed expects an empty database.
+data/out/aed_osm_hours.json and data/out/osm_extra.json (pipeline.osm_match) and data/out/placement.json
+(pipeline.placement), all optional. The seed expects an empty database.
 
 Hours are trusted (`hours_verified = true`) only when the pipeline did not
 guess. LLM schedules, assumed weekdays and flagged 24/7-indoors records remain unverified, so the
@@ -184,7 +185,7 @@ def seed_rows(raw, parsed, trust_flagged_247, osm=None):
     return rows
 
 
-def render(raw, parsed, boundary, trust_flagged_247=False, districts=None, photos=(), osm_hours=None, osm_extra=()):
+def render(raw, parsed, boundary, trust_flagged_247=False, districts=None, photos=(), osm_hours=None, osm_extra=(), placement=None):
     districts, photos = districts or {}, set(photos)
     values = []
     for r in seed_rows(raw, parsed, trust_flagged_247, osm_hours):
@@ -205,6 +206,7 @@ def render(raw, parsed, boundary, trust_flagged_247=False, districts=None, photo
             hours_json(x["schedule"] if scheduled else None, closed), None, x["district"],
             "osm", "osm" if x["status"] != "unknown" else None,
         ]) + ")")
+    placement_sql = f"INSERT INTO app_data (key, data) VALUES ('placement', {q(placement)});\n" if placement else ""
     holidays = [h for y in (2026, 2027) for h in polish_holidays(y)]
     holiday_values = ",\n".join(f"({q(d.isoformat())}, {q(n)})" for d, n in holidays)
     aed_values = ",\n".join(values)
@@ -227,7 +229,7 @@ INSERT INTO aeds (source_id, object_name, full_address, lon, lat, in_building, f
     access_instructions, public_access, hours_text, hours_status, hours_verified, hours, photo_path, district,
     source, hours_source) VALUES
 {aed_values};
-INSERT INTO app_data (key, data) VALUES ('status',
+{placement_sql}INSERT INTO app_data (key, data) VALUES ('status',
     jsonb_build_object('aed_count', {len(values)}, 'osm_count', {len(osm_extra)}, 'source', 'Warsaw Open Data',
                        'attribution', 'Dane: m.st. Warszawa, SCB (CC BY)', 'updated_at', now()));
 COMMIT;
@@ -251,7 +253,7 @@ def main():
 
     sql = render(raw, parsed, load("raw", "warsaw_boundary.geojson"), a.trust_flagged_247,
                  optional({}, "out", "aed_district.json"), optional([], "out", "aed_photos.json"),
-                 optional({}, "out", "aed_osm_hours.json"), optional([], "out", "osm_extra.json"))
+                 optional({}, "out", "aed_osm_hours.json"), optional([], "out", "osm_extra.json"), optional(None, "out", "placement.json"))
     with open(a.out, "w", encoding="utf-8") as f:
         f.write(sql)
 
