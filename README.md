@@ -31,13 +31,11 @@
   <img alt="OpenAI gpt-4o-mini" src="https://img.shields.io/badge/OpenAI-gpt--4o--mini-412991">
 </p>
 
-| | |
-| --- | --- |
-| **Projekt** | DefiWawa |
-| **Zespół** | Joblessness, numer zespołu **24** |
-| **Wyzwanie** | 3 |
-| **Prezentacja** | [`3_Joblessness_DefiWawa.pptx`](3_Joblessness_DefiWawa.pptx) |
-| **Działa na żywo** | [defiwawa.pl](https://defiwawa.pl) (otwórz na telefonie) |
+- **Projekt:** DefiWawa
+- **Zespół:** Joblessness, numer zespołu **24**
+- **Wyzwanie:** 3
+- **Prezentacja:** [`3_Joblessness_DefiWawa.pptx`](3_Joblessness_DefiWawa.pptx)
+- **Działa na żywo:** [defiwawa.pl](https://defiwawa.pl) (otwórz na telefonie)
 
 ---
 
@@ -80,12 +78,9 @@ z takim samym wyglądem i działaniem.
 
 ```mermaid
 flowchart LR
-  A["Otwarte dane<br>Warszawy, GUS,<br>OpenStreetMap"] --> B["Skrypty Python<br>czyszczą i łączą dane"]
-  B --> C[("Supabase<br>baza AED, zdjęcia,<br>zgłoszenia")]
-  C --> D["Strona www<br>(React)"]
-  C --> E["Aplikacja na telefon<br>(Flutter)"]
-  D & E <--> F["Mapbox<br>mapa, trasy piesze,<br>adresy"]
-  G["GitHub Actions<br>co 3 godziny"] --> B
+  A["Otwarte dane"] -- "Python, co 3 h" --> B[("Supabase")]
+  B --> C["www i telefon"]
+  C <--> D["Mapbox: mapa i trasy"]
 ```
 
 **1. Zbieramy dane.** Bierzemy listę AED z otwartych danych Warszawy (710 urządzeń z godzinami, opisem i zdjęciami)
