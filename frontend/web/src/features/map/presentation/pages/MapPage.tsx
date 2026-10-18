@@ -121,6 +121,10 @@ export function MapPage() {
     </button>
   )
 
+  // Phones keep the address search at the top of every screen, as in Google Maps, except while navigating or
+  // picking a point on the map; wide screens show it on the start screen, where the side panel is closed.
+  const searchShown = floating ? wide || !picking : !wide && !navigating && !picking
+
   return (
     <div
       className={styles.layout}
@@ -133,10 +137,10 @@ export function MapPage() {
         {navigating && !wide ? (
           <NavigationBanner />
         ) : (
-          <AppHeader floating={floating} onClose={wide && handle?.close ? onClose : undefined} />
+          <AppHeader floating={floating || searchShown} onClose={wide && handle?.close ? onClose : undefined} />
         )}
-        {/* Start screen: the address search in the logo's row; wide also adds the find button. */}
-        {floating && (wide || !picking) && (
+        {/* The address search replaces the logo at the top; wide also adds the find button on the start screen. */}
+        {searchShown && (
           <div className={styles.search}>
             <AddressSearch />
           </div>

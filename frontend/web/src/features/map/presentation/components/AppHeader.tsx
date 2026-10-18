@@ -6,7 +6,7 @@ import { IconButton } from '@/design-system/components/IconButton'
 import styles from './AppHeader.module.css'
 
 type AppHeaderProps = {
-  /** Over the map, also in the wide layout. */
+  /** Over the map with the address search in the same row: the search's D is the logo, so no lockup here. */
   floating?: boolean
   /** Wide layout: closes the open AED or panel from the header row. */
   onClose?: () => void
@@ -16,7 +16,7 @@ type AppHeaderProps = {
 export function AppHeader({ floating = false, onClose }: AppHeaderProps) {
   return (
     <header className={styles.header} data-floating={floating || undefined}>
-      {/* Start screen: the D in the search field is the logo, the lockup stays only as the page heading. */}
+      {/* With the search in the row, the D in the field is the logo; the lockup stays only as the page heading. */}
       {floating ? (
         <h1 className={styles.srOnly}>DefiWawa</h1>
       ) : (
