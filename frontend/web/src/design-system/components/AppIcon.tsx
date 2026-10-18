@@ -28,6 +28,7 @@ import info from '@phosphor-icons/core/bold/info-bold.svg'
 import listBullets from '@phosphor-icons/core/bold/list-bullets-bold.svg'
 import lockSimple from '@phosphor-icons/core/bold/lock-simple-bold.svg'
 import magnifyingGlass from '@phosphor-icons/core/bold/magnifying-glass-bold.svg'
+import mapPinPlus from '@phosphor-icons/core/bold/map-pin-plus-bold.svg'
 import mapPin from '@phosphor-icons/core/bold/map-pin-bold.svg'
 import navigationArrow from '@phosphor-icons/core/bold/navigation-arrow-bold.svg'
 import path from '@phosphor-icons/core/bold/path-bold.svg'
@@ -42,6 +43,7 @@ import x from '@phosphor-icons/core/bold/x-bold.svg'
 import circlesThreeFill from '@phosphor-icons/core/fill/circles-three-fill.svg'
 import clockFill from '@phosphor-icons/core/fill/clock-fill.svg'
 import funnelSimpleFill from '@phosphor-icons/core/fill/funnel-simple-fill.svg'
+import mapPinPlusFill from '@phosphor-icons/core/fill/map-pin-plus-fill.svg'
 import infoFill from '@phosphor-icons/core/fill/info-fill.svg'
 import googleMaps from '@/assets/brand/google-maps.svg'
 import styles from './AppIcon.module.css'
@@ -49,6 +51,7 @@ import styles from './AppIcon.module.css'
 // Phosphor Icons, bold weight (DESIGN.md §4), bundled as local SVGs so they work offline.
 // App names stay stable; only the glyphs behind them change. `google_maps` is the Simple Icons logo (CC0).
 const ICONS = {
+  add_location: mapPinPlus,
   aed: heartbeat,
   call: phone,
   check_circle: checkCircle,
@@ -97,6 +100,7 @@ const ICONS = {
 
 /** Filled glyphs for the switched-on state of toggle controls. */
 const FILLED: Partial<Record<keyof typeof ICONS, string>> = {
+  add_location: mapPinPlusFill,
   info: infoFill,
   layers: circlesThreeFill,
   schedule: clockFill,

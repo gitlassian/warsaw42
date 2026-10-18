@@ -11,6 +11,7 @@ export const SOURCE = {
   aeds: 'aeds',
   route: 'route',
   coverage: 'coverage',
+  placement: 'placement-reach',
   accuracy: 'origin-accuracy',
   boundary: 'warsaw-boundary',
 } as const
@@ -82,6 +83,23 @@ export function addAppLayers(map: MapboxMap) {
     slot: 'middle',
     filter: ['==', ['get', 'kind'], 'covered'],
     paint: { 'line-color': '#ffffff', 'line-width': 3, 'line-opacity': 0.95 },
+  })
+
+  // Reach of the suggested AED sites: the radius used for the coverage numbers, dashed green.
+  map.addSource(SOURCE.placement, { type: 'geojson', data: EMPTY_COLLECTION })
+  map.addLayer({
+    id: 'placement-reach-fill',
+    type: 'fill',
+    source: SOURCE.placement,
+    slot: 'middle',
+    paint: { 'fill-color': accent, 'fill-opacity': 0.14 },
+  })
+  map.addLayer({
+    id: 'placement-reach-line',
+    type: 'line',
+    source: SOURCE.placement,
+    slot: 'middle',
+    paint: { 'line-color': accent, 'line-width': 2, 'line-dasharray': [2, 2] },
   })
 
   map.addSource(SOURCE.accuracy, { type: 'geojson', data: EMPTY_COLLECTION })

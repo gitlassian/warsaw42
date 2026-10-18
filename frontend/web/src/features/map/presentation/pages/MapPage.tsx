@@ -56,6 +56,7 @@ export function MapPage() {
   const available = useStore(mapFiltersStore, (s) => s.available)
   const unavailable = useStore(mapFiltersStore, (s) => s.unavailable)
   const coverageShown = location.pathname === RoutePaths.coverage
+  const placementShown = location.pathname === RoutePaths.placement
   const floating = !!handle?.floating
   const navigating = !!handle?.navigation
   const wide = useMediaQuery(WIDE_LAYOUT_QUERY)
@@ -225,6 +226,7 @@ export function MapPage() {
               <MapControls
                 collapsible={!wide}
                 coverageShown={coverageShown}
+                placementShown={placementShown}
                 filters={{ available, unavailable }}
                 onToggleFilter={toggleFilter}
                 timeOpen={timeOpen}
@@ -232,6 +234,7 @@ export function MapPage() {
                 filtersOpen={filtersOpen}
                 onFiltersOpenChange={onFiltersOpenChange}
                 onToggleCoverage={() => navigate(coverageShown ? RoutePaths.map : RoutePaths.coverage)}
+                onTogglePlacement={() => navigate(placementShown ? RoutePaths.map : RoutePaths.placement)}
               >
                 {!wide && locateButton}
               </MapControls>

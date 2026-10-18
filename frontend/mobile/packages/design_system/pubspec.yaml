@@ -10,3 +10,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_svg: ^2.3.0
+
+flutter:
+  assets:
+    - assets/icons/
+  # Bundled so the app has its one font on an offline cold start (DESIGN.md §3).
+  fonts:
+    - family: NotoSans
+      fonts:
+        - asset: fonts/NotoSans-400.ttf
+          weight: 400
+        - asset: fonts/NotoSans-600.ttf
+          weight: 600
+        - asset: fonts/NotoSans-700.ttf
+          weight: 700
